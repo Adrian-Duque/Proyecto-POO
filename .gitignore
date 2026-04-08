@@ -1,24 +1,66 @@
-# Compiled class file
+# --- Java (Compilados y Salida) ---
 *.class
-
-# Log file
 *.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
 *.jar
 *.war
-*.nar
 *.ear
+*.nar
 *.zip
 *.tar.gz
 *.rar
+*.ctxt
+.mtj.tmp/
+/target/
+/build/
+/out/
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# --- Editores de IA (Nuevos) ---
+.claude.code/        # Claude Code (historial de agentes y logs)
+.cursor/             # Cursor AI
+.windsurf/           # Windsurf (Codeium)
+.opencode/           # OpenCode configuraciones locales
+
+# --- VS Code & Forks (Cursor/Windsurf/OpenCode) ---
+.vscode/
+*.code-workspace
+.history/            # Extensiones de historial local
+
+# --- IntelliJ IDEA ---
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# --- Eclipse ---
+.metadata/
+.settings/
+.classpath
+.project
+.factorypath
+bin/
+
+# --- Antigravity ---
+# Evitando que la gravedad (o Python) ensucie el proyecto
+build/
+dist/
+*.pyc
+__pycache__/
+
+# --- Herramientas de Construcción (Build Tools) ---
+.mvn/
+.gradle/
+build/
+# No ignorar el wrapper de gradle para que otros puedan construir el proyecto
+!gradle-wrapper.jar
+
+# --- Sistema Operativo y Varios ---
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+
+# --- virtual machine crash logs ---
 hs_err_pid*
 replay_pid*
+
+*~
