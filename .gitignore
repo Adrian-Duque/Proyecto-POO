@@ -9,6 +9,7 @@
 *.tar.gz
 *.rar
 *.ctxt
+*.csv
 .mtj.tmp/
 /target/
 /build/
