@@ -1,0 +1,270 @@
+A;Empieza por la A, Insecto amarillo y negro que fabrica miel;Abeja
+A;Empieza por la A, Líquido transparente que bebemos para vivir;Agua
+A;Empieza por la A, Color del cielo y del mar;Azul
+A;Empieza por la A, Planta grande con tronco y hojas;Árbol
+A;Empieza por la A, Vehículo que vuela por el aire;Avión
+A;Empieza por la A, Familiar que es el padre de tu padre o madre;Abuelo
+A;Empieza por la A, Persona con la que te gusta jugar y pasar tiempo;Amigo
+A;Empieza por la A, Joya circular que se pone en el dedo;Anillo
+A;Empieza por la A, Animal de ocho patas que teje redes;Araña
+A;Empieza por la A, Arco de colores que sale después de la lluvia;Arcoíris
+B;Empieza por la B, Objeto redondo que sirve para jugar al fútbol;Balón
+B;Empieza por la B, Vehículo para viajar por el agua;Barco
+B;Empieza por la B, Parte del cuerpo con la que hablamos y comemos;Boca
+B;Empieza por la B, Color de la nieve y de la leche;Blanco
+B;Empieza por la B, Animal de carga parecido al caballo pero más pequeño;Burro
+B;Empieza por la B, Niño muy pequeño recién nacido;Bebé
+B;Empieza por la B, Vehículo de dos ruedas que movemos con pedales;Bicicleta
+B;Empieza por la B, Mujer con poderes mágicos que suele volar en escoba;Bruja
+B;Empieza por la B, Recipiente para guardar líquidos como agua;Botella
+B;Empieza por la B, Prenda de ropa larga para abrigar el cuello;Bufanda
+C;Empieza por la C, Lugar donde vivimos;Casa
+C;Empieza por la C, Vehículo de cuatro ruedas para viajar por carretera;Coche
+C;Empieza por la C, Mueble donde dormimos;Cama
+C;Empieza por la C, Animal de orejas largas que salta;Conejo
+C;Empieza por la C, Lugar donde vamos a aprender con los profesores;Colegio
+C;Empieza por la C, Dulce pequeño envuelto en papel;Caramelo
+C;Empieza por la C, Parte superior del cuerpo donde está el cerebro;Cabeza
+C;Empieza por la C, Prenda de ropa con botones y cuello;Camisa
+C;Empieza por la C, Animal que lleva su casa a cuestas;Caracol
+C;Empieza por la C, Objeto para tomar sopa;Cuchara
+D;Empieza por la D, Cubo con puntos que usamos en juegos de mesa;Dado
+D;Empieza por la D, Tenemos cinco en cada mano;Dedo
+D;Empieza por la D, Piezas duras y blancas de la boca para masticar;Diente
+D;Empieza por la D, Animal gigante que vivió hace millones de años;Dinosaurio
+D;Empieza por la D, Persona que nos cura cuando estamos enfermos;Doctor
+D;Empieza por la D, El último día de la semana;Domingo
+D;Empieza por la D, Lo que hacemos en la cama por la noche;Dormir
+D;Empieza por la D, Imagen hecha con lápices o colores en un papel;Dibujo
+D;Empieza por la D, Sabor agradable como el del azúcar;Dulce
+D;Empieza por la D, Animal que vive en el mar y es muy inteligente;Delfín
+E;Empieza por la E, Animal muy grande con trompa;Elefante
+E;Empieza por la E, Objeto brillante en el cielo nocturno;Estrella
+E;Empieza por la E, Lugar donde los niños van a aprender;Escuela
+E;Empieza por la E, Persona muy bajita de los cuentos de Blancanieves;Enano
+E;Empieza por la E, Objeto donde te miras para ver tu reflejo;Espejo
+E;Empieza por la E, Construcción alta con muchos pisos;Edificio
+E;Empieza por la E, Serie de escalones para subir y bajar;Escalera
+E;Empieza por la E, Objeto para guardar lápices y gomas;Estuche
+E;Empieza por la E, El primer mes del año;Enero
+E;Empieza por la E, Salida con el colegio o amigos a visitar un lugar;Excursión
+F;Empieza por la F, Animal marino que vive en zonas frías y aplaude;Foca
+F;Empieza por la F, Produce calor y luz, y quema;Fuego
+F;Empieza por la F, Ser que asusta cubierto con una sábana blanca;Fantasma
+F;Empieza por la F, Parte bonita de la planta que suele oler bien;Flor
+F;Empieza por la F, Grupo de personas formado por padres e hijos;Familia
+F;Empieza por la F, Imagen capturada con una cámara;Foto
+F;Empieza por la F, Deporte rey donde se juega con los pies;Fútbol
+F;Empieza por la F, Sensación de baja temperatura, opuesto a calor;Frío
+F;Empieza por la F, Celebración con música y alegría;Fiesta
+F;Empieza por la F, Fruta pequeña y roja con semillas por fuera;Fresa
+G;Empieza por la G, Animal doméstico que hace miau;Gato
+G;Empieza por la G, Prenda para cubrir la cabeza del sol;Gorra
+G;Empieza por la G, Prenda para abrigar las manos;Guantes
+G;Empieza por la G, Animal pequeño y alargado que se arrastra;Gusano
+G;Empieza por la G, Juguete de goma que se hincha con aire;Globo
+G;Empieza por la G, Dulce crujiente que se toma con leche;Galleta
+G;Empieza por la G, Ave de granja que despierta a todos cantando;Gallo
+G;Empieza por la G, Instrumento musical de cuerdas;Guitarra
+G;Empieza por la G, Objeto escolar para borrar lo escrito a lápiz;Goma
+G;Empieza por la G, Ser enorme de los cuentos;Gigante
+H;Empieza por la H, Alimento que ponen las gallinas;Huevo
+H;Empieza por la H, Agua congelada y fría;Hielo
+H;Empieza por la H, Insecto pequeño y trabajador que vive en colonias;Hormiga
+H;Empieza por la H, Lugar donde curan a los enfermos graves;Hospital
+H;Empieza por la H, Parte dura que forma el esqueleto;Hueso
+H;Empieza por la H, Gas gris que sale del fuego;Humo
+H;Empieza por la H, Postre frío de muchos sabores;Helado
+H;Empieza por la H, Hijo de tus mismos padres;Hermano
+H;Empieza por la H, Ser mágico pequeño con alas;Hada
+H;Empieza por la H, Planta verde que crece en el suelo de los jardines;Hierba
+I;Empieza por la I, Edificio religioso con campana;Iglesia
+I;Empieza por la I, Tierra rodeada de agua por todas partes;Isla
+I;Empieza por la I, Habitante nativo de América con plumas;Indio
+I;Empieza por la I, Casa de hielo de los esquimales;Iglú
+I;Empieza por la I, Objeto que atrae metales;Imán
+I;Empieza por la I, Estación del año más fría;Invierno
+I;Empieza por la I, Animal pequeño como la mosca o el mosquito;Insecto
+I;Empieza por la I, Reptil verde parecido a un lagarto grande;Iguana
+I;Empieza por la I, Pensamiento que se nos ocurre de repente;Idea
+I;Empieza por la I, Capacidad de inventar cosas en la mente;Imaginación
+J;Empieza por la J, Animal muy alto con cuello largo;Jirafa
+J;Empieza por la J, Objeto que sirve para jugar;Juguete
+J;Empieza por la J, Zona con plantas y flores fuera de la casa;Jardín
+J;Empieza por la J, Recipiente con asa para servir agua o zumo;Jarra
+J;Empieza por la J, Producto para lavarse y oler bien;Jabón
+J;Empieza por la J, Día de la semana que va antes del viernes;Jueves
+J;Empieza por la J, Embutido de cerdo muy rico;Jamón
+J;Empieza por la J, Objeto de valor como un collar o anillo;Joya
+J;Empieza por la J, Líquido que se saca de las frutas;Jugo
+J;Empieza por la J, Caja de rejas para encerrar pájaros;Jaula
+K;Empieza por la K, Fruta verde por dentro y peluda por fuera;Kiwi
+K;Empieza por la K, Animal australiano parecido a un osito que come eucalipto;Koala
+K;Empieza por la K, Medida de peso igual a mil gramos;Kilo
+K;Empieza por la K, Deporte de lucha con cinturones de colores;Karate
+K;Empieza por la K, Salsa de tomate que se pone en las hamburguesas;Kétchup
+K;Empieza por la K, Caseta pequeña donde venden periódicos y chuches;Kiosco
+K;Empieza por la K, Vestido tradicional japonés;Kimono
+K;Empieza por la K, Medida de distancia igual a mil metros;Kilómetro
+K;Empieza por la K, Canoa pequeña para remar en el río;Kayak
+K;Empieza por la K, Actividad de cantar canciones siguiendo la letra en una pantalla;Karaoke
+L;Empieza por la L, Rey de la selva con gran melena;León
+L;Empieza por la L, Satélite que brilla en la noche;Luna
+L;Empieza por la L, Objeto con hojas escritas para leer;Libro
+L;Empieza por la L, Utensilio de madera y grafito para escribir;Lápiz
+L;Empieza por la L, Animal parecido al perro que aúlla;Lobo
+L;Empieza por la L, Líquido blanco que nos da la vaca;Leche
+L;Empieza por la L, Fruta amarilla y muy ácida;Limón
+L;Empieza por la L, Pelo de la oveja con el que se hacen jerséis;Lana
+L;Empieza por la L, Primer día de la semana escolar;Lunes
+L;Empieza por la L, Gran cantidad de agua rodeada de tierra;Lago
+M;Empieza por la M, La madre de tu madre o padre;Madre
+M;Empieza por la M, Parte del cuerpo con cinco dedos;Mano
+M;Empieza por la M, Mueble con patas para comer o escribir;Mesa
+M;Empieza por la M, Animal gracioso que come plátanos;Mono
+M;Empieza por la M, Fruta roja o verde de cuento de Blancanieves;Manzana
+M;Empieza por la M, Dibujo de la tierra o de un país;Mapa
+M;Empieza por la M, Sonidos con ritmo que se pueden bailar;Música
+M;Empieza por la M, Gran extensión de agua salada;Mar
+M;Empieza por la M, Elevación grande de terreno;Montaña
+M;Empieza por la M, Vehículo de dos ruedas con motor;Moto
+N;Empieza por la N, Masa blanca de vapor en el cielo;Nube
+N;Empieza por la N, Parte de la cara para oler;Nariz
+N;Empieza por la N, Agua helada que cae en copos blancos;Nieve
+N;Empieza por la N, Parte del día cuando sale la luna y dormimos;Noche
+N;Empieza por la N, Fruta redonda de color naranja;Naranja
+N;Empieza por la N, Persona de poca edad;Niño
+N;Empieza por la N, Casa que construyen los pájaros;Nido
+N;Empieza por la N, Color más oscuro de todos;Negro
+N;Empieza por la N, Moverse en el agua usando brazos y piernas;Nadar
+N;Empieza por la N, Fiesta en diciembre donde viene Papá Noel;Navidad
+Ñ;Empieza por la Ñ, Animal africano parecido al toro;Ñu
+Ñ;Contiene la Ñ, Animal de ocho patas que teje telarañas;Araña
+Ñ;Contiene la Ñ, Tiempo de 365 días;Año
+Ñ;Contiene la Ñ, Fruta tropical amarilla con hojas arriba;Piña
+Ñ;Contiene la Ñ, Casa pequeña y rústica de madera;Cabaña
+Ñ;Contiene la Ñ, Momento del día cuando sale el sol;Mañana
+Ñ;Contiene la Ñ, Estación del año en la que caen las hojas;Otoño
+Ñ;Contiene la Ñ, Juguete con forma de persona;Muñeca
+Ñ;Contiene la Ñ, Tela para limpiarse la nariz;Pañuelo
+Ñ;Contiene la Ñ, Lo contrario de grande;Pequeño
+O;Empieza por la O, Animal grande y peludo que hiberna;Oso
+O;Empieza por la O, Órgano para ver;Ojo
+O;Empieza por la O, Órgano para oír;Oreja
+O;Empieza por la O, Metal amarillo muy valioso;Oro
+O;Empieza por la O, Número que sigue al siete;Ocho
+O;Empieza por la O, Animal que nos da lana;Oveja
+O;Empieza por la O, Movimiento del agua en el mar;Ola
+O;Empieza por la O, Máquina electrónica para trabajar o jugar;Ordenador
+O;Empieza por la O, Ausencia de luz;Oscuridad
+O;Empieza por la O, Mes del año donde se celebra Halloween;Octubre
+P;Empieza por la P, El padre de tu padre o madre;Papá
+P;Empieza por la P, El mejor amigo del hombre;Perro
+P;Empieza por la P, Ave que nada y dice cuac;Pato
+P;Empieza por la P, Juguete redondo que bota;Pelota
+P;Empieza por la P, Parte del cuerpo que usamos para caminar;Pie
+P;Empieza por la P, Alimento básico hecho de harina;Pan
+P;Empieza por la P, Animal con plumas que vuela;Pájaro
+P;Empieza por la P, Artista de circo que hace reír;Payaso
+P;Empieza por la P, Animal que vive bajo el agua y respira por branquias;Pez
+P;Empieza por la P, Abertura para entrar a una habitación;Puerta
+Q;Empieza por la Q, Alimento hecho de leche, a los ratones les encanta;Queso
+Q;Empieza por la Q, Número que viene después del catorce;Quince
+Q;Empieza por la Q, Destruir algo con fuego;Quemar
+Q;Empieza por la Q, Sentir amor por alguien;Querer
+Q;Empieza por la Q, No moverse nada;Quieto
+Q;Empieza por la Q, Lugar donde compras periódicos y revistas;Quiosco
+Q;Contiene la Q, Lugar con árboles y columpios para jugar;Parque
+Q;Contiene la Q, Instrumento para golpear la pelota en tenis;Raqueta
+Q;Contiene la Q, Lo contrario de grande;Pequeño
+Q;Contiene la Q, Conjunto de huesos del cuerpo;Esqueleto
+R;Empieza por la R, Animal pequeño que le gusta el queso;Ratón
+R;Empieza por la R, Color de la sangre y de las fresas;Rojo
+R;Empieza por la R, Flor con espinas que huele muy bien;Rosa
+R;Empieza por la R, Objeto que marca la hora;Reloj
+R;Empieza por la R, Corriente de agua que va al mar;Río
+R;Empieza por la R, Hombre que lleva corona y gobierna un reino;Rey
+R;Empieza por la R, Animal verde que salta y croa;Rana
+R;Empieza por la R, Lo que recibes en tu cumpleaños;Regalo
+R;Empieza por la R, Lo que nos ponemos para vestirnos;Ropa
+R;Empieza por la R, Máquina que puede moverse y hacer cosas;Robot
+S;Empieza por la S, Astro rey que nos da calor;Sol
+S;Empieza por la S, Animal parecido a la rana;Sapo
+S;Empieza por la S, Condimento blanco y salado para la comida;Sal
+S;Empieza por la S, Mueble para sentarse;Silla
+S;Empieza por la S, Prenda para cubrir la cabeza;Sombrero
+S;Empieza por la S, Reptil largo sin patas que se arrastra;Serpiente
+S;Empieza por la S, Comida líquida y caliente que se toma con cuchara;Sopa
+S;Empieza por la S, Parte de abajo de una habitación donde pisamos;Suelo
+S;Empieza por la S, Fruta grande verde por fuera y roja por dentro;Sandía
+S;Empieza por la S, Lo que tenemos cuando queremos dormir;Sueño
+T;Empieza por la T, Vehículo largo que va sobre vías;Tren
+T;Empieza por la T, Animal con caparazón que camina muy lento;Tortuga
+T;Empieza por la T, Animal con cuernos;Toro
+T;Empieza por la T, Felino grande a rayas naranjas y negras;Tigre
+T;Empieza por la T, Aparato con pantalla para ver dibujos;Televisión
+T;Empieza por la T, Aparato para hablar a distancia;Teléfono
+T;Empieza por la T, Instrumento musical que se golpea con palillos;Tambor
+T;Empieza por la T, Cubierto con pinchos para comer;Tenedor
+T;Empieza por la T, Herramienta para cortar papel;Tijeras
+T;Empieza por la T, Fruta roja que se usa en ensaladas;Tomate
+U;Empieza por la U, Fruta pequeña y redonda que crece en racimos;Uva
+U;Empieza por la U, Parte dura que tenemos en la punta de los dedos;Uña
+U;Empieza por la U, El primer número;Uno
+U;Empieza por la U, Caballo mágico con un cuerno en la frente;Unicornio
+U;Empieza por la U, Todo lo que existe, planetas y estrellas;Universo
+U;Empieza por la U, Ropa igual que llevan todos los niños de un colegio;Uniforme
+U;Empieza por la U, Correr al médico rápido cuando algo es grave;Urgencia
+U;Empieza por la U, El que va al final de la fila;Último
+U;Empieza por la U, Juntar dos cosas;Unir
+U;Empieza por la U, Caja donde se meten los votos en las elecciones;Urna
+V;Empieza por la V, Animal de granja que da leche y hace mu;Vaca
+V;Empieza por la V, Objeto de cera con una mecha que da luz;Vela
+V;Empieza por la V, Color de la hierba y las hojas;Verde
+V;Empieza por la V, Recipiente para beber agua;Vaso
+V;Empieza por la V, Hueco en la pared con cristal para mirar fuera;Ventana
+V;Empieza por la V, Prenda de ropa de una sola pieza;Vestido
+V;Empieza por la V, Ir de un lugar a otro lejano;Viaje
+V;Empieza por la V, Lo contrario de muerte;Vida
+V;Empieza por la V, Aire que se mueve fuerte;Viento
+V;Empieza por la V, Moverse por el aire como los pájaros;Volar
+W;Contiene la W, Fruta verde con semillas negras;Kiwi
+W;Contiene la W, Comida de dos rebanadas de pan con algo dentro;Sándwich
+W;Empieza por la W, Deporte que se juega en el agua con pelota;Waterpolo
+W;Empieza por la W, Internet, red mundial;Web
+W;Contiene la W, Fiesta de miedo en octubre;Halloween
+W;Contiene la W, Isla famosa de Estados Unidos;Hawái
+W;Empieza por la W, Galleta con forma de rejilla;Waffle
+W;Empieza por la W, Conexión a internet sin cables;Wifi
+W;Contiene la W, Espectáculo o función;Show
+W;Contiene la W, Vaquero amigo de Buzz Lightyear;Woody
+X;Empieza por la X, Instrumento musical de placas de madera;Xilófono
+X;Contiene la X, Prueba en el colegio para ver qué sabes;Examen
+X;Contiene la X, Coche que te lleva si pagas al conductor;Taxi
+X;Contiene la X, Instrumento de viento dorado curvado;Saxofón
+X;Contiene la X, Ser de otro planeta;Extraterrestre
+X;Contiene la X, Deporte de lucha con guantes;Boxeo
+X;Contiene la X, Salida al campo con el colegio;Excursión
+X;Contiene la X, Escrito para leer;Texto
+X;Contiene la X, Lo que está fuera, no dentro;Exterior
+X;Contiene la X, Ayuda o socorro;Auxilio
+Y;Empieza por la Y, Juguete redondo que sube y baja con una cuerda;Yoyó
+Y;Empieza por la Y, Postre lácteo cremoso;Yogur
+Y;Empieza por la Y, La parte amarilla del huevo;Yema
+Y;Empieza por la Y, Barco de lujo;Yate
+Y;Contiene la Y, Artista de circo con nariz roja;Payaso
+Y;Contiene la Y, Lugar de arena junto al mar;Playa
+Y;Contiene la Y, Personaje que gobierna un reino;Rey
+Y;Contiene la Y, El día en el que estamos;Hoy
+Y;Contiene la Y, Primera comida del día;Desayuno
+Y;Contiene la Y, Mes de las flores;Mayo
+Z;Empieza por la Z, Prenda que nos ponemos en los pies;Zapato
+Z;Empieza por la Z, Animal astuto de color naranja;Zorro
+Z;Empieza por la Z, Hortaliza naranja que comen los conejos;Zanahoria
+Z;Empieza por la Z, Parque donde viven animales salvajes;Zoológico
+Z;Empieza por la Z, Líquido que sale de exprimir frutas;Zumo
+Z;Empieza por la Z, Calzado cómodo para estar por casa;Zapatilla
+Z;Contiene la Z, Objeto con asa para beber leche;Taza
+Z;Contiene la Z, Animal que nada en el mar;Pez
+Z;Contiene la Z, Parte de la cara para oler;Nariz
+Z;Contiene la Z, Fruta roja o verde de Blancanieves;Manzana

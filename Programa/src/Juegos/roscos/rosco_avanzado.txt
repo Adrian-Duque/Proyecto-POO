@@ -1,0 +1,270 @@
+A;Empieza por la A, Dejadez, falta de voluntad o disminución notable de energía;Abulia
+A;Empieza por la A, Proposición tan clara y evidente que se admite sin necesidad de demostración;Axioma
+A;Empieza por la A, Error que consiste en suponer acaecido un hecho antes o después del tiempo en que sucedió;Anacronismo
+A;Empieza por la A, Discurso o escrito en alabanza o defensa de personas o cosas;Apología
+A;Empieza por la A, Que depende del arbitrio o capricho y no de la ley o la razón;Arbitrario
+A;Empieza por la A, Sentencia breve y doctrinal que se propone como regla en alguna ciencia o arte;Aforismo
+A;Empieza por la A, Persona que guía o lidera a un grupo o movimiento;Adalid
+A;Empieza por la A, Que se muestra soberbio, orgulloso y despreciativo con los demás;Altivo
+A;Empieza por la A, Postura filosófica que declara inaccesible al entendimiento humano el conocimiento de lo divino;Agnosticismo
+A;Empieza por la A, Palabra formada por las iniciales de otras palabras;Acrónimo
+B;Empieza por la B, Conjunto de actividades y trámites que hay que seguir para resolver un asunto administrativo;Burocracia
+B;Empieza por la B, Nación o potencia que está en guerra;Beligerante
+B;Empieza por la B, Aprobación o permiso que da alguien para hacer algo;Beneplácito
+B;Empieza por la B, Que evoca de modo idealizado la vida en el campo;Bucólico
+B;Empieza por la B, Tosco, basto, sin delicadeza;Burdo
+B;Empieza por la B, Libro en que se apuntan el rumbo, la velocidad y demás accidentes de la navegación;Bitácora
+B;Empieza por la B, Que es trivial, común o insustancial;Banal
+B;Empieza por la B, Prosperidad, felicidad o tiempo tranquilo y sereno;Bonanza
+B;Empieza por la B, Amparo y defensa de algo o alguien;Baluarte
+B;Empieza por la B, Dicho de un terreno: Que no se labra ni está cultivado;Baldío
+C;Empieza por la C, Combinación de factores y circunstancias que se presentan en un momento determinado;Coyuntura
+C;Empieza por la C, Fuerza o violencia que se hace a alguien para obligarlo a que diga o ejecute algo;Coacción
+C;Empieza por la C, Que se separa o divide, especialmente en materia de religión o política;Cismático
+C;Empieza por la C, Posibilidad de que algo suceda o no suceda;Contingencia
+C;Empieza por la C, Recipiente donde se funden materias, o lugar donde se mezclan diversas culturas;Crisol
+C;Empieza por la C, Pisotear, quebrantar o infringir una ley o un derecho;Conculcar
+C;Empieza por la C, Modelo o regla, especialmente en arte o música;Canon
+C;Empieza por la C, Serio, prudente y reservado en el hablar y actuar;Circunspecto
+C;Empieza por la C, Delito que comete el funcionario público que acepta soborno;Cohecho
+C;Empieza por la C, Purificación o liberación de las pasiones a través del arte;Catarsis
+D;Empieza por la D, Razonamiento o exposición detallada sobre un tema;Disertación
+D;Empieza por la D, División en dos partes, generalmente opuestas;Dicotomía
+D;Empieza por la D, Verdad revelada o principio innegable de una religión o ciencia;Dogma
+D;Empieza por la D, Malgastar los bienes sin prudencia;Dilapidar
+D;Empieza por la D, Práctica política que apela a los sentimientos y prejuicios del pueblo para ganar apoyo;Demagogia
+D;Empieza por la D, Que se separa de la doctrina o creencia común;Disidente
+D;Empieza por la D, Discurso o escrito violento contra alguien o algo;Diatriba
+D;Empieza por la D, Negligencia, inercia o falta de cuidado;Desidia
+D;Empieza por la D, Muestra de respeto o cortesía hacia alguien;Deferencia
+D;Empieza por la D, Insultar u ofender gravemente de palabra;Denostar
+E;Empieza por la E, Que trata de reunir o conciliar opiniones o estilos diversos;Ecléctico
+E;Empieza por la E, Pasajero, de corta duración;Efímero
+E;Empieza por la E, Propio y exclusivo de determinadas localidades o regiones (dicho de enfermedades o especies);Endémico
+E;Empieza por la E, Carta o misiva, especialmente las de los apóstoles;Epístola
+E;Empieza por la E, Disposición del ánimo que mueve a dar a cada uno lo que merece;Equidad
+E;Empieza por la E, Facultad de hablar o escribir con eficacia para persuadir o conmover;Elocuencia
+E;Empieza por la E, Perteneciente o relativo a la experiencia;Empírico
+E;Empieza por la E, Agravar o avivar una enfermedad, una pasión o una molestia;Exacerbar
+E;Empieza por la E, Librar, desembarazar a alguien de cargas, obligaciones o culpas;Eximir
+E;Empieza por la E, Examen y averiguación exacta y diligente que se hace de algo;Escrutinio
+F;Empieza por la F, Argumento falso pero aparentemente verdadero para inducir a error;Falacia
+F;Empieza por la F, Lleno de presunción o vanidad infundada;Fatuo
+F;Empieza por la F, Digno de fe y crédito;Fidedigno
+F;Empieza por la F, Amor al género humano;Filantropía
+F;Empieza por la F, Que tiene un temperamento apático, tranquilo o lento;Flemático
+F;Empieza por la F, Que se hace a escondidas;Furtivo
+F;Empieza por la F, De poco aprecio o importancia;Fútil
+F;Empieza por la F, Cosa de poco valor o entidad;Fruslería
+F;Empieza por la F, Delincuente habitual o persona malvada;Facineroso
+F;Empieza por la F, Falta de razón o de entendimiento;Fatuidad
+G;Empieza por la G, Dicho de una persona: Que vive en grupo o necesita de los demás;Gregario
+G;Empieza por la G, Dicho de una persona: Rústica y zafia;Garrulo
+G;Empieza por la G, Catálogo de palabras de una misma disciplina o campo de estudio, definidas o comentadas;Glosario
+G;Empieza por la G, Carga, obligación o impuesto que pesa sobre alguien;Gravamen
+G;Empieza por la G, Auténtico, legítimo;Genuino
+G;Empieza por la G, Lenguaje oscuro por la impropiedad de la frase o por la confusión de las ideas;Galimatías
+G;Empieza por la G, Serie de progenitores y ascendientes de una persona;Genealogía
+G;Empieza por la G, Yerro que por inadvertencia deja escapar quien escribe o habla;Gazapo
+G;Empieza por la G, Que habla o escribe con un estilo elevado y pomposo;Grandilocuente
+G;Empieza por la G, Que da garantía;Garante
+H;Empieza por la H, Supremacía que un Estado ejerce sobre otros;Hegemonía
+H;Empieza por la H, Impenetrable, cerrado, o difícil de entender;Hermético
+H;Empieza por la H, Doctrina que proclama el placer como fin supremo de la vida;Hedonismo
+H;Empieza por la H, Sacrificio de muchas víctimas o gran desgracia;Hecatombe
+H;Empieza por la H, Autor o promotor de una herejía;Heresiarca
+H;Empieza por la H, Risa ruidosa o alegría;Hilaridad
+H;Empieza por la H, Contrario o enemigo;Hostil
+H;Empieza por la H, Acción ilustre o heroica;Hazaña
+H;Empieza por la H, Fingimiento de cualidades o sentimientos contrarios a los que verdaderamente se tienen;Hipocresía
+H;Empieza por la H, Repugnancia a la comida o aburrimiento grande;Hastío
+I;Empieza por la I, Rasgos, temperamento o carácter distintivos y propios de un individuo o de una colectividad;Idiosincrasia
+I;Empieza por la I, Que no se puede explicar con palabras;Inefable
+I;Empieza por la I, Que no se puede evitar, eludir o detener;Inexorable
+I;Empieza por la I, Malvado, injusto;Inicuo
+I;Empieza por la I, Que no hace daño;Inocuo
+I;Empieza por la I, Íntimo, esencial, que no depende de circunstancias externas;Intrínseco
+I;Empieza por la I, Que no se altera, perturba o muestra emoción alguna ante impresiones fuertes;Impertérrito
+I;Empieza por la I, Combatir, contradecir o refutar;Impugnar
+I;Empieza por la I, Facilidad para perdonar o disimular las culpas;Indulgencia
+I;Empieza por la I, Indagar o examinar cuidadosamente algo;Inquirir
+J;Empieza por la J, Alabanza propia, desordenada y presuntuosa;Jactancia
+J;Empieza por la J, Conjunto de sentencias de los tribunales y doctrina que contienen;Jurisprudencia
+J;Empieza por la J, Lenguaje especial y familiar que usan entre sí los individuos de ciertas profesiones u oficios;Jerga
+J;Empieza por la J, Viva alegría, y especialmente la que se manifiesta con signos exteriores;Júbilo
+J;Empieza por la J, Probar algo con razones convincentes, testigos o documentos;Justificar
+J;Empieza por la J, Alegre, festivo y desenfadado;Jovial
+J;Empieza por la J, Gradación de personas, valores o dignidades;Jerarquía
+J;Empieza por la J, Ejercicio de juzgar o cuerpo de jueces;Judicatura
+J;Empieza por la J, Marcar con hitos o jalones, o señalar las etapas de un proceso;Jalonar
+J;Empieza por la J, Cualidad o propiedad de una cosa (normalmente usado en la frase "del mismo...");Jaez
+K;Empieza por la K, Relativo a las situaciones absurdas o angustiosas descritas por el escritor Kafka;Kafkaiano
+K;Empieza por la K, Estudio científico del movimiento humano;Kinesiología
+K;Empieza por la K, En algunas religiones de la India, energía derivada de los actos que condiciona las reencarnaciones;Karma
+K;Empieza por la K, Salsa de tomate condimentada con vinagre, azúcar y especias;Kétchup
+K;Empieza por la K, Piloto suicida japonés de la Segunda Guerra Mundial;Kamikaze
+K;Empieza por la K, Estética pretenciosa, pasada de moda o de mal gusto;Kitsch
+K;Empieza por la K, Pequeño crustáceo marino que sirve de alimento a las ballenas;Krill
+K;Empieza por la K, Producto lácteo fermentado;Kéfir
+K;Empieza por la K, Título de los emperadores de Alemania y Austria;Káiser
+K;Empieza por la K, Unidad de potencia equivalente a 1000 vatios;Kilovatio
+L;Empieza por la L, Flaqueza, debilidad o falta de espíritu;Languidez
+L;Empieza por la L, Independiente de cualquier organización o confesión religiosa;Laico
+L;Empieza por la L, Que existe pero está oculto o no se manifiesta exteriormente;Latente
+L;Empieza por la L, Que alcanza una edad muy avanzada;Longevo
+L;Empieza por la L, Que habla mucho o demasiado;Locuaz
+L;Empieza por la L, Ganancia o provecho que se saca de algo;Lucro
+L;Empieza por la L, Pleito, disputa o contienda judicial;Litigio
+L;Empieza por la L, Perteneciente o relativo al juego;Lúdico
+L;Empieza por la L, Falta o equivocación cometida por descuido;Lapsus
+L;Empieza por la L, Superlativo de libre;Libérrimo
+M;Empieza por la M, Persona que siente aversión al trato humano;Misántropo
+M;Empieza por la M, Que actúa con astucia, engaño y sin escrúpulos para conseguir un fin;Maquiavélico
+M;Empieza por la M, Persona que patrocina las letras o las artes;Mecenas
+M;Empieza por la M, Persona que miente de forma compulsiva y patológica;Mitómano
+M;Empieza por la M, Que murmura o critica con acritud o malignidad;Mordaz
+M;Empieza por la M, Generosidad espléndida;Munificencia
+M;Empieza por la M, Pasión desordenada por la música;Melomanía
+M;Empieza por la M, Que tiene grandeza y elevación de ánimo, generoso;Magnánimo
+M;Empieza por la M, Parte de la filosofía que trata del ser, de sus principios y causas primeras;Metafísica
+M;Empieza por la M, Excesivamente puntual, escrupuloso o concienzudo;Meticuloso
+N;Empieza por la N, Triste, funesto o muy desgraciado;Nefasto
+N;Empieza por la N, Preferencia desmedida que algunos dan a sus parientes para las concesiones o empleos públicos;Nepotismo
+N;Empieza por la N, Negación de todo principio religioso, político y social;Nihilismo
+N;Empieza por la N, Dañino, pernicioso o perjudicial;Nocivo
+N;Empieza por la N, Casamiento o boda;Nupcias
+N;Empieza por la N, Persona adherida recientemente a una causa, o recién convertida a una religión;Neófito
+N;Empieza por la N, Que padece una inestabilidad emocional o ansiedad excesiva;Neurótico
+N;Empieza por la N, Cosa de poca entidad o importancia (bagatela);Nadería
+N;Empieza por la N, Que tiene el nombre de algo pero carece de la realidad de ello;Nominal
+N;Empieza por la N, Que tiene noventa años o más, pero menos de cien;Nonagenario
+Ñ;Contiene la Ñ, Artificio o engaño para dañar a alguien o conseguir algo;Añagaza
+Ñ;Contiene la Ñ, Sustancia nociva para la salud o veneno;Ponzoña
+Ñ;Contiene la Ñ, Trampa o astucia para engañar a alguien;Artimaña
+Ñ;Contiene la Ñ, Cosa que hace daño a otra, o enemistad;Cizaña
+Ñ;Contiene la Ñ, Dicho de una persona: Que no se arregla ni se adorna;Desaliñado
+Ñ;Contiene la Ñ, Examinar, inquirir y averiguar cuidadosamente algo;Escudriñar
+Ñ;Contiene la Ñ, Deseo vehemente de hacer o conseguir algo;Empeño
+Ñ;Contiene la Ñ, Dinero o bienes particulares de cada uno;Peculio
+Ñ;Contiene la Ñ, Cosa que sirve para atraer o engañar;Señuelo
+Ñ;Contiene la Ñ, Añadir una cosa a otra;Añadir
+O;Empieza por la O, Pesado, molesto o gravoso (especialmente gastos);Oneroso
+O;Empieza por la O, Aislamiento voluntario o forzoso de la vida pública;Ostracismo
+O;Empieza por la O, Perteneciente o relativo a los sueños;Onírico
+O;Empieza por la O, Dicho de una comida o banquete: Espléndido y abundante;Opíparo
+O;Empieza por la O, Cegado, deslumbrado, o que mantiene una idea con terquedad;Obcecado
+O;Empieza por la O, Arte de hablar con elocuencia;Oratoria
+O;Empieza por la O, Conforme con la doctrina tradicional;Ortodoxo
+O;Empieza por la O, Oposición sistemática a la difusión de la cultura y al progreso;Oscurantismo
+O;Empieza por la O, Obstáculo, impedimento o estorbo;Óbice
+O;Empieza por la O, Forma de gobierno en la cual el poder es ejercido por un grupo reducido de personas;Oligarquía
+P;Empieza por la P, Ejemplo o ejemplar;Paradigma
+P;Empieza por la P, Urgente, apremiante, o concluyente;Perentorio
+P;Empieza por la P, Largo, dilatado o excesivamente cuidadoso en los detalles;Prolijo
+P;Empieza por la P, Remedio que buscaban los alquimistas para curar todas las enfermedades;Panacea
+P;Empieza por la P, Que prefiere lo práctico y útil a lo teórico;Pragmático
+P;Empieza por la P, Falto de ánimo y valor para tolerar las desgracias o afrontar peligros;Pusilánime
+P;Empieza por la P, Dicho o hecho que parece contrario a la lógica;Paradoja
+P;Empieza por la P, Gravemente dañoso y perjudicial;Pernicioso
+P;Empieza por la P, Diferir o aplazar;Procrastinar
+P;Empieza por la P, Dicho de un amor: Idealista y casto, sin contacto sexual;Platónico
+Q;Empieza por la Q, Aquello que se propone a la imaginación como posible o verdadero, no siéndolo;Quimera
+Q;Empieza por la Q, Número de individuos necesario para que un cuerpo deliberante tome ciertos acuerdos;Quórum
+Q;Empieza por la Q, Acusación ante un juez o tribunal;Querella
+Q;Empieza por la Q, Que se ofende con facilidad por cosas nimias;Quisquilloso
+Q;Empieza por la Q, Pérdida o daño grande, o decaimiento físico;Quebranto
+Q;Empieza por la Q, Hombre que antepone sus ideales a su conveniencia y obra de forma desinteresada;Quijote
+Q;Empieza por la Q, Lo más puro, fino y acendrado de una cosa;Quintaesencia
+Q;Empieza por la Q, Adivinación del futuro por las rayas de la mano;Quiromancia
+Q;Contiene la Q, Que puede entenderse de varios modos y dar motivo a dudas;Equívoco
+Q;Contiene la Q, Que inquiere, investiga o pregunta detalladamente;Inquisitivo
+R;Empieza por la R, Capacidad de adaptación de un ser vivo frente a un agente perturbador;Resiliencia
+R;Empieza por la R, Reservado, desconfiado, que no dice todo lo que sabe;Reticente
+R;Empieza por la R, Rechazar a un juez o perito por considerar que no es imparcial;Recusar
+R;Empieza por la R, Arte de bien decir, de dar al lenguaje eficacia para deleitar o persuadir;Retórica
+R;Empieza por la R, Recuerdo vago o incompleto;Reminiscencia
+R;Empieza por la R, Contradecir o impugnar con argumentos;Refutar
+R;Empieza por la R, Suscribir o firmar un documento, o dar testimonio de algo;Rubricar
+R;Empieza por la R, Indemnizar, reparar un daño o perjuicio;Resarcir
+R;Empieza por la R, Igual en la correspondencia de uno a otro;Recíproco
+R;Empieza por la R, Aprobar o confirmar actos, palabras o escritos dándoles por valederos;Ratificar
+S;Empieza por la S, Acción de dos o más causas cuyo efecto es superior a la suma de los efectos individuales;Sinergia
+S;Empieza por la S, Excelso, eminente, de elevación extraordinaria;Sublime
+S;Empieza por la S, Propenso a concebir sospechas o a tener desconfianza;Suspicaz
+S;Empieza por la S, Misterioso, oscuro o con doble sentido (como los oráculos);Sibilino
+S;Empieza por la S, Razón o argumento aparente con que se quiere defender o persuadir lo que es falso;Sofisma
+S;Empieza por la S, Avasallar, sojuzgar, dominar poderosa o violentamente;Subyugar
+S;Empieza por la S, Dicho de una sustancia: Que puede reemplazar a otra por tener propiedades similares;Sucedáneo
+S;Empieza por la S, Que durará siempre, que no tendrá fin;Sempiterno
+S;Empieza por la S, Astuto y prudente, que prevé y previene las cosas;Sagaz
+S;Empieza por la S, Oculto, malicioso y cauto;Solapado
+T;Empieza por la T, Callado, silencioso, que le molesta hablar;Taciturno
+T;Empieza por la T, Dar una interpretación forzada o errónea a palabras o acontecimientos;Tergiversar
+T;Empieza por la T, Repetición inútil y viciosa de un mismo pensamiento expresado de distintas maneras;Tautología
+T;Empieza por la T, Imprudente, que se expone a peligros sin necesidad;Temerario
+T;Empieza por la T, Que no sobresale de lo ordinario y común, que carece de importancia;Trivial
+T;Empieza por la T, Aquello que está más allá de los límites naturales o importancia suma;Trascendencia
+T;Empieza por la T, Artificio sutil e ingenioso para conseguir algún intento;Treta
+T;Empieza por la T, Que no admite discusión, indiscutible;Taxativo
+T;Empieza por la T, Que contiene veneno o produce efectos perjudiciales (también figurado);Tóxico
+T;Empieza por la T, Decisión y perseverancia que se pone en la ejecución de algo;Tesón
+U;Empieza por la U, Plan, proyecto, doctrina o sistema deseable pero de muy difícil realización;Utopía
+U;Empieza por la U, Dicho de un conjunto de personas: Que tienen un mismo parecer;Unánime
+U;Empieza por la U, Que está a continuación o más allá, o que se dice o hace después;Ulterior
+U;Empieza por la U, Persona que presta dinero con intereses excesivos;Usurero
+U;Empieza por la U, Arrogante, presuntuoso, engreído;Ufano
+U;Empieza por la U, Maquinar y disponer cautelosamente algo contra alguien;Urdir
+U;Empieza por la U, Que tiene un solo significado y no admite duda;Unívoco
+U;Empieza por la U, Cortesía, comedimiento y buen modo;Urbanidad
+U;Empieza por la U, Derecho a disfrutar bienes ajenos con la obligación de conservarlos;Usufructo
+U;Empieza por la U, Calidad de estar presente en todas partes al mismo tiempo;Ubicuidad
+V;Empieza por la V, Que tiene una fuerza impetuosa, ardiente y lleno de pasión;Vehemente
+V;Empieza por la V, Inconstante, mudable, que cambia de opinión por capricho;Veleidoso
+V;Empieza por la V, Criticar o censurar a alguien con dureza;Vituperar
+V;Empieza por la V, Aglomeración confusa de sucesos, de gentes o de cosas en movimiento;Vorágine
+V;Empieza por la V, Estado del que está despierto, o víspera de una festividad;Vigilia
+V;Empieza por la V, Verbosidad excesiva, empleo de demasiadas palabras;Verborrea
+V;Empieza por la V, Que puede ser herido o recibir lesión, física o moralmente;Vulnerable
+V;Empieza por la V, Vacío, falto de contenido o superficial;Vacuo
+V;Empieza por la V, Ver un objeto confusamente o conocer imperfectamente algo;Vislumbrar
+V;Empieza por la V, Muy antiguo, de mucha edad;Vetusto
+W;Contiene la W, Parte lógica o inmaterial de un sistema informático;Software
+W;Contiene la W, Parte física o material de una computadora;Hardware
+W;Contiene la W, Licor alcohólico obtenido del grano de algunas plantas;Whisky
+W;Contiene la W, Emparedado hecho con dos rebanadas de pan de molde;Sándwich
+W;Contiene la W, Espectáculo de variedades;Show
+W;Contiene la W, Sistema de conexión inalámbrica;Wifi
+W;Contiene la W, Deporte de equipo que se juega en una piscina;Waterpolo
+W;Contiene la W, Elemento químico metálico de símbolo W (Tungsteno);Wolframio
+W;Contiene la W, Perteneciente o relativo a la teoría de la evolución de las especies;Darwiniano
+W;Contiene la W, Red informática;Web
+X;Contiene la X, Aliviar, descargar de peso u obligación, o declarar libre de culpa;Exonerar
+X;Contiene la X, Irritar, causar muy grave enfado o enojo;Exacerbar
+X;Contiene la X, Insuficiente, escaso;Exiguo
+X;Contiene la X, De carácter raro, extravagante;Excéntrico
+X;Contiene la X, Que agota o apura por completo, muy minucioso;Exhaustivo
+X;Contiene la X, Entorno físico o de situación, político, histórico, etc.;Contexto
+X;Contiene la X, Flojo, que no tiene la tensión que debe tener, o poco estricto;Laxo
+X;Contiene la X, Cualidad de cumplir las normas tradicionales y generalizadas;Ortodoxia
+X;Empieza por la X, Odio, repugnancia u hostilidad hacia los extranjeros;Xenofobia
+X;Contiene la X, Ave fabulosa que renacía de sus cenizas;Fénix
+Y;Empieza por la Y, Ley o dominio superior que sujeta y obliga a obedecer;Yugo
+Y;Empieza por la Y, Terreno inhabitado, sin vegetación ni cultivo;Yermo
+Y;Empieza por la Y, Lugar en el que se encuentran de forma natural minerales, rocas o fósiles;Yacimiento
+Y;Empieza por la Y, Falta o delito cometido por ignorancia o malicia;Yerro
+Y;Empieza por la Y, Poner algo junto a otra cosa;Yuxtaponer
+Y;Contiene la Y, Combinación de factores que se presentan en un momento determinado;Coyuntura
+Y;Contiene la Y, Someter, avasallar o dominar;Subyugar
+Y;Contiene la Y, Escrito en el que un autor desarrolla sus ideas sin necesidad de mostrar aparato erudito;Ensayo
+Y;Contiene la Y, Alternativa entre dos cosas, por una de las cuales hay que optar;Disyuntiva
+Y;Contiene la Y, Abstinencia de comer o beber;Ayuno
+Z;Empieza por la Z, Grosero o tosco en sus modales;Zafio
+Z;Empieza por la Z, Sentimiento de tristeza, congoja o inquietud;Zozobra
+Z;Empieza por la Z, Que demuestra cariño de forma exagerada y a veces empalagosa;Zalamero
+Z;Empieza por la Z, Punto del hemisferio celeste que está justo encima del observador;Cenit
+Z;Empieza por la Z, Excavación larga y estrecha, o dificultad que se pone en un asunto;Zanja
+Z;Contiene la Z, Astuto y prudente;Sagaz
+Z;Contiene la Z, Firme, porfiado y pertinaz en un propósito;Tenaz
+Z;Contiene la Z, Que critica con ironía aguda y malintencionada;Mordaz
+Z;Contiene la Z, Valiente, osado, atrevido;Audaz
+Z;Contiene la Z, Engañoso o mentiroso;Falaz

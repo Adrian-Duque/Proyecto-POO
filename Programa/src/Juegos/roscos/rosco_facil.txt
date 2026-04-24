@@ -1,0 +1,270 @@
+A;Empieza por la A, Continente en el que se encuentran países como Egipto o Marruecos;África
+A;Empieza por la A, Ciencia que estudia las estrellas, los planetas y el universo;Astronomía
+A;Empieza por la A, Persona que escribe obras de teatro o actúa en películas;Actor
+A;Empieza por la A, Líquido vital incoloro e inodoro compuesto por hidrógeno y oxígeno;Agua
+A;Empieza por la A, Falta de orden o gobierno en un estado;Anarquía
+A;Empieza por la A, Ángulo de 90 grados;Agudo
+A;Empieza por la A, Cultivo de la tierra para obtener alimentos;Agricultura
+A;Empieza por la A, Elemento químico metálico muy usado en latas y papel de cocina;Aluminio
+A;Empieza por la A, Antónimo de enemigo;Amigo
+A;Empieza por la A, País de América del Sur cuya capital es Buenos Aires;Argentina
+B;Empieza por la B, Deporte de equipo en el que hay que encestar una pelota en una canasta;Baloncesto
+B;Empieza por la B, Ciencia que estudia a los seres vivos;Biología
+B;Empieza por la B, Instrumento que sirve para orientarse y señala el norte;Brújula
+B;Empieza por la B, Lugar donde se guardan, ordenan y prestan libros;Biblioteca
+B;Empieza por la B, Microorganismo unicelular que puede causar enfermedades o ser beneficioso;Bacteria
+B;Empieza por la B, Capital de Alemania;Berlín
+B;Empieza por la B, Narración corta sobre la vida de una persona escrita por otra;Biografía
+B;Empieza por la B, Vehículo de dos ruedas impulsado por pedales;Bicicleta
+B;Empieza por la B, Persona que busca cosas antiguas enterradas bajo tierra;Buscador
+B;Empieza por la B, Conjunto de árboles y matas espesas;Bosque
+C;Empieza por la C, Unidad fundamental de los seres vivos;Célula
+C;Empieza por la C, Ciudad principal de un país donde suele estar el gobierno;Capital
+C;Empieza por la C, Gran masa de tierra separada por océanos, como Europa o Asia;Continente
+C;Empieza por la C, Órgano que controla el sistema nervioso y el pensamiento;Cerebro
+C;Empieza por la C, Figura geométrica de cuatro lados iguales y cuatro ángulos rectos;Cuadrado
+C;Empieza por la C, Conjunto de conocimientos, tradiciones y costumbres de un pueblo;Cultura
+C;Empieza por la C, Cambio de estado de líquido a gas;Condensación
+C;Empieza por la C, Periodo de cien años;Centenario
+C;Empieza por la C, Historia contada mediante viñetas y dibujos;Cómic
+C;Empieza por la C, Gas que exhalamos al respirar;Carbono
+D;Empieza por la D, Sistema de gobierno donde el pueblo elige a sus representantes;Democracia
+D;Empieza por la D, Libro que recopila y explica las palabras de un idioma;Diccionario
+D;Empieza por la D, Terreno arenoso y muy seco con pocas lluvias;Desierto
+D;Empieza por la D, Proceso por el cual el cuerpo transforma los alimentos en energía;Digestión
+D;Empieza por la D, Conversación entre dos o más personas;Diálogo
+D;Empieza por la D, Periodo de diez años;Década
+D;Empieza por la D, Documento Nacional de Identidad;DNI
+D;Empieza por la D, Enfermedad en la que el cuerpo no regula bien el azúcar;Diabetes
+D;Empieza por la D, Piedra preciosa muy dura y brillante;Diamante
+D;Empieza por la D, Resultado de dividir algo en dos partes iguales;Doble
+E;Empieza por la E, Línea imaginaria que divide la Tierra en dos hemisferios;Ecuador
+E;Empieza por la E, Conjunto de huesos que sostiene el cuerpo;Esqueleto
+E;Empieza por la E, Comunidad de seres vivos y el medio natural en que viven;Ecosistema
+E;Empieza por la E, Fenómeno físico relacionado con la luz y la energía que usamos en casa;Electricidad
+E;Empieza por la E, Texto que se manda por internet;Email
+E;Empieza por la E, Persona que escribe libros o artículos;Escritor
+E;Empieza por la E, Astro que tiene luz propia, como el Sol;Estrella
+E;Empieza por la E, Obra de referencia que busca compilar el conocimiento humano;Enciclopedia
+E;Empieza por la E, Paso del estado líquido al gaseoso;Evaporación
+E;Empieza por la E, Época de la historia anterior a la contemporánea;Edad
+F;Empieza por la F, Resto de un ser vivo de hace miles de años petrificado;Fósil
+F;Empieza por la F, Proceso por el cual las plantas fabrican su alimento con el sol;Fotosíntesis
+F;Empieza por la F, Línea que separa dos países o territorios;Frontera
+F;Empieza por la F, Relato breve con moraleja protagonizado por animales;Fábula
+F;Empieza por la F, Tiempo verbal que indica acciones que aún no han pasado;Futuro
+F;Empieza por la F, Ciencia que estudia la materia y la energía;Física
+F;Empieza por la F, Número que expresa una parte de un todo, como 1/2;Fracción
+F;Empieza por la F, Conjunto de animales de una región;Fauna
+F;Empieza por la F, Instrumento musical de viento;Flauta
+F;Empieza por la F, Deporte rey en muchos países hispanos;Fútbol
+G;Empieza por la G, Agrupación enorme de estrellas, gas y polvo;Galaxia
+G;Empieza por la G, Ciencia que describe la Tierra;Geografía
+G;Empieza por la G, Fuerza que nos mantiene pegados al suelo;Gravedad
+G;Empieza por la G, Texto que contiene los diálogos de una película;Guion
+G;Empieza por la G, Masa grande de hielo que se acumula en zonas frías;Glaciar
+G;Empieza por la G, Reglas para hablar y escribir correctamente un idioma;Gramática
+G;Empieza por la G, Lugar donde se hace ejercicio físico;Gimnasio
+G;Empieza por la G, Conjunto de personas que dirigen un estado;Gobierno
+G;Empieza por la G, Virtud de dar sin esperar nada a cambio;Generosidad
+G;Empieza por la G, Medida de ángulo;Grado
+H;Empieza por la H, Ciencia que estudia el pasado de la humanidad;Historia
+H;Empieza por la H, Personaje principal de una obra que realiza hazañas;Héroe
+H;Empieza por la H, Cada una de las dos mitades de la esfera terrestre;Hemisferio
+H;Empieza por la H, Elemento químico más ligero de la tabla periódica;Hidrógeno
+H;Empieza por la H, Tormenta tropical con vientos muy fuertes;Huracán
+H;Empieza por la H, Agua en estado sólido;Hielo
+H;Empieza por la H, Lugar con las condiciones adecuadas para que viva una especie;Hábitat
+H;Empieza por la H, Capacidad para realizar algo con destreza;Habilidad
+H;Empieza por la H, Virtud contraria al orgullo;Humildad
+H;Empieza por la H, Animal herbívoro gigante que vivía en la prehistoria;Herbívoro
+I;Empieza por la I, Organización política de un estado que extiende su poder sobre otros;Imperio
+I;Empieza por la I, Porción de tierra rodeada de agua por todas partes;Isla
+I;Empieza por la I, Creación de un objeto o técnica nueva;Invento
+I;Empieza por la I, Animal invertebrado con tres pares de patas;Insecto
+I;Empieza por la I, Red informática mundial;Internet
+I;Empieza por la I, Idioma oficial en Reino Unido y Estados Unidos;Inglés
+I;Empieza por la I, Estación del año caracterizada por el frío;Invierno
+I;Empieza por la I, Concepto matemático de algo que no tiene fin;Infinito
+I;Empieza por la I, Capacidad de crear imágenes en la mente;Imaginación
+I;Empieza por la I, Conducta innata de los animales para sobrevivir;Instinto
+J;Empieza por la J, Planeta más grande del Sistema Solar;Júpiter
+J;Empieza por la J, Persona que tiene autoridad para juzgar y sentenciar;Juez
+J;Empieza por la J, Bosque tropical muy espeso;Jungla
+J;Empieza por la J, Animal salvaje pariente del cerdo;Jabalí
+J;Empieza por la J, Objeto ornamental de valor hecho con metales preciosos;Joya
+J;Empieza por la J, Arte marcial de origen japonés;Judo
+J;Empieza por la J, Persona que es joven;Juventud
+J;Empieza por la J, Actividad que se realiza por diversión o entretenimiento;Juego
+J;Empieza por la J, Título del líder de un estado, como en las tribus;Jefe
+J;Empieza por la J, Animal más alto del mundo;Jirafa
+K;Empieza por la K, Arte marcial japonés que utiliza golpes de puño y patadas;Karate
+K;Empieza por la K, Fruta de piel peluda y pulpa verde;Kiwi
+K;Empieza por la K, Medida de longitud que equivale a 1000 metros;Kilómetro
+K;Empieza por la K, Salsa de tomate condimentada;Kétchup
+K;Empieza por la K, Aparato para cantar con la música de fondo;Karaoke
+K;Empieza por la K, Animal marsupial australiano;Koala
+K;Empieza por la K, Vestimenta tradicional japonesa;Kimono
+K;Empieza por la K, Unidad de masa que equivale a 1000 gramos;Kilogramo
+K;Empieza por la K, Canoa deportiva ligera;Kayak
+K;Empieza por la K, Imperio mongol fundado por Genghis...;Khan
+L;Empieza por la L, Relato tradicional que mezcla hechos reales y fantásticos;Leyenda
+L;Empieza por la L, Lugar dotado de medios para realizar experimentos científicos;Laboratorio
+L;Empieza por la L, Derecho de las personas a elegir su forma de actuar;Libertad
+L;Empieza por la L, Satélite natural de la Tierra;Luna
+L;Empieza por la L, Unidad de medida de capacidad para líquidos;Litro
+L;Empieza por la L, Capacidad humana para comunicarse mediante signos;Lenguaje
+L;Empieza por la L, Estado de la materia que se adapta al recipiente;Líquido
+L;Empieza por la L, Magma que sale de un volcán;Lava
+L;Empieza por la L, Arte que utiliza la palabra como medio de expresión;Literatura
+L;Empieza por la L, Lente que sirve para aumentar el tamaño de los objetos;Lupa
+M;Empieza por la M, Clase de animales vertebrados que alimentan a sus crías con leche;Mamífero
+M;Empieza por la M, Representación geográfica de la Tierra en una superficie plana;Mapa
+M;Empieza por la M, Tejido del cuerpo que nos permite movernos;Músculo
+M;Empieza por la M, Fragmento de roca del espacio que cae a la Tierra;Meteorito
+M;Empieza por la M, Ciencia que estudia los números y las formas;Matemáticas
+M;Empieza por la M, Instrumento para ver objetos muy pequeños;Microscopio
+M;Empieza por la M, Forma de gobierno en la que el jefe es un rey;Monarquía
+M;Empieza por la M, Parte más pequeña de una sustancia que conserva sus propiedades;Molécula
+M;Empieza por la M, Lugar donde se exhiben obras de arte o históricas;Museo
+M;Empieza por la M, Figura retórica que consiste en identificar un término con otro;Metáfora
+N;Empieza por la N, Obra literaria extensa escrita en prosa;Novela
+N;Empieza por la N, Célula del sistema nervioso;Neurona
+N;Empieza por la N, Conjunto de todo lo que existe y no ha sido modificado por el hombre;Naturaleza
+N;Empieza por la N, Punto cardinal opuesto al sur;Norte
+N;Empieza por la N, Pueblo que no tiene residencia fija y se mueve de un lugar a otro;Nómada
+N;Empieza por la N, Masa de vapor de agua suspendida en la atmósfera;Nube
+N;Empieza por la N, Gas más abundante en la atmósfera terrestre;Nitrógeno
+N;Empieza por la N, Ciencia que estudia los alimentos y su efecto en la salud;Nutrición
+N;Empieza por la N, Desplazarse por el agua en una embarcación;Navegar
+N;Empieza por la N, Concepto matemático que expresa cantidad;Número
+Ñ;Empieza por la Ñ, Mamífero africano que realiza grandes migraciones;Ñu
+Ñ;Contiene la Ñ, Movimiento artístico y literario o lengua derivada del latín;Español
+Ñ;Contiene la Ñ, Periodo de 365 días;Año
+Ñ;Contiene la Ñ, Elevación natural del terreno;Montaña
+Ñ;Contiene la Ñ, Arácnido de ocho patas;Araña
+Ñ;Contiene la Ñ, Parte del día que va desde el amanecer hasta el mediodía;Mañana
+Ñ;Contiene la Ñ, Estación del año que sigue al verano;Otoño
+Ñ;Contiene la Ñ, Adjetivo para algo que tiene poco tamaño;Pequeño
+Ñ;Contiene la Ñ, Acción de imaginar cosas mientras duermes;Soñar
+Ñ;Contiene la Ñ, Tubería por donde sale el agua sucia;Cañería
+O;Empieza por la O, Gas necesario para la respiración de la mayoría de seres vivos;Oxígeno
+O;Empieza por la O, Gran masa de agua salada que cubre la mayor parte de la Tierra;Océano
+O;Empieza por la O, Conjunto de músicos que tocan diversos instrumentos;Orquesta
+O;Empieza por la O, Trayectoria que describe un planeta alrededor del Sol;Órbita
+O;Empieza por la O, Sentido que nos permite percibir los olores;Olfato
+O;Empieza por la O, Juicio o valoración que se forma sobre algo;Opinión
+O;Empieza por la O, Principio o causa de algo;Origen
+O;Empieza por la O, Punto cardinal por donde se pone el Sol;Oeste
+O;Empieza por la O, Polígono de ocho lados;Octágono
+O;Empieza por la O, Animal que nace de un huevo;Ovíparo
+P;Empieza por la P, Cuerpo celeste que gira alrededor de una estrella;Planeta
+P;Empieza por la P, Personaje principal de una obra de ficción;Protagonista
+P;Empieza por la P, Monumento funerario del antiguo Egipto;Pirámide
+P;Empieza por la P, Porción de tierra rodeada de agua excepto por una parte;Península
+P;Empieza por la P, Género literario escrito en verso;Poesía
+P;Empieza por la P, Arte de representar imágenes con pigmentos y colores;Pintura
+P;Empieza por la P, Asamblea legislativa nacional;Parlamento
+P;Empieza por la P, Órgano principal del sistema respiratorio;Pulmón
+P;Empieza por la P, Suma de la longitud de los lados de una figura;Perímetro
+P;Empieza por la P, Texto escrito en columnas en los periódicos;Prensa
+Q;Empieza por la Q, Ciencia que estudia la composición de la materia;Química
+Q;Empieza por la Q, Producto lácteo sólido obtenido de la leche;Queso
+Q;Empieza por la Q, Número equivalente a la suma de diez más cinco;Quince
+Q;Empieza por la Q, Personaje de Cervantes que luchaba contra molinos;Quijote
+Q;Empieza por la Q, Sala de un hospital donde se realizan operaciones;Quirófano
+Q;Empieza por la Q, Acción de destruir algo con fuego;Quemar
+Q;Contiene la Q, Arte y técnica de diseñar edificios;Arquitectura
+Q;Contiene la Q, Grupo de músicos;Orquesta
+Q;Contiene la Q, Estructura ósea del cuerpo humano;Esqueleto
+Q;Contiene la Q, Pregunta o duda;Cuestión
+R;Empieza por la R, Forma de gobierno sin monarca;República
+R;Empieza por la R, Paralelogramo con cuatro ángulos rectos y lados iguales dos a dos;Rectángulo
+R;Empieza por la R, Parte de la planta que está bajo tierra;Raíz
+R;Empieza por la R, Capital de Italia y antiguo imperio;Roma
+R;Empieza por la R, Conjunto de formas que tiene la superficie terrestre;Relieve
+R;Empieza por la R, Valor que consiste en tratar bien a los demás;Respeto
+R;Empieza por la R, Composición escrita sobre un tema;Redacción
+R;Empieza por la R, Animal vertebrado de sangre fría que suele reptar;Reptil
+R;Empieza por la R, Máquina programable capaz de realizar tareas;Robot
+R;Empieza por la R, Proceso de transformar residuos en nuevos productos;Reciclaje
+S;Empieza por la S, Conjunto de órganos que cumplen una función biológica;Sistema
+S;Empieza por la S, Cuerpo celeste que orbita alrededor de un planeta;Satélite
+S;Empieza por la S, Periodo de cien años;Siglo
+S;Empieza por la S, Bioma de zona cálida con mucha vegetación y lluvias;Selva
+S;Empieza por la S, Imagen o figura que representa un concepto;Símbolo
+S;Empieza por la S, Palabra que nombra a personas, animales o cosas;Sustantivo
+S;Empieza por la S, Adhesión a la causa o empresa de otros;Solidaridad
+S;Empieza por la S, Operación matemática de añadir cantidades;Suma
+S;Empieza por la S, Sensación producida en el oído por vibraciones;Sonido
+S;Empieza por la S, Ausencia de ruido;Silencio
+T;Empieza por la T, Grado de calor o frío de un cuerpo o del ambiente;Temperatura
+T;Empieza por la T, Polígono de tres lados;Triángulo
+T;Empieza por la T, Edificio o lugar destinado a la representación de obras dramáticas;Teatro
+T;Empieza por la T, Instrumento óptico para ver objetos lejanos;Telescopio
+T;Empieza por la T, Conjunto de conocimientos técnicos;Tecnología
+T;Empieza por la T, Perturbación atmosférica violenta con lluvia y viento;Tormenta
+T;Empieza por la T, Costumbre transmitida de generación en generación;Tradición
+T;Empieza por la T, Actividad de viajar por placer;Turismo
+T;Empieza por la T, Nombre de una obra literaria o película;Título
+T;Empieza por la T, Ola gigante provocada por un terremoto submarino;Tsunami
+U;Empieza por la U, Conjunto de todo lo que existe;Universo
+U;Empieza por la U, Séptimo planeta del Sistema Solar;Urano
+U;Empieza por la U, Institución de enseñanza superior;Universidad
+U;Empieza por la U, Situación que requiere atención inmediata;Urgencia
+U;Empieza por la U, Persona que utiliza un servicio o un ordenador;Usuario
+U;Empieza por la U, Que es el único de su especie;Único
+U;Empieza por la U, Lugar en el que está algo;Ubicación
+U;Empieza por la U, Ropa estandarizada usada por miembros de una organización;Uniforme
+U;Empieza por la U, Acción y efecto de unir;Unión
+U;Empieza por la U, Objeto que sirve para un uso manual frecuente;Utensilio
+V;Empieza por la V, Abertura en la tierra por donde sale el magma;Volcán
+V;Empieza por la V, Magnitud física que expresa el espacio recorrido en un tiempo;Velocidad
+V;Empieza por la V, Ser orgánico que crece y vive, pero no muda de lugar;Vegetal
+V;Empieza por la V, Clase de palabra que indica acción;Verbo
+V;Empieza por la V, Animal que tiene esqueleto y columna vertebral;Vertebrado
+V;Empieza por la V, Preparado que genera inmunidad contra una enfermedad;Vacuna
+V;Empieza por la V, Llanura situada entre montes;Valle
+V;Empieza por la V, Agua en estado gaseoso;Vapor
+V;Empieza por la V, Pueblo navegante y guerrero de Escandinavia;Vikingo
+V;Empieza por la V, Conformidad de las cosas con el concepto que de ellas se forma la mente;Verdad
+W;Contiene la W, Página electrónica en internet;Web
+W;Contiene la W, Conexión inalámbrica a internet;Wifi
+W;Contiene la W, Deporte acuático de equipo;Waterpolo
+W;Contiene la W, Capital de Estados Unidos;Washington
+W;Contiene la W, Enciclopedia libre y colaborativa en internet;Wikipedia
+W;Contiene la W, Comida rápida de dos rebanadas de pan;Sándwich
+W;Contiene la W, Conjunto de programas de una computadora;Software
+W;Contiene la W, Componentes físicos de una computadora;Hardware
+W;Contiene la W, Fruta verde y pequeña;Kiwi
+W;Contiene la W, Fiesta de origen celta que se celebra el 31 de octubre;Halloween
+X;Empieza por la X, Instrumento musical de percusión;Xilófono
+X;Contiene la X, Que es de otro país;Extranjero
+X;Contiene la X, Prueba de conocimientos;Examen
+X;Contiene la X, Elemento químico necesario para respirar (O);Oxígeno
+X;Contiene la X, Conjunto de palabras que forman un escrito;Texto
+X;Contiene la X, Entorno lingüístico del que depende el sentido de una palabra;Contexto
+X;Contiene la X, Prueba científica para descubrir algo;Experimento
+X;Contiene la X, Que no tiene error, preciso;Exacto
+X;Contiene la X, Lo opuesto de mínimo;Máximo
+X;Contiene la X, Que ya no existe o se ha extinguido;Extinto
+Y;Empieza por la Y, Hembra del caballo;Yegua
+Y;Empieza por la Y, Disciplina física y mental originaria de la India;Yoga
+Y;Empieza por la Y, Lugar donde se hallan restos arqueológicos o minerales;Yacimiento
+Y;Empieza porla Y, Elemento químico de símbolo I (aunque se escribe con Y al inicio de la palabra en español coloquial, el elemento es Yodo);Yodo
+Y;Empieza por la Y, Bloque de hierro donde el herrero golpea los metales;Yunque
+Y;Contiene la Y, Que supera a otro en cantidad o calidad;Mayor
+Y;Contiene la Y, Ribera del mar formada de arenales;Playa
+Y;Contiene la Y, Escrito en prosa en el cual un autor desarrolla sus ideas;Ensayo
+Y;Contiene la Y, Regla o norma establecida por una autoridad;Ley
+Y;Contiene la Y, Monarca o soberano de un reino;Rey
+Z;Empieza por la Z, Mamífero carnívoro de la familia de los cánidos;Zorro
+Z;Empieza por la Z, Superficie o terreno determinado;Zona
+Z;Empieza por la Z, Elemento químico metálico (Zn);Zinc
+Z;Empieza por la Z, Parque donde se exhiben animales;Zoológico
+Z;Empieza por la Z, Calzado deportivo o ligero;Zapatilla
+Z;Empieza por la Z, Líquido obtenido de exprimir frutas;Zumo
+Z;Contiene la Z, Parte superior del cuerpo humano;Cabeza
+Z;Contiene la Z, Órgano que bombea sangre;Corazón
+Z;Contiene la Z, Situación sin guerra;Paz
+Z;Contiene la Z, Animal acuático que respira por branquias;Pez
