@@ -3,11 +3,13 @@ import java.util.Random;
 import java.util.Scanner;
 import java.text.Normalizer;
 
+package Juegos;
+
 /**
- * Clase principal que implementa la lógica del juego "Pasapalabra".
+ * Clase principal del pasa palabra que implementa la lógica del juego "Pasapalabra".
  * Permite jugar un rosco de preguntas, válida respuesta y muestra el progreso visualmente.
- * @version 1.0.0
- * @author Adrian Duque, Carlota Parra, Camila Michelle Paucar
+ * @version 1.1.0
+ * @author Adrian Duque
  */
 
 public class PasaPalabra {
