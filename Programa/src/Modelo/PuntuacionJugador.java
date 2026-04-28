@@ -3,6 +3,9 @@ package Modelo;
 /**
  * Representa la puntuación de un jugador dentro de una partida.
  * Cada instancia almacena el username del jugador y sus puntos acumulados.
+ * 
+ *    @author JP-Aceves
+ *    @version 1.0
  */
 public class PuntuacionJugador {
 
