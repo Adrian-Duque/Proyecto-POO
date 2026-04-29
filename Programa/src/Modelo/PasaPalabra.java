@@ -1,9 +1,9 @@
+package Modelo;
+
 import java.io.*;
 import java.util.Random;
 import java.util.Scanner;
 import java.text.Normalizer;
-
-package Juegos;
 
 /**
  * Clase principal del pasa palabra que implementa la lógica del juego "Pasapalabra".
@@ -16,6 +16,7 @@ public class PasaPalabra {
     /** Escáner global para la entrada de datos por consola. */
     public static Scanner sc = new Scanner(System.in);
 
+    private final String FilePath = "/src/Modelo/roscos";
     /**
      * Punto de entrada principal de la aplicación.
      * Gestiona el menú principal, el registro del usuario, la selección de dificultad
@@ -150,7 +151,7 @@ public class PasaPalabra {
                 archivo = "rosco_facil.txt";
         }
 
-        File fichero = new File("src/roscos/"+archivo);
+        File fichero = new File(FilePath + archivo);
 
         // Array temporal (buffer) para cargar el contenido del fichero en memoria.
         // Se reserva espacio para 300 líneas (27 letras * ~10 opciones = 270 líneas mínimo).
