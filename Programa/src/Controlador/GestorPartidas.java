@@ -1,5 +1,9 @@
 package Controlador;
 
+import Modelo.Juego;
+import Modelo.Partida;
+import Modelo.Usuario;
+import Persistencia.GestorPersistencia;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +13,8 @@ import java.util.ArrayList;
  * delegando la persistencia en {@link GestorPersistencia}.
  * </p>
  *    @author JP-Aceves
- *    @version 1.0
+ *    @author Adrián
+ *    @version 1.1
  */
 public class GestorPartidas {
 
