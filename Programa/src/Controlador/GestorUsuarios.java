@@ -1,9 +1,9 @@
 package Controlador;
 
 import Modelo.Administrador;
+import Modelo.Jugador;
 import Modelo.Usuario;
 import Persistencia.GestorPersistencia;
-
 import java.util.ArrayList;
 
 /**
@@ -15,42 +15,44 @@ import java.util.ArrayList;
  * </p>
  *
  * @author Adrián
- * @version 1.0
+ * @version 1.1
  */
 public class GestorUsuarios {
 
     /** Implementación de persistencia inyectada por constructor. */
     private GestorPersistencia persistencia;
 
+    /** Lista de usuarios cargada una sola vez al iniciar el gestor. */
+    private ArrayList<Usuario> listaUsuarios;
+
     /** Usuario que ha iniciado sesión actualmente. Null si no hay sesión activa. */
     private Usuario usuarioActual;
 
     /**
      * Crea un nuevo GestorUsuarios con la implementación de persistencia indicada.
+     * Carga la lista de usuarios desde disco una única vez.
      *
      * @param persistencia implementación de {@link GestorPersistencia} a utilizar
      */
     public GestorUsuarios(GestorPersistencia persistencia) {
         this.persistencia = persistencia;
+        this.listaUsuarios = persistencia.cargarUsuarios(); // una sola lectura de disco
         this.usuarioActual = null;
     }
 
     /**
      * Intenta iniciar sesión con las credenciales proporcionadas.
      * <p>
-     * Carga la lista de usuarios desde persistencia, busca el username
-     * y verifica la contraseña. Si las credenciales son correctas,
-     * guarda el usuario en {@code usuarioActual}.
+     * Busca el username en {@code listaUsuarios} y verifica la contraseña.
+     * Si las credenciales son correctas, guarda el usuario en {@code usuarioActual}.
      * </p>
      *
-     * @param username  nombre de usuario
+     * @param username   nombre de usuario
      * @param contrasena contraseña en texto plano
      * @return el {@link Usuario} autenticado, o {@code null} si las credenciales son incorrectas
      */
     public Usuario iniciarSesion(String username, String contrasena) {
-        ArrayList<Usuario> lista = persistencia.cargarUsuarios();
-
-        for (Usuario u : lista) {
+        for (Usuario u : listaUsuarios) {
             if (u.getUsername().equals(username)) {
                 if (u.verificarPassword(contrasena)) {
                     usuarioActual = u;
@@ -60,24 +62,19 @@ public class GestorUsuarios {
                 return null;
             }
         }
-
         return null; // Username no existe
     }
 
     /**
-     * Registra un nuevo usuario si las credenciales superan las validaciones
+     * Registra un nuevo jugador si las credenciales superan las validaciones
      * y el username no está ya en uso.
-     * <p>
-     * Recarga la lista desde disco justo antes de guardar para evitar
-     * sobreescribir registros añadidos en otra operación.
-     * </p>
      *
      * @param username   nombre de usuario deseado
      * @param contrasena contraseña deseada
      * @return {@code null} si el registro fue exitoso, o un mensaje de error si falló
      */
     public String registrarUsuario(String username, String contrasena) {
-        // Validar formato antes de tocar persistencia
+        // Validar formato antes de tocar la lista
         String errorUsername = validarUsername(username);
         if (errorUsername != null) return errorUsername;
 
@@ -85,15 +82,15 @@ public class GestorUsuarios {
         if (errorPassword != null) return errorPassword;
 
         // Comprobar duplicado
-        ArrayList<Usuario> lista = persistencia.cargarUsuarios();
-        for (Usuario u : lista) {
+        for (Usuario u : listaUsuarios) {
             if (u.getUsername().equals(username)) {
                 return "El nombre de usuario ya está en uso.";
             }
         }
 
-        lista.add(new Usuario(username, contrasena));
-        persistencia.guardarUsuarios(lista);
+        // Jugador es la subclase concreta de Usuario para usuarios normales
+        listaUsuarios.add(new Jugador(username, contrasena));
+        persistencia.guardarUsuarios(listaUsuarios);
         return null;
     }
 
@@ -162,14 +159,13 @@ public class GestorUsuarios {
     }
 
     /**
-     * Busca un usuario por su nombre de usuario en la lista cargada desde persistencia.
+     * Busca un usuario por su nombre de usuario en {@code listaUsuarios}.
      *
      * @param username nombre de usuario a buscar
      * @return el {@link Usuario} encontrado, o {@code null} si no existe
      */
     public Usuario buscarUsuario(String username) {
-        ArrayList<Usuario> lista = persistencia.cargarUsuarios();
-        for (Usuario u : lista) {
+        for (Usuario u : listaUsuarios) {
             if (u.getUsername().equals(username)) {
                 return u;
             }
@@ -193,6 +189,6 @@ public class GestorUsuarios {
      * @return {@link ArrayList} con todos los {@link Usuario} registrados
      */
     public ArrayList<Usuario> getListaUsuarios() {
-        return persistencia.cargarUsuarios();
+        return listaUsuarios;
     }
 }
