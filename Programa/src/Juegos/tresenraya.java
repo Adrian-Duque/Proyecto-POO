@@ -1,42 +1,22 @@
+package modelo;
+
 /**
  * Implementación del juego Tres en Raya para dos jugadores.
  *
- * <p>Esta clase hereda de {@link Juego} e implementa todos sus métodos abstractos.
- * El juego consiste en un tablero 3x3 donde dos jugadores se alternan colocando
- * fichas (X y O) intentando conseguir tres en línea.</p>
+ * <p>Hereda de {@link Juego} e implementa todos sus métodos abstractos.
+ * El tablero es 3x3 con fichas 'X' y 'O'. La gestión del turno la lleva
+ * {@link Partida} externamente — esta clase solo conoce el estado del tablero.</p>
  *
- * <p>Ejemplo de uso:</p>
- * <pre>
- *     TresEnRaya juego = new TresEnRaya("jugador1", "jugador2");
- *     juego.inicializar();
- *     juego.hacerJugada(0, 0); // jugador1 en fila 0, columna 0
- *     System.out.println(juego.getEstadoTexto());
- * </pre>
- *
- * @author POO - Primer año Ingeniería Informática
- * @version 1.0
+ * @author Nacho 
+ * @version 2.1
  */
 public class TresEnRaya extends Juego {
 
-    /**
-     * Tablero de juego 3x3.
-     * Cada celda contiene {@code null} si está vacía,
-     * o el username del jugador que ha colocado su ficha.
-     */
-    private String[][] tablero;
-
-    /** Username del primer jugador (juega con X). */
-    private String jugador1;
-
-    /** Username del segundo jugador (juega con O). */
-    private String jugador2;
-
-    /** Username del jugador al que le corresponde jugar en este turno. */
-    private String turnoActual;
+    /** Tablero 3x3. Cada celda contiene 'X', 'O' o ' ' si está vacía. */
+    private char[][] tablero;
 
     /**
-     * Username del ganador de la partida.
-     * Es {@code null} si la partida no ha terminado o ha terminado en empate.
+     * Username del ganador. null si la partida no ha terminado o acabó en empate.
      */
     private String ganador;
 
@@ -45,179 +25,110 @@ public class TresEnRaya extends Juego {
     // ============================================================
 
     /**
-     * Crea una nueva partida de Tres en Raya con dos jugadores.
-     *
-     * <p>El tablero se crea vacío. Para iniciar la partida hay que llamar
-     * a {@link #inicializar()} después del constructor.</p>
-     *
-     * @param jugador1 username del primer jugador (jugará primero)
-     * @param jugador2 username del segundo jugador
+     * Crea una nueva instancia de Tres en Raya.
+     * Llamar a {@link #inicializar()} antes de empezar a jugar.
      */
-    public TresEnRaya(String jugador1, String jugador2) {
-        super("TresEnRaya", "Juego del tres en raya para dos jugadores");
-
-        this.jugador1 = jugador1;
-        this.jugador2 = jugador2;
+    public TresEnRaya() {
+        super("TresEnRaya", "Juego del tres en raya para dos jugadores", false); 
+        this.tablero = new char[3][3];
         this.ganador = null;
-        this.tablero = new String[3][3];
     }
 
     // ============================================================
-    // MÉTODOS ABSTRACTOS DE Juego
+    // METODOS ABSTRACTOS DE Juego
     // ============================================================
 
     /**
      * Inicializa o reinicia la partida.
-     *
-     * <p>Limpia todas las casillas del tablero, asigna el turno al jugador 1
-     * y resetea el ganador. Debe llamarse antes de empezar a jugar.</p>
+     * Limpia el tablero, resetea el ganador y marca el juego como no finalizado.
      */
     @Override
     public void inicializar() {
-        // Vaciamos todas las casillas del tablero
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                tablero[i][j] = null;
-            }
-        }
-
-        // El jugador 1 siempre empieza
-        turnoActual = jugador1;
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                tablero[i][j] = ' ';
         ganador = null;
+        juegoFinalizado = false;
     }
 
     /**
      * Devuelve el estado actual del tablero en formato texto.
      *
-     * <p>Muestra el tablero con:</p>
-     * <ul>
-     *   <li>{@code .} para casillas vacías</li>
-     *   <li>{@code X} para las fichas del jugador 1</li>
-     *   <li>{@code O} para las fichas del jugador 2</li>
-     * </ul>
-     * <p>Si la partida ha terminado, indica si hay ganador o empate.</p>
+     * <p>Usa ' . ' para casillas vacías, {@code X} para jugador 1
+     * y {@code O} para jugador 2. Si la partida ha terminado indica el resultado.</p>
      *
-     * @return String con el tablero dibujado en texto y el estado de la partida
+     * @return String con el tablero dibujado y el estado de la partida
      */
     @Override
     public String getEstadoTexto() {
         StringBuilder sb = new StringBuilder();
-
-        sb.append("=== TRES EN RAYA ===\n");
-        sb.append("Turno de: ").append(turnoActual).append("\n\n");
-
-        // Dibujamos el tablero fila por fila
+        sb.append("=== TRES EN RAYA ===\n\n");
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (tablero[i][j] == null) {
-                    sb.append(" . ");           // Casilla vacía
-                } else if (tablero[i][j].equals(jugador1)) {
-                    sb.append(" X ");           // Ficha del jugador 1
-                } else {
-                    sb.append(" O ");           // Ficha del jugador 2
-                }
-                if (j < 2) sb.append("|");     // Separador vertical entre columnas
+                sb.append(tablero[i][j] == ' ' ? " . " : " " + tablero[i][j] + " ");
+                if (j < 2) sb.append("|");
             }
             sb.append("\n");
-            if (i < 2) sb.append("-----------\n"); // Separador horizontal entre filas
+            if (i < 2) sb.append("-----------\n");
         }
-
-        // Mensaje de resultado si la partida ha terminado
         if (isTerminado()) {
-            if (ganador != null) {
+            if (ganador != null)
                 sb.append("\n¡Ha ganado: ").append(ganador).append("!\n");
-            } else {
+            else
                 sb.append("\n¡Empate!\n");
-            }
         }
-
         return sb.toString();
     }
 
     /**
-     * Serializa el estado completo de la partida a un String.
+     * Serializa el estado completo a un String.
      *
-     * <p>El formato es el siguiente:</p>
-     * <pre>
-     *     casilla00,casilla01,...,casilla22;turnoActual;ganador
-     * </pre>
-     * <p>Las casillas vacías se representan con la cadena {@code "null"}.
-     * Si no hay ganador, también se guarda como {@code "null"}.</p>
+     * <p>Formato: {@code casilla00,casilla01,...,casilla22;ganador}<br>
+     * Las casillas vacías se guardan como espacio {@code ' '}.
+     * Si no hay ganador se guarda {@code "null"}.</p>
      *
-     * <p>Este String puede usarse con {@link #deserializarEstado(String)}
-     * para restaurar la partida más tarde.</p>
-     *
-     * @return String con el estado completo del juego serializado
+     * @return String con el estado serializado
      */
     @Override
     public String serializarEstado() {
         StringBuilder sb = new StringBuilder();
-
-        // Guardamos las 9 casillas del tablero separadas por comas
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (tablero[i][j] == null) {
-                    sb.append("null");
-                } else {
-                    sb.append(tablero[i][j]);
-                }
-                // Añadimos coma separadora salvo en la última casilla
-                if (!(i == 2 && j == 2)) {
-                    sb.append(",");
-                }
+                sb.append(tablero[i][j]);
+                if (!(i == 2 && j == 2)) sb.append(",");
             }
         }
-
-        // Añadimos el turno actual y el ganador, separados por punto y coma
-        sb.append(";").append(turnoActual);
         sb.append(";").append(ganador == null ? "null" : ganador);
-
         return sb.toString();
     }
 
     /**
-     * Restaura el estado de la partida a partir de un String serializado.
+     * Restaura el estado desde un String serializado.
      *
-     * <p>El String debe tener el formato generado por {@link #serializarEstado()}.
-     * Reconstruye el tablero, el turno actual y el ganador.</p>
+     * <p>El String debe tener el formato de {@link #serializarEstado()}.</p>
      *
-     * @param s String con el estado serializado de la partida
+     * @param s String con el estado serializado
      */
     @Override
     public void deserializarEstado(String s) {
-        // Separamos el String en sus tres partes: tablero, turno y ganador
         String[] partes = s.split(";");
-
-        // Reconstruimos el tablero a partir de las 9 casillas
-        String[] casillas = partes[0].split(",");
-        int index = 0;
+        String[] casillas = partes[0].split(",", -1);
+        int idx = 0;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (casillas[index].equals("null")) {
-                    tablero[i][j] = null;   // Casilla vacía
-                } else {
-                    tablero[i][j] = casillas[index]; // Username del jugador
-                }
-                index++;
+                tablero[i][j] = casillas[idx].isEmpty() ? ' ' : casillas[idx].charAt(0);
+                idx++;
             }
         }
-
-        // Restauramos el turno actual
-        turnoActual = partes[1];
-
-        // Restauramos el ganador (null si la cadena es "null")
-        ganador = partes[2].equals("null") ? null : partes[2];
+        ganador = partes[1].equals("null") ? null : partes[1];
     }
 
     /**
-     * Marca la partida como finalizada.
-     *
-     * <p>Llama al método {@code terminar()} de la clase padre {@link Juego},
-     * que se encarga de poner {@code juegoFinalizado = true}.</p>
+     * Marca la partida como finalizada delegando en la clase padre.
      */
     @Override
     public void terminar() {
-        super.terminar();
+        juegoFinalizado = true; 
     }
 
     // ============================================================
@@ -225,47 +136,37 @@ public class TresEnRaya extends Juego {
     // ============================================================
 
     /**
-     * Realiza una jugada en la posición indicada del tablero.
+     * Realiza una jugada en la posición indicada.
      *
-     * <p>Coloca la ficha del jugador actual en la casilla ({@code fila}, {@code columna}).
-     * Después de cada jugada comprueba si hay victoria o empate. Si la partida
-     * continúa, cambia el turno al otro jugador.</p>
+     * <p>Coloca la ficha del jugador en ({@code fila}, {@code columna}).
+     * Comprueba victoria o empate. El cambio de turno lo gestiona
+     * {@link Partida} externamente — esta clase no lo maneja.</p>
      *
-     * @param fila    fila donde se quiere colocar la ficha (0, 1 o 2)
-     * @param columna columna donde se quiere colocar la ficha (0, 1 o 2)
-     * @return {@code true} si la jugada fue válida y se realizó correctamente;
-     *         {@code false} si la casilla estaba ocupada o el juego ya ha terminado
+     * @param username username del jugador que realiza la jugada
+     * @param ficha    ficha del jugador ('X' o 'O')
+     * @param fila     fila donde colocar la ficha (0-2)
+     * @param columna  columna donde colocar la ficha (0-2)
+     * @return {@code true} si la jugada fue válida; {@code false} si la casilla
+     *         estaba ocupada o el juego ya había terminado
      */
-    public boolean hacerJugada(int fila, int columna) {
-        // No se puede jugar si la partida ya ha terminado
-        if (isTerminado()) {
-            return false;
-        }
+    public boolean jugarTurno(String username, char ficha, int fila, int columna) {
+        if (isTerminado()) return false;
+        if (casillaOcupada(fila, columna)) return false;
 
-        // No se puede jugar en una casilla ya ocupada
-        if (casillaOcupada(fila, columna)) {
-            return false;
-        }
+        tablero[fila][columna] = ficha;
 
-        // Colocamos la ficha del jugador actual en el tablero
-        tablero[fila][columna] = turnoActual;
-
-        // Comprobamos si el jugador actual ha ganado con esta jugada
-        if (hayVictoria(turnoActual)) {
-            ganador = turnoActual;
-            sumarPuntos(turnoActual, 10); // Sumamos 10 puntos al ganador
+        if (hayVictoria(ficha)) {
+            ganador = username;
+            sumarPuntos(username, 10);
             terminar();
             return true;
         }
 
-        // Comprobamos si el tablero está lleno y hay empate
-        if (hayEmpate()) {
-            terminar(); // La partida termina sin ganador
+        if (tableroLleno()) {
+            terminar();
             return true;
         }
 
-        // Si nadie ha ganado ni hay empate, cambiamos al otro jugador
-        cambiarTurno();
         return true;
     }
 
@@ -274,91 +175,56 @@ public class TresEnRaya extends Juego {
     // ============================================================
 
     /**
-     * Comprueba si una casilla del tablero ya tiene una ficha.
+     * Comprueba si una casilla ya tiene una ficha.
      *
-     * @param fila    fila de la casilla a comprobar (0, 1 o 2)
-     * @param columna columna de la casilla a comprobar (0, 1 o 2)
-     * @return {@code true} si la casilla ya está ocupada; {@code false} si está libre
+     * @param fila    fila de la casilla (0-2)
+     * @param columna columna de la casilla (0-2)
+     * @return {@code true} si la casilla está ocupada
      */
     private boolean casillaOcupada(int fila, int columna) {
-        return tablero[fila][columna] != null;
+        return tablero[fila][columna] != ' ';
     }
 
     /**
-     * Comprueba si el jugador indicado ha conseguido tres en línea.
+     * Comprueba si la ficha dada tiene tres en línea.
      *
-     * <p>Revisa las tres filas, las tres columnas, la diagonal principal (↘)
-     * y la diagonal secundaria (↙).</p>
+     * <p>Revisa las tres filas, tres columnas, diagonal principal (↘)
+     * y diagonal secundaria (↙).</p>
      *
-     * @param username username del jugador cuya victoria se comprueba
-     * @return {@code true} si el jugador tiene tres fichas en línea; {@code false} en caso contrario
+     * @param ficha ficha a comprobar ('X' o 'O')
+     * @return {@code true} si hay tres en línea
      */
-    private boolean hayVictoria(String username) {
-        // Comprobamos las tres filas
+    private boolean hayVictoria(char ficha) {
         for (int i = 0; i < 3; i++) {
-            if (username.equals(tablero[i][0]) &&
-                username.equals(tablero[i][1]) &&
-                username.equals(tablero[i][2])) {
-                return true;
-            }
+            if (tablero[i][0] == ficha &&
+                tablero[i][1] == ficha &&
+                tablero[i][2] == ficha) return true;
         }
-
-        // Comprobamos las tres columnas
         for (int j = 0; j < 3; j++) {
-            if (username.equals(tablero[0][j]) &&
-                username.equals(tablero[1][j]) &&
-                username.equals(tablero[2][j])) {
-                return true;
-            }
+            if (tablero[0][j] == ficha &&
+                tablero[1][j] == ficha &&
+                tablero[2][j] == ficha) return true;
         }
-
-        // Comprobamos la diagonal principal: (0,0) → (1,1) → (2,2)
-        if (username.equals(tablero[0][0]) &&
-            username.equals(tablero[1][1]) &&
-            username.equals(tablero[2][2])) {
-            return true;
-        }
-
-        // Comprobamos la diagonal secundaria: (0,2) → (1,1) → (2,0)
-        if (username.equals(tablero[0][2]) &&
-            username.equals(tablero[1][1]) &&
-            username.equals(tablero[2][0])) {
-            return true;
-        }
+        if (tablero[0][0] == ficha &&
+            tablero[1][1] == ficha &&
+            tablero[2][2] == ficha) return true;
+        if (tablero[0][2] == ficha &&
+            tablero[1][1] == ficha &&
+            tablero[2][0] == ficha) return true;
 
         return false;
     }
 
     /**
-     * Comprueba si la partida ha terminado en empate.
+     * Comprueba si el tablero está completamente lleno.
      *
-     * <p>Hay empate cuando todas las casillas están ocupadas y ningún
-     * jugador ha conseguido tres en línea.</p>
-     *
-     * @return {@code true} si el tablero está lleno y no hay ganador; {@code false} en caso contrario
+     * @return {@code true} si no quedan casillas vacías
      */
-    private boolean hayEmpate() {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (tablero[i][j] == null) {
-                    return false; // Aún hay casillas libres, no hay empate
-                }
-            }
-        }
-        return true; // Todas las casillas ocupadas → empate
-    }
-
-    /**
-     * Cambia el turno al otro jugador.
-     *
-     * <p>Si le tocaba al jugador 1, pasa al jugador 2, y viceversa.</p>
-     */
-    private void cambiarTurno() {
-        if (turnoActual.equals(jugador1)) {
-            turnoActual = jugador2;
-        } else {
-            turnoActual = jugador1;
-        }
+    private boolean tableroLleno() {
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                if (tablero[i][j] == ' ') return false;
+        return true;
     }
 
     // ============================================================
@@ -366,33 +232,21 @@ public class TresEnRaya extends Juego {
     // ============================================================
 
     /**
-     * Devuelve el username del jugador al que le toca jugar.
-     *
-     * @return username del jugador con el turno actual
-     */
-    public String getTurnoActual() {
-        return turnoActual;
-    }
-
-    /**
-     * Devuelve el username del ganador de la partida.
-     *
-     * @return username del ganador, o {@code null} si no hay ganador
-     *         (partida en curso o empate)
+     * @return username del ganador, o {@code null} si no hay ganador todavía
      */
     public String getGanador() {
         return ganador;
     }
 
     /**
-     * Devuelve el tablero de juego actual.
-     *
-     * <p>Cada celda contiene el username del jugador que la ocupa,
-     * o {@code null} si está vacía.</p>
+     * Devuelve una copia del tablero para evitar modificaciones externas.
      *
      * @return matriz 3x3 con el estado actual del tablero
      */
-    public String[][] getTablero() {
-        return tablero;
+    public char[][] getTablero() {
+        char[][] copia = new char[3][3];
+        for (int i = 0; i < 3; i++)
+            copia[i] = tablero[i].clone();
+        return copia;
     }
 }
