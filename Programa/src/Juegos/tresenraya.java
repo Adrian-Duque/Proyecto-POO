@@ -248,5 +248,6 @@ public class TresEnRaya extends Juego {
         for (int i = 0; i < 3; i++)
             copia[i] = tablero[i].clone();
         return copia;
+        
     }
 }
