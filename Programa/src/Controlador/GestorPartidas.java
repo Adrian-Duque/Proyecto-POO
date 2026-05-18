@@ -96,17 +96,6 @@ public class GestorPartidas {
     }
 
     /**
-     * Reanuda una partida pausada restaurando su estado desde el string serializado.
-     *
-     * @param partida           partida a reanudar
-     * @param estadoSerializado string con el estado serializado del juego (sin prefijo de nombre)
-     */
-    public void reanudarPartida(Partida partida, String estadoSerializado) {
-        partida.reanudar(estadoSerializado);
-        partidaActual = partida;
-    }
-
-    /**
      * Reconstruye y reanuda una partida pausada a partir de los datos cargados de disco.
      * El parámetro {@code datosCompletos} tiene el formato {@code "nombreJuego|estadoSerializado"}
      * tal como lo guarda {@link #pausarPartida()}.
@@ -119,12 +108,10 @@ public class GestorPartidas {
      * @param jugadores      lista de jugadores que participarán
      * @return la {@link Partida} ya activa y lista para jugar
      */
-    public Partida reanudarPartida(int id, String datosCompletos, Juego juego,
-                                   ArrayList<Usuario> jugadores) {
+    public Partida reanudarPartida(int id, String datosCompletos, Juego juego, ArrayList<Usuario> jugadores) {
         // Formato nuevo: "nombreJuego|users|estado"  /  formato legado: "nombreJuego|estado"
         String[] partes = datosCompletos.split("\\|", 3);
-        String estadoSerializado = (partes.length == 3) ? partes[2]
-                                 : (partes.length == 2) ? partes[1] : datosCompletos;
+        String estadoSerializado = partes[2]; 
 
         // Para PasaPalabra el rosco debe cargarse antes de deserializar
         juego.inicializar();

@@ -34,7 +34,7 @@ public class Aplicacion {
     public static void main(String[] args) {
         GestorPersistencia persistencia = new PersistenciaArchivos();
 
-        gestorUsuarios     = new GestorUsuarios(persistencia);
+        gestorUsuarios = new GestorUsuarios(persistencia);
         gestorEstadisticas = new GestorEstadisticas(persistencia);
 
         gestorJuegos = new GestorJuegos();
@@ -50,8 +50,19 @@ public class Aplicacion {
         SwingUtilities.invokeLater(() -> new VentanaLogin(gestorUsuarios).setVisible(true));
     }
 
-    public static GestorUsuarios getGestorUsuarios()         { return gestorUsuarios; }
-    public static GestorJuegos getGestorJuegos()             { return gestorJuegos; }
-    public static GestorPartidas getGestorPartidas()         { return gestorPartidas; }
-    public static GestorEstadisticas getGestorEstadisticas() { return gestorEstadisticas; }
+    public static GestorUsuarios getGestorUsuarios(){
+        return gestorUsuarios; 
+    }
+
+    public static GestorJuegos getGestorJuegos(){ 
+        return gestorJuegos; 
+    }
+
+    public static GestorPartidas getGestorPartidas(){ 
+        return gestorPartidas; 
+    }
+    
+    public static GestorEstadisticas getGestorEstadisticas(){
+        return gestorEstadisticas; 
+    }
 }

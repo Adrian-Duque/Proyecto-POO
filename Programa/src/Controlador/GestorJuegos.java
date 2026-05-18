@@ -11,10 +11,8 @@ import java.util.ArrayList;
  * Permite registrar juegos, instanciarlos y consultar sus propiedades.
  *
  * Autor: Ignacio del Peso Dominguez
- * Fecha: 11/05/2026
  * Versión: 2.0
  * Descripción: Clase que gestiona los juegos del sistema.
- * Métodos y atributos según el diagrama UML V4.
  */
 public class GestorJuegos {
 

@@ -67,12 +67,14 @@ public class VentanaLogin extends JFrame {
         lblTitulo = new JLabel("MINIJUEGOS");
         lblTitulo.setFont(Tema.FUENTE_TITULO);
         lblTitulo.setForeground(Tema.ACENTO);
-        lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 
         lblSubtitulo = new JLabel();
         lblSubtitulo.setFont(Tema.FUENTE_LABEL);
         lblSubtitulo.setForeground(Tema.SUBTEXTO);
-        lblSubtitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblSubtitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblSubtitulo.setHorizontalAlignment(SwingConstants.CENTER);
 
         lblUsername = new JLabel("Usuario");
         lblUsername.setFont(Tema.FUENTE_LABEL);
@@ -92,7 +94,8 @@ public class VentanaLogin extends JFrame {
         lblError = new JLabel(" ");
         lblError.setFont(Tema.FUENTE_LABEL);
         lblError.setForeground(Tema.ERROR);
-        lblError.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblError.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblError.setHorizontalAlignment(SwingConstants.CENTER);
 
         btnAccion = new JButton();
         btnAccion.setFont(Tema.FUENTE_BOTON);
@@ -103,7 +106,7 @@ public class VentanaLogin extends JFrame {
         btnAccion.setOpaque(true);
         btnAccion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnAccion.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
-        btnAccion.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnAccion.setAlignmentX(Component.LEFT_ALIGNMENT);
         btnAccion.addMouseListener(new MouseAdapter() {
             @Override public void mouseEntered(MouseEvent e) {
                 btnAccion.setBackground(Tema.ACENTO.brighter());
@@ -125,7 +128,8 @@ public class VentanaLogin extends JFrame {
         btnCambiarModo.setFocusPainted(false);
         btnCambiarModo.setContentAreaFilled(false);
         btnCambiarModo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btnCambiarModo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnCambiarModo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        btnCambiarModo.setHorizontalAlignment(SwingConstants.CENTER);
         btnCambiarModo.addActionListener(e -> cambiarModo());
 
         txtPassword.addActionListener(e -> {
@@ -151,7 +155,10 @@ public class VentanaLogin extends JFrame {
         card.add(Box.createRigidArea(new Dimension(0, 12)));
         card.add(btnCambiarModo);
 
-        root.add(card);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.CENTER;
+        root.add(card, gbc);
+
         pack();
         setLocationRelativeTo(null);
     }

@@ -23,7 +23,7 @@ public class PasaPalabra extends Juego {
     public static final String ESTADO_PASAPALABRA = "3";
 
     // ── Ruta base de los ficheros de roscos ──────────────────────────────────
-    private static final String DIR_ROSCOS = "src/Modelo/roscos/";
+    private static final String DIR_ROSCOS = "data/roscos/";
 
     // ── Estado interno ───────────────────────────────────────────────────────
     /**
