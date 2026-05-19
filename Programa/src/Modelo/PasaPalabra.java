@@ -57,7 +57,7 @@ public class PasaPalabra extends Juego {
     @Override
     public void inicializar() {
         this.rosco           = cargarDatos(nivel);
-        this.letraActual     = 0;
+        this.letraActual     = -1;
         this.aciertos        = 0;
         this.fallos          = 0;
         this.pasapalabras    = 0;
