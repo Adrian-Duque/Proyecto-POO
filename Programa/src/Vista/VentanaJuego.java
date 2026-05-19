@@ -2,6 +2,7 @@ package Vista;
 
 import Controlador.GestorEstadisticas;
 import Controlador.GestorPartidas;
+import Modelo.Partida;
 
 import javax.swing.*;
 
@@ -51,11 +52,13 @@ public abstract class VentanaJuego extends JFrame {
 
     /**
      * Finaliza la partida, registra las estadísticas y vuelve al menú principal.
-     * La fecha de finalización es responsabilidad de los gestores.
+     * El orden importa: primero finalizarPartida() para que fechaFin quede establecida,
+     * luego registrarResultado() que necesita esa fecha.
      */
     protected void accionFinalizar() {
-        gestorEstadisticas.registrarResultado(gestorPartidas.getPartidaActual());
-        gestorPartidas.finalizarPartida();
+        Partida partida = gestorPartidas.getPartidaActual();
+        gestorPartidas.finalizarPartida();          // establece fechaFin y nullea partidaActual
+        gestorEstadisticas.registrarResultado(partida); // ya tiene fechaFin
         dispose();
         ventanaPadre.setVisible(true);
     }

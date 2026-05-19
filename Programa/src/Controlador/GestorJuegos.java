@@ -1,8 +1,8 @@
-package controlador;
+package Controlador;
 
-import modelo.Juego;
-import modelo.Pasapalabra;
-import modelo.TresEnRaya;
+import Modelo.Juego;
+import Modelo.PasaPalabra;
+import Modelo.TresEnRaya;
 
 import java.util.ArrayList;
 
@@ -11,10 +11,8 @@ import java.util.ArrayList;
  * Permite registrar juegos, instanciarlos y consultar sus propiedades.
  *
  * Autor: Ignacio del Peso Dominguez
- * Fecha: 11/05/2026
  * Versión: 2.0
  * Descripción: Clase que gestiona los juegos del sistema.
- * Métodos y atributos según el diagrama UML V4.
  */
 public class GestorJuegos {
 
@@ -48,9 +46,21 @@ public class GestorJuegos {
      * @return instancia de Juego correspondiente, o null si el nombre no existe
      */
     public Juego crearJuego(String nombre) {
-        if ("PasaPalabra".equals(nombre)) return new Pasapalabra();
+        if ("Pasapalabra".equals(nombre)) return new PasaPalabra();
         if ("TresEnRaya".equals(nombre)) return new TresEnRaya();
         System.err.println("GestorJuegos: juego desconocido -> " + nombre);
+        return null;
+    }
+
+    /**
+     * Crea e inicializa una nueva instancia del juego indicado por nombre y nivel (metodo con sobrecarga).
+     *
+     * @param nombre nombre del juego ("PasaPalabra", "TresEnRaya", …)
+     * @return instancia de Juego y Nivel correspondiente, o null si el nombre no existe
+     */
+    public Juego crearJuego(String nombre, int nivel) {
+        if ("Pasapalabra".equals(nombre)) return new PasaPalabra(nivel);
+        if ("TresEnRaya".equals(nombre)) return new TresEnRaya();
         return null;
     }
 

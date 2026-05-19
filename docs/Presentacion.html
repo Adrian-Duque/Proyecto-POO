@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MiniJuegos — Programación Orientada a Objetos · UEM</title>
+<meta name="description" content="Aplicación de escritorio en Java con Pasapalabra y Tres en Raya. Proyecto académico de Programación Orientada a Objetos. Universidad Europea de Madrid, 2024-2025." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    /* base — black & yellow */
+    --bg:          #0a0a0a;
+    --bg-elev:    #111111;
+    --bg-soft:    #161616;
+    --line:       #262626;
+    --line-soft:  #1c1c1c;
+    --ink:        #f5f5f5;
+    --ink-dim:    #9a9a9a;
+    --ink-mute:   #5a5a5a;
+
+    /* yellow scale */
+    --yellow:        #FFD60A;
+    --yellow-bright: #FFE600;
+    --yellow-soft:   #FFF066;
+    --yellow-dim:    #B89500;
+    --yellow-deep:   #5C4A00;
+
+    /* rosco palette — sólo negro / amarillo / gris */
+    --st-correcta:    var(--yellow);          /* amarillo brillante */
+    --st-incorrecta:  #2a2a2a;                /* gris oscuro */
+    --st-pasapalabra: #6b6b6b;                /* gris medio */
+    --st-actual:      var(--yellow-bright);   /* amarillo glow */
+    --st-pendiente:   #2a2a2a;
+
+    --accent:     var(--yellow);
+    --accent-ink: #000000;
+
+    /* type */
+    --display: "Space Grotesk", "Montserrat", system-ui, sans-serif;
+    --sans:    "Montserrat", system-ui, -apple-system, sans-serif;
+    --mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    /* layout */
+    --maxw: 1180px;
+    --pad-x: clamp(20px, 4vw, 56px);
+    --radius: 4px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* ─── Gradient dots background ──────────────────────────────────
+     Hexagonal dot grid: los puntos son "agujeros" en el fondo negro
+     que dejan ver gradientes amarillo-dorados moviéndose abajo. */
+  .gradient-dots {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(circle at 50% 50%, transparent 1.2px, var(--bg) 0 8px, transparent 8px),
+      radial-gradient(circle at 50% 50%, transparent 1.2px, var(--bg) 0 8px, transparent 8px),
+      radial-gradient(circle at 50% 50%, #FFD60A, transparent 35%),
+      radial-gradient(circle at 50% 50%, #B89500, transparent 35%),
+      radial-gradient(circle at 50% 50%, #8a6b00, transparent 35%),
+      radial-gradient(ellipse at 50% 50%, #FFE600, transparent 35%);
+    background-size:
+      10px 17.32px,
+      10px 17.32px,
+      200% 200%,
+      200% 200%,
+      200% 200%,
+      200% 17.32px;
+    background-position:
+      0px 0px, 5px 8.66px,
+      800% 400%, 1000% -400%, -1200% -600%, 400% 17.32px;
+    animation: gdots-pos 22s linear infinite;
+    opacity: 0.75;
+    filter: brightness(1.15) saturate(1.3);
+    mask-image: radial-gradient(ellipse 110% 90% at 50% 40%, #000 55%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 110% 90% at 50% 40%, #000 55%, transparent 100%);
+  }
+  @keyframes gdots-pos {
+    from { background-position: 0px 0px, 5px 8.66px, 800% 400%, 1000% -400%, -1200% -600%, 400% 17.32px; }
+    to   { background-position: 0px 0px, 5px 8.66px, 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+  }
+  /* glow ambiente sutil por encima de los puntos */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(900px 600px at 85% -10%, rgba(255,214,10,0.05), transparent 60%),
+      radial-gradient(700px 500px at -10% 90%, rgba(255,214,10,0.03), transparent 55%);
+    z-index: 0;
+  }
+  nav, header, section, footer { position: relative; z-index: 1; }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ─── NAV ─────────────────────────────────────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: rgba(10, 10, 10, 0.78);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav-inner {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 14px var(--pad-x);
+    display: flex; align-items: center; gap: 28px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+  .brand-mark {
+    width: 26px; height: 26px;
+    display: grid; place-items: center;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 15px;
+    border-radius: 4px;
+    line-height: 1;
+  }
+  .nav-links {
+    display: flex; gap: 22px;
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--ink-dim);
+  }
+  .nav-links a { transition: color .15s ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border: 1px solid var(--yellow-deep);
+    border-radius: 4px;
+    color: var(--yellow);
+    background: rgba(255,214,10,0.04);
+    transition: all .15s ease;
+    display: inline-flex; align-items: center; gap: 6px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .nav-cta:hover { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+  @media (max-width: 720px) {
+    .nav-links { display: none; }
+  }
+
+  /* ─── HERO ────────────────────────────────────────────────────── */
+  .hero {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: clamp(56px, 9vw, 120px) var(--pad-x) clamp(60px, 8vw, 100px);
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: clamp(32px, 6vw, 80px);
+    align-items: center;
+  }
+  @media (max-width: 880px) {
+    .hero { grid-template-columns: 1fr; }
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--yellow);
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 32px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 32px; height: 1px;
+    background: var(--yellow);
+    display: inline-block;
+  }
+
+  h1.title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(64px, 11vw, 144px);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    margin: 0 0 32px;
+    text-transform: uppercase;
+  }
+  h1.title em {
+    color: var(--accent);
+    font-style: normal;
+    font-weight: 700;
+    display: inline-block;
+  }
+
+  .hero-sub {
+    font-size: clamp(15px, 1.5vw, 17px);
+    line-height: 1.6;
+    color: var(--ink-dim);
+    max-width: 480px;
+    margin: 0 0 36px;
+    font-weight: 400;
+  }
+  .hero-sub strong { color: var(--yellow); font-weight: 600; }
+
+  .hero-cta {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    margin-bottom: 44px;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 15px 22px;
+    border-radius: 4px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .18s ease;
+    border: 1px solid transparent;
+    line-height: 1;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-color: var(--accent);
+    box-shadow: 0 8px 28px -10px rgba(255, 214, 10, 0.55);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    background: var(--yellow-bright);
+    border-color: var(--yellow-bright);
+    box-shadow: 0 14px 36px -10px rgba(255, 214, 10, 0.7);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--line);
+  }
+  .btn-ghost:hover { border-color: var(--yellow); color: var(--yellow); background: rgba(255,214,10,0.04); }
+  .btn svg { width: 16px; height: 16px; }
+
+  .hero-team {
+    border-top: 1px solid var(--line-soft);
+    padding-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .hero-team-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--yellow);
+    font-weight: 500;
+  }
+  .hero-team-list {
+    display: flex; flex-wrap: wrap; gap: 6px 20px;
+    font-size: 13px;
+    color: var(--ink-dim);
+    font-weight: 500;
+  }
+  .hero-team-list span { display: inline-flex; align-items: center; gap: 8px; }
+  .hero-team-list span::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--yellow);
+    display: inline-block;
+    transform: rotate(45deg);
+  }
+
+  /* Rosco decorativo */
+  .rosco-wrap {
+    position: relative;
+    aspect-ratio: 1;
+    width: 100%;
+    max-width: 480px;
+    justify-self: end;
+  }
+  @media (max-width: 880px) {
+    .rosco-wrap { justify-self: center; max-width: 360px; }
+  }
+  .rosco-wrap svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .rosco-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+  }
+  .rosco-center .timer {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--yellow);
+    letter-spacing: 0.14em;
+    font-weight: 500;
+  }
+  .rosco-center .timer-val {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 72px;
+    color: var(--yellow);
+    line-height: 1;
+    margin: 8px 0 10px;
+    letter-spacing: -0.04em;
+    text-shadow: 0 0 40px rgba(255,214,10,0.4);
+  }
+  .rosco-center .timer-hint {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  /* ─── SECTION GENERIC ─────────────────────────────────────────── */
+  section { padding: clamp(80px, 10vw, 140px) 0; position: relative; }
+  .container {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 var(--pad-x);
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    margin-bottom: clamp(40px, 5vw, 64px);
+    border-bottom: 1px solid var(--line-soft);
+    padding-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--yellow);
+    letter-spacing: 0.14em;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .section-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(36px, 4.8vw, 56px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin: 0;
+    flex: 1;
+    text-transform: uppercase;
+  }
+  .section-kicker {
+    color: var(--ink-dim);
+    font-size: 14px;
+    max-width: 420px;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ─── JUEGOS ──────────────────────────────────────────────────── */
+  .games {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 820px) {
+    .games { grid-template-columns: 1fr; }
+  }
+  .game-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    transition: border-color .2s ease, transform .2s ease, background .2s ease;
+    position: relative;
+  }
+  .game-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--yellow);
+    transition: width .3s ease;
+  }
+  .game-card:hover { border-color: var(--yellow-deep); transform: translateY(-3px); }
+  .game-card:hover::before { width: 100%; }
+  .game-visual {
+    height: 220px;
+    display: grid;
+    place-items: center;
+    background: var(--bg);
+    border-radius: 10px;
+    border: 1px solid var(--line-soft);
+    position: relative;
+    overflow: hidden;
+  }
+  .game-head {
+    display: flex; align-items: baseline; gap: 14px;
+  }
+  .game-name {
+    font-family: var(--display);
+    font-size: 34px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+  }
+  .game-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--yellow);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid var(--yellow-deep);
+    background: rgba(255,214,10,0.05);
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+  .game-desc { color: var(--ink-dim); margin: 0; font-size: 14px; line-height: 1.6; }
+  .game-feats {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 10px;
+    font-size: 14px;
+    border-top: 1px solid var(--line-soft);
+    padding-top: 20px;
+  }
+  .game-feats li {
+    display: flex; gap: 12px;
+    color: var(--ink-dim);
+  }
+  .game-feats li {
+    font-weight: 400;
+  }
+  .game-feats li::before {
+    content: "▸";
+    color: var(--accent);
+    font-family: var(--mono);
+    flex-shrink: 0;
+  }
+
+  /* mini rosco para card */
+  .mini-rosco { width: 180px; height: 180px; }
+
+  /* mini ttt */
+  .mini-ttt {
+    display: grid;
+    grid-template-columns: repeat(3, 56px);
+    grid-template-rows: repeat(3, 56px);
+    gap: 6px;
+  }
+  .mini-ttt .cell {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    display: grid; place-items: center;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--ink-mute);
+  }
+  .mini-ttt .cell.x { color: var(--yellow); }
+  .mini-ttt .cell.o { color: var(--ink); }
+  .mini-ttt .cell.win {
+    background: rgba(255,214,10,0.08);
+    border-color: var(--yellow);
+    box-shadow: 0 0 0 1px var(--yellow) inset, 0 0 20px -4px rgba(255,214,10,0.4);
+    color: var(--yellow);
+  }
+
+  /* ─── ARQUITECTURA ────────────────────────────────────────────── */
+  .arch-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  @media (max-width: 880px) {
+    .arch-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  .layers {
+    display: flex; flex-direction: column;
+    gap: 14px;
+    position: relative;
+  }
+  .layer {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 22px;
+    position: relative;
+    transition: all .2s ease;
+  }
+  .layer:hover { border-color: var(--yellow); background: rgba(255,214,10,0.02); }
+  .layer-num {
+    position: absolute;
+    top: 18px; right: 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--yellow-dim);
+    letter-spacing: 0.1em;
+  }
+  .layer-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 22px;
+    margin: 0 0 6px;
+    display: flex; align-items: center; gap: 12px;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+  .layer-name .dot {
+    width: 8px; height: 8px;
+    display: inline-block;
+    background: var(--yellow);
+    transform: rotate(45deg);
+  }
+  .layer-name .dot.v { background: var(--yellow-bright); }
+  .layer-name .dot.c { background: var(--yellow); }
+  .layer-name .dot.m { background: var(--yellow-dim); }
+  .layer-name .dot.p { background: var(--yellow-soft); }
+  .layer-pkg {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    margin: 0 0 14px;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+  }
+  .layer-desc {
+    margin: 0 0 12px;
+    font-size: 14px;
+    color: var(--ink-dim);
+  }
+  .layer-classes {
+    display: flex; flex-wrap: wrap; gap: 5px;
+  }
+  .layer-classes code {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    background: var(--bg);
+    border: 1px solid var(--line-soft);
+    color: var(--ink-dim);
+    padding: 3px 7px;
+    border-radius: 4px;
+  }
+
+  .layer-arrow {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -10px;
+    color: var(--yellow);
+    font-size: 12px;
+    font-family: var(--mono);
+    background: var(--bg);
+    padding: 0 6px;
+    z-index: 1;
+  }
+
+  /* Decisiones */
+  .decisions {
+    display: flex; flex-direction: column;
+    gap: 0;
+  }
+  .decision {
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .decision:first-child { padding-top: 0; }
+  .decision:last-child { border-bottom: none; }
+  .decision-head {
+    display: flex; align-items: baseline; gap: 14px;
+    margin-bottom: 8px;
+  }
+  .decision-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--yellow);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .decision h4 {
+    margin: 0;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+  .decision p {
+    margin: 0;
+    color: var(--ink-dim);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .decision p code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line-soft);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--ink);
+  }
+
+  /* ─── STACK ───────────────────────────────────────────────────── */
+  .stack-strip {
+    margin-top: 64px;
+    padding: 32px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+  @media (max-width: 720px) {
+    .stack-strip { grid-template-columns: 1fr; gap: 16px; }
+  }
+  .stack-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .stack-chips {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .stack-chip {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--ink);
+    background: var(--bg);
+    letter-spacing: 0.04em;
+  }
+  .stack-chip.zero {
+    color: var(--yellow);
+    border-color: var(--yellow-deep);
+    border-style: dashed;
+    background: rgba(255,214,10,0.04);
+  }
+
+  /* ─── EQUIPO ──────────────────────────────────────────────────── */
+  .team {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 720px) {
+    .team { grid-template-columns: 1fr; }
+  }
+  .member {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .member::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+  .member-head {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .member-avatar {
+    width: 48px; height: 48px;
+    border-radius: 4px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    display: grid; place-items: center;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .member-name {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+  .member-role {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--yellow-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  .member-body {
+    color: var(--ink-dim);
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.6;
+  }
+  .member-classes {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .member-classes code {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    background: var(--bg);
+    border: 1px solid var(--line-soft);
+    color: var(--ink-dim);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* ─── REPO + TREE ─────────────────────────────────────────────── */
+  .repo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
+    align-items: start;
+  }
+  @media (max-width: 880px) {
+    .repo-grid { grid-template-columns: 1fr; }
+  }
+
+  .repo-side h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 28px;
+    margin: 0 0 14px;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+  .repo-side p {
+    color: var(--ink-dim);
+    font-size: 15px;
+    margin: 0 0 24px;
+  }
+  .repo-buttons {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .repo-buttons .btn { justify-content: flex-start; width: 100%; }
+
+  .tree {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.85;
+    overflow: hidden;
+  }
+  .tree-head {
+    padding: 12px 18px;
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 10px;
+    color: var(--ink-dim);
+    font-size: 12px;
+  }
+  .tree-head .dots {
+    display: flex; gap: 5px;
+  }
+  .tree-head .dots span {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+  .tree-body {
+    padding: 20px 22px;
+    color: var(--ink-dim);
+    overflow-x: auto;
+  }
+  .tree-body .dir { color: var(--yellow); font-weight: 600; }
+  .tree-body .file { color: var(--ink-dim); }
+  .tree-body .comment { color: var(--ink-mute); font-style: italic; }
+
+  /* ─── FLUJO ───────────────────────────────────────────────────── */
+  .flow {
+    margin-top: 64px;
+    padding: 32px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .flow-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+  }
+  .flow-steps {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .flow-step {
+    flex: 1;
+    min-width: 130px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .flow-step + .flow-step { margin-left: -1px; }
+  .flow-arrow {
+    align-self: center;
+    color: var(--ink-mute);
+    flex-shrink: 0;
+    padding: 0 14px;
+    font-family: var(--mono);
+    font-size: 18px;
+  }
+  .flow-step { transition: all .2s ease; }
+  .flow-step:hover { border-color: var(--yellow); background: rgba(255,214,10,0.04); }
+  .flow-step .step-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--yellow);
+    letter-spacing: 0.14em;
+    font-weight: 500;
+  }
+  .flow-step .step-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.15;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+  .flow-step .step-class {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-mute);
+  }
+  .flow-arrow { color: var(--yellow); }
+
+  /* ─── FOOTER ──────────────────────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--line-soft);
+    padding: 36px var(--pad-x);
+    text-align: center;
+  }
+  footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    text-align: left;
+  }
+  footer .foot-brand {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+  footer .foot-meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-mute);
+  }
+
+  /* ─── Subtle reveal ──────────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Focus visible */
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="gradient-dots" aria-hidden="true"></div>
+
+<!-- ─── NAV ─────────────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <span class="brand-mark">M</span>
+      <span>MiniJuegos<span style="color:var(--yellow-dim)">.java</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#juegos">Juegos</a>
+      <a href="#arquitectura">Arquitectura</a>
+      <a href="#equipo">Equipo</a>
+      <a href="#repositorio">Repositorio</a>
+    </div>
+    <a href="proyecto.zip" download="proyecto.zip" class="nav-cta">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9m0 0l-3-3m3 3l3-3M2 12v2h12v-2"/></svg>
+      .zip
+    </a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─────────────────────────────────────────────────────── -->
+<header class="hero" id="top">
+  <div class="hero-text">
+    <div class="eyebrow">Programación Orientada a Objetos · UEM 2024-25</div>
+    <h1 class="title">Mini<em>Juegos</em></h1>
+    <p class="hero-sub">
+      Aplicación de escritorio en <strong>Java + Swing</strong> con dos minijuegos clásicos,
+      sistema multiusuario con roles, persistencia en disco y panel de administración.
+      Proyecto final de la asignatura, escrito en cuatro capas y cero dependencias externas.
+    </p>
+
+    <div class="hero-cta">
+      <a href="proyecto.zip" download="proyecto.zip" class="btn btn-primary">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 1.5v9.5m0 0l-3.5-3.5M8 11l3.5-3.5M2 13.5h12"/></svg>
+        Descargar proyecto.zip
+      </a>
+      <a href="https://github.com/JP-Aceves/MiniJuegos-Proyecto-POO" target="_blank" rel="noopener" class="btn btn-ghost">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38v-1.33c-2.22.48-2.69-1.07-2.69-1.07-.36-.93-.89-1.18-.89-1.18-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.88 2.34.67.07-.52.28-.88.51-1.08-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.13 0 0 .67-.21 2.2.82a7.6 7.6 0 014 0c1.53-1.04 2.2-.82 2.2-.82.44 1.11.16 1.93.08 2.13.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        Código en GitHub
+      </a>
+    </div>
+
+    <div class="hero-team">
+      <span class="hero-team-label">Equipo</span>
+      <div class="hero-team-list">
+        <span>JP Aceves</span>
+        <span>Adrián</span>
+        <span>Juan Carlos</span>
+        <span>Nacho</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rosco SVG -->
+  <div class="rosco-wrap">
+    <svg id="rosco" viewBox="-110 -110 220 220" aria-hidden="true"></svg>
+    <div class="rosco-center">
+      <div class="timer">02:30</div>
+      <div class="timer-val">27</div>
+      <div class="timer-hint">letras · rosco completo</div>
+    </div>
+  </div>
+</header>
+
+<!-- ─── JUEGOS ──────────────────────────────────────────────────── -->
+<section id="juegos">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">01 / Juegos</span>
+      <h2 class="section-title">Dos clásicos, una sola aplicación</h2>
+      <p class="section-kicker">Cada minijuego implementa la misma interfaz abstracta de <code style="font-family:var(--mono);font-size:12px">Juego</code>, lo que permite añadir más sin tocar el resto.</p>
+    </div>
+
+    <div class="games">
+      <!-- PASAPALABRA -->
+      <article class="game-card reveal">
+        <div class="game-visual">
+          <svg class="mini-rosco" id="miniRosco" viewBox="-100 -100 200 200" aria-hidden="true"></svg>
+        </div>
+        <div class="game-head">
+          <h3 class="game-name">Pasapalabra</h3>
+          <span class="game-tag">individual</span>
+        </div>
+        <p class="game-desc">Rosco de 27 letras del abecedario español con cuatro niveles de dificultad y temporizador a contrarreloj.</p>
+        <ul class="game-feats">
+          <li>4 niveles: Infantil · Fácil · Medio · Avanzado</li>
+          <li>Temporizador de 2 min 30 s por partida</li>
+          <li>Pregunta aleatoria por letra de cada bloque de 10</li>
+          <li>Panel custom con código de color por estado de letra</li>
+        </ul>
+      </article>
+
+      <!-- TRES EN RAYA -->
+      <article class="game-card reveal">
+        <div class="game-visual">
+          <div class="mini-ttt">
+            <div class="cell x win">×</div><div class="cell o">○</div><div class="cell">  </div>
+            <div class="cell">  </div><div class="cell x win">×</div><div class="cell o">○</div>
+            <div class="cell o">○</div><div class="cell">  </div><div class="cell x win">×</div>
+          </div>
+        </div>
+        <div class="game-head">
+          <h3 class="game-name">Tres en Raya</h3>
+          <span class="game-tag">2 jugadores</span>
+        </div>
+        <p class="game-desc">Tablero 3×3 para dos jugadores con detección automática de victoria y empate, pausable en cualquier momento.</p>
+        <ul class="game-feats">
+          <li>Tablero clicable con turnos alternos</li>
+          <li>Detección de las 8 líneas ganadoras + empate</li>
+          <li>Pausa y reanudación serializada en disco</li>
+          <li>Marcador acumulado de la partida</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ARQUITECTURA ────────────────────────────────────────────── -->
+<section id="arquitectura" style="background: linear-gradient(to bottom, transparent, var(--bg-elev) 40%, transparent);">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">02 / Implementación</span>
+      <h2 class="section-title">Arquitectura en cuatro capas</h2>
+      <p class="section-kicker">Cada paquete Java solo conoce a las capas inmediatamente inferiores. Permite cambiar la persistencia o la UI sin reescribir el modelo.</p>
+    </div>
+
+    <div class="arch-grid">
+      <!-- Capas -->
+      <div class="layers">
+        <div class="layer">
+          <span class="layer-num">01</span>
+          <h3 class="layer-name"><span class="dot v"></span>Vista</h3>
+          <p class="layer-pkg">paquete Vista</p>
+          <p class="layer-desc">Ventanas y paneles Swing. Recoge interacción y delega toda la lógica en los gestores.</p>
+          <div class="layer-classes">
+            <code>Aplicacion</code><code>Tema</code><code>VentanaLogin</code><code>VentanaMenuPrincipal</code><code>VentanaSeleccionJuego</code><code>VentanaJuego</code><code>VentanaJuegoPasapalabra</code><code>VentanaJuegoTresEnRaya</code><code>VentanaEstadisticas</code><code>VentanaAdmin</code>
+          </div>
+          <span class="layer-arrow">↓</span>
+        </div>
+
+        <div class="layer">
+          <span class="layer-num">02</span>
+          <h3 class="layer-name"><span class="dot c"></span>Controlador</h3>
+          <p class="layer-pkg">paquete Controlador</p>
+          <p class="layer-desc">Coordinan Vista con Modelo. Autenticación, ciclo de partidas, registro de estadísticas.</p>
+          <div class="layer-classes">
+            <code>GestorUsuarios</code><code>GestorJuegos</code><code>GestorPartidas</code><code>GestorEstadisticas</code>
+          </div>
+          <span class="layer-arrow">↓</span>
+        </div>
+
+        <div class="layer">
+          <span class="layer-num">03</span>
+          <h3 class="layer-name"><span class="dot m"></span>Modelo</h3>
+          <p class="layer-pkg">paquete Modelo</p>
+          <p class="layer-desc">Clases de dominio puras, sin dependencias de UI ni persistencia.</p>
+          <div class="layer-classes">
+            <code>Usuario</code><code>Jugador</code><code>Administrador</code><code>Juego</code><code>PasaPalabra</code><code>TresEnRaya</code><code>Partida</code><code>Estadistica</code><code>PuntuacionJugador</code><code>EstadoPartida</code>
+          </div>
+          <span class="layer-arrow">↓</span>
+        </div>
+
+        <div class="layer">
+          <span class="layer-num">04</span>
+          <h3 class="layer-name"><span class="dot p"></span>Persistencia</h3>
+          <p class="layer-pkg">paquete Persistencia</p>
+          <p class="layer-desc">Interfaz desacoplada de su implementación. Cambiar a base de datos solo requiere una nueva clase aquí.</p>
+          <div class="layer-classes">
+            <code>GestorPersistencia</code><code>PersistenciaArchivos</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decisiones de diseño -->
+      <div class="decisions">
+        <div class="decision">
+          <div class="decision-head">
+            <span class="decision-tag">01</span>
+            <h4>Herencia, no banderas</h4>
+          </div>
+          <p><code>Usuario</code> es abstracta con subclases <code>Jugador</code> y <code>Administrador</code>. Polimorfismo real con <code>instanceof</code> en lugar de un <code>boolean esAdmin</code> que mezcla responsabilidades.</p>
+        </div>
+
+        <div class="decision">
+          <div class="decision-head">
+            <span class="decision-tag">02</span>
+            <h4>Juego como clase abstracta</h4>
+          </div>
+          <p>Comparte estado y comportamiento entre <code>PasaPalabra</code> y <code>TresEnRaya</code>, y obliga a las subclases a implementar su propia mecánica vía métodos abstractos. Añadir un tercer juego no toca el resto del sistema.</p>
+        </div>
+
+        <div class="decision">
+          <div class="decision-head">
+            <span class="decision-tag">03</span>
+            <h4>Persistencia tras interfaz</h4>
+          </div>
+          <p>Los controladores hablan con <code>GestorPersistencia</code>, nunca con <code>PersistenciaArchivos</code>. Migrar a BBDD significa escribir una segunda implementación sin tocar Vista ni Controlador.</p>
+        </div>
+
+        <div class="decision">
+          <div class="decision-head">
+            <span class="decision-tag">04</span>
+            <h4>Serialización inline, no binaria</h4>
+          </div>
+          <p>El estado de una partida pausada se guarda como texto: <code>juego|user1,user2|estado</code>. Sin <code>Serializable</code> de Java: formato legible, debuggeable y portable.</p>
+        </div>
+
+        <div class="decision">
+          <div class="decision-head">
+            <span class="decision-tag">05</span>
+            <h4>Contraseñas SHA-256</h4>
+          </div>
+          <p>Nunca en texto plano. El hash se calcula con <code>java.security.MessageDigest</code> dentro de <code>Usuario</code>. Un constructor alternativo (<code>yaEsHash=true</code>) permite reconstruir desde disco sin re-hashear.</p>
+        </div>
+
+        <div class="decision">
+          <div class="decision-head">
+            <span class="decision-tag">06</span>
+            <h4>Tema centralizado</h4>
+          </div>
+          <p>Una sola clase <code>Tema</code> contiene paleta y tipografía. Rediseñar la app entera es editar un único fichero.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stack -->
+    <div class="stack-strip">
+      <span class="stack-label">Stack & herramientas</span>
+      <div class="stack-chips">
+        <span class="stack-chip">Java SE 17+</span>
+        <span class="stack-chip">Swing</span>
+        <span class="stack-chip">AWT</span>
+        <span class="stack-chip">SHA-256</span>
+        <span class="stack-chip">Ficheros .txt / .dat</span>
+        <span class="stack-chip zero">0 dependencias externas</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── EQUIPO ──────────────────────────────────────────────────── -->
+<section id="equipo">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">03 / Equipo</span>
+      <h2 class="section-title">División del trabajo</h2>
+      <p class="section-kicker">Cuatro integrantes, una responsabilidad principal por persona. Los gestores compartidos se codesarrollaron por parejas.</p>
+    </div>
+
+    <div class="team">
+      <article class="member" style="--member-color: var(--yellow)">
+        <div class="member-head">
+          <div class="member-avatar">J</div>
+          <div>
+            <h3 class="member-name">JP Aceves</h3>
+            <div class="member-role">Coordinación · Arquitectura · Persistencia</div>
+          </div>
+        </div>
+        <p class="member-body">Diseño general del sistema, arquitectura en capas, modelo de partidas y persistencia. Codesarrollo de <code style="font-family:var(--mono);font-size:12px">PersistenciaArchivos</code> y <code style="font-family:var(--mono);font-size:12px">GestorPartidas</code> con Adrián.</p>
+        <div class="member-classes">
+          <code>EstadoPartida</code><code>PuntuacionJugador</code><code>GestorPersistencia</code><code>PersistenciaArchivos</code><code>Juego</code><code>Partida</code><code>GestorPartidas</code><code>VentanaJuego</code><code>Aplicacion</code><code>Tema</code><code>VentanaSeleccionJuego</code>
+        </div>
+      </article>
+
+      <article class="member" style="--member-color: var(--yellow-bright)">
+        <div class="member-head">
+          <div class="member-avatar">A</div>
+          <div>
+            <h3 class="member-name">Adrián</h3>
+            <div class="member-role">Usuarios · Pasapalabra · Login</div>
+          </div>
+        </div>
+        <p class="member-body">Modelo de usuarios completo, juego Pasapalabra (rosco con 4 niveles y temporizador) y vistas de login y menú principal.</p>
+        <div class="member-classes">
+          <code>Usuario</code><code>Jugador</code><code>Administrador</code><code>PasaPalabra</code><code>GestorUsuarios</code><code>VentanaLogin</code><code>VentanaMenuPrincipal</code><code>VentanaJuegoPasapalabra</code>
+        </div>
+      </article>
+
+      <article class="member" style="--member-color: var(--yellow-dim)">
+        <div class="member-head">
+          <div class="member-avatar">J</div>
+          <div>
+            <h3 class="member-name">Juan Carlos</h3>
+            <div class="member-role">Estadísticas · Administración</div>
+          </div>
+        </div>
+        <p class="member-body">Sistema de estadísticas con ranking global y últimas partidas, tabla interactiva de consulta y panel de administración para usuarios admin.</p>
+        <div class="member-classes">
+          <code>Estadistica</code><code>GestorEstadisticas</code><code>VentanaEstadisticas</code><code>VentanaAdmin</code>
+        </div>
+      </article>
+
+      <article class="member" style="--member-color: var(--yellow-soft)">
+        <div class="member-head">
+          <div class="member-avatar">N</div>
+          <div>
+            <h3 class="member-name">Nacho</h3>
+            <div class="member-role">Tres en Raya · Fábrica de juegos</div>
+          </div>
+        </div>
+        <p class="member-body">Juego Tres en Raya completo —tablero 3×3, detección de victoria y empate, serialización del estado— y fábrica de juegos disponibles.</p>
+        <div class="member-classes">
+          <code>TresEnRaya</code><code>GestorJuegos</code><code>VentanaJuegoTresEnRaya</code>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ─── REPOSITORIO ─────────────────────────────────────────────── -->
+<section id="repositorio" style="background: linear-gradient(to bottom, transparent, var(--bg-elev) 40%, transparent);">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">04 / Entrega</span>
+      <h2 class="section-title">Código fuente & estructura</h2>
+      <p class="section-kicker">El zip contiene el proyecto Java listo para abrir en cualquier IDE. La estructura sigue la separación de capas declarada arriba.</p>
+    </div>
+
+    <div class="repo-grid">
+      <div class="repo-side">
+        <h3>Dos formas de obtenerlo.</h3>
+        <p>Descarga el zip empaquetado para abrirlo directamente desde tu IDE, o navega el código fuente en GitHub para revisarlo commit a commit.</p>
+        <div class="repo-buttons">
+          <a href="proyecto.zip" download="proyecto.zip" class="btn btn-primary">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 1.5v9.5m0 0l-3.5-3.5M8 11l3.5-3.5M2 13.5h12"/></svg>
+            Descargar proyecto.zip
+          </a>
+          <a href="https://github.com/JP-Aceves/MiniJuegos-Proyecto-POO" target="_blank" rel="noopener" class="btn btn-ghost">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38v-1.33c-2.22.48-2.69-1.07-2.69-1.07-.36-.93-.89-1.18-.89-1.18-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.88 2.34.67.07-.52.28-.88.51-1.08-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.13 0 0 .67-.21 2.2.82a7.6 7.6 0 014 0c1.53-1.04 2.2-.82 2.2-.82.44 1.11.16 1.93.08 2.13.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            Repositorio en GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="tree">
+        <div class="tree-head">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span>JuegoFinal / Programa</span>
+        </div>
+        <pre class="tree-body"><span class="dir">src/</span>
+├── <span class="dir">Controlador/</span>
+│   ├── <span class="file">GestorEstadisticas.java</span>
+│   ├── <span class="file">GestorJuegos.java</span>
+│   ├── <span class="file">GestorPartidas.java</span>
+│   └── <span class="file">GestorUsuarios.java</span>
+├── <span class="dir">Modelo/</span>
+│   ├── <span class="file">Administrador.java</span>
+│   ├── <span class="file">Estadistica.java</span>
+│   ├── <span class="file">EstadoPartida.java</span>     <span class="comment"># enum</span>
+│   ├── <span class="file">Juego.java</span>             <span class="comment"># abstracta</span>
+│   ├── <span class="file">Jugador.java</span>
+│   ├── <span class="file">Partida.java</span>
+│   ├── <span class="file">PasaPalabra.java</span>
+│   ├── <span class="file">PuntuacionJugador.java</span>
+│   ├── <span class="file">TresEnRaya.java</span>
+│   └── <span class="file">Usuario.java</span>           <span class="comment"># abstracta</span>
+├── <span class="dir">Persistencia/</span>
+│   ├── <span class="file">GestorPersistencia.java</span> <span class="comment"># interfaz</span>
+│   └── <span class="file">PersistenciaArchivos.java</span>
+└── <span class="dir">Vista/</span>
+    ├── <span class="file">Aplicacion.java</span>
+    ├── <span class="file">Tema.java</span>
+    ├── <span class="file">VentanaAdmin.java</span>
+    ├── <span class="file">VentanaEstadisticas.java</span>
+    ├── <span class="file">VentanaJuego.java</span>      <span class="comment"># abstracta</span>
+    ├── <span class="file">VentanaJuegoPasapalabra.java</span>
+    ├── <span class="file">VentanaJuegoTresEnRaya.java</span>
+    ├── <span class="file">VentanaLogin.java</span>
+    ├── <span class="file">VentanaMenuPrincipal.java</span>
+    └── <span class="file">VentanaSeleccionJuego.java</span>
+
+<span class="dir">data/</span>
+├── <span class="file">usuarios.txt</span>           <span class="comment"># username;sha256;esAdmin</span>
+├── <span class="file">estadisticas.txt</span>       <span class="comment"># username;juego;pts;victoria;fecha</span>
+├── <span class="dir">partidas/</span>              <span class="comment"># estados pausados serializados (.dat)</span>
+└── <span class="dir">roscos/</span>                <span class="comment"># rosco_{infantil,facil,medio,avanzado}.txt</span></pre>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── FOOTER ──────────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="foot-brand">MiniJuegos<span style="color:var(--accent)">.</span></div>
+    <div class="foot-meta">Programación Orientada a Objetos · Universidad Europea de Madrid · Curso 2024-2025</div>
+  </div>
+</footer>
+
+<script>
+  // ─── Generador del rosco SVG ────────────────────────────────────
+  // Abecedario español de 27 letras
+  const LETRAS = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
+
+  function buildRosco(svgId, radius, letterRadius, fontSize, randomize) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    const N = LETRAS.length;
+    // estados (mono—amarillo/negro): 0=pendiente, 1=correcta, 2=incorrecta, 3=pasapalabra, 4=actual
+    const colors = ['#2a2a2a', '#FFD60A', '#1a1a1a', '#6b6b6b', '#FFE600'];
+
+    // Patrón visual: una distribución plausible
+    let states;
+    if (randomize) {
+      states = LETRAS.map(() => {
+        const r = Math.random();
+        if (r < 0.45) return 1;
+        if (r < 0.60) return 2;
+        if (r < 0.70) return 3;
+        return 0;
+      });
+      // un "actual" claro
+      const currentIdx = states.findIndex(s => s === 0);
+      if (currentIdx >= 0) states[currentIdx] = 4;
+    } else {
+      states = [1,1,1,2,1,1,3,1,1,2,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    }
+
+    // Anillo conector (sutil)
+    const ringPath = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    ringPath.setAttribute("cx", 0);
+    ringPath.setAttribute("cy", 0);
+    ringPath.setAttribute("r", radius);
+    ringPath.setAttribute("fill", "none");
+    ringPath.setAttribute("stroke", "#1c1c1c");
+    ringPath.setAttribute("stroke-width", "1");
+    ringPath.setAttribute("stroke-dasharray", "2 4");
+    svg.appendChild(ringPath);
+
+    for (let i = 0; i < N; i++) {
+      // Empezamos arriba y vamos en sentido horario
+      const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
+      const x = Math.cos(angle) * radius;
+      const y = Math.sin(angle) * radius;
+      const state = states[i];
+      const color = colors[state];
+
+      // Círculo de letra
+      const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      c.setAttribute("cx", x);
+      c.setAttribute("cy", y);
+      c.setAttribute("r", letterRadius);
+      if (state === 0) {
+        c.setAttribute("fill", "#0f0f0f");
+        c.setAttribute("stroke", "#2a2a2a");
+        c.setAttribute("stroke-width", "1");
+      } else if (state === 2) {
+        // incorrecta: tachada, negra con borde gris
+        c.setAttribute("fill", "#0a0a0a");
+        c.setAttribute("stroke", "#3a3a3a");
+        c.setAttribute("stroke-width", "1");
+      } else {
+        c.setAttribute("fill", color);
+        if (state === 4) {
+          // halo amarillo para la actual
+          const halo = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          halo.setAttribute("cx", x);
+          halo.setAttribute("cy", y);
+          halo.setAttribute("r", letterRadius + 5);
+          halo.setAttribute("fill", "none");
+          halo.setAttribute("stroke", "#FFD60A");
+          halo.setAttribute("stroke-width", "1");
+          halo.setAttribute("opacity", "0.5");
+          svg.appendChild(halo);
+          const halo2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          halo2.setAttribute("cx", x);
+          halo2.setAttribute("cy", y);
+          halo2.setAttribute("r", letterRadius + 9);
+          halo2.setAttribute("fill", "none");
+          halo2.setAttribute("stroke", "#FFD60A");
+          halo2.setAttribute("stroke-width", "1");
+          halo2.setAttribute("opacity", "0.2");
+          svg.appendChild(halo2);
+        }
+      }
+      svg.appendChild(c);
+
+      // Letra
+      const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      t.setAttribute("x", x);
+      t.setAttribute("y", y);
+      t.setAttribute("text-anchor", "middle");
+      t.setAttribute("dominant-baseline", "central");
+      t.setAttribute("font-family", "'Space Grotesk', 'Montserrat', sans-serif");
+      t.setAttribute("font-weight", "700");
+      t.setAttribute("font-size", fontSize);
+      // texto: gris en pendientes, gris medio en tachados, negro sobre amarillo
+      let textColor;
+      if (state === 0) textColor = "#4a4a4a";
+      else if (state === 2) textColor = "#5a5a5a";
+      else if (state === 3) textColor = "#0a0a0a";
+      else textColor = "#000000";
+      t.setAttribute("fill", textColor);
+      t.textContent = LETRAS[i];
+      svg.appendChild(t);
+    }
+  }
+
+  buildRosco("rosco", 92, 11, 11, false);
+  buildRosco("miniRosco", 78, 9, 9, true);
+
+  // ─── Reveal on scroll ────────────────────────────────────────────
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

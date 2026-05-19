@@ -1,6 +1,8 @@
 package Modelo;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,7 +25,7 @@ public class PasaPalabra extends Juego {
     public static final String ESTADO_PASAPALABRA = "3";
 
     // ── Ruta base de los ficheros de roscos ──────────────────────────────────
-    private static final String DIR_ROSCOS = "src/Modelo/roscos/";
+    private static final String DIR_ROSCOS = "Programa/data/roscos/";
 
     // ── Estado interno ───────────────────────────────────────────────────────
     /**
@@ -202,6 +204,25 @@ public class PasaPalabra extends Juego {
         return n.replaceAll("\\p{Mn}+", "").toLowerCase().trim();
     }
 
+    // ── Resolución de rutas ──────────────────────────────────────────────────
+
+    private static File resolverRuta(String nombreFichero) {
+        // 1. Relativo al directorio de trabajo (funciona desde Programa/ con compilar.sh)
+        File f = new File(DIR_ROSCOS + nombreFichero);
+        if (f.exists()) return f;
+
+        // 2. Relativo al directorio del .class (funciona desde IDE cuyo output es out/)
+        try {
+            URL url = PasaPalabra.class.getProtectionDomain().getCodeSource().getLocation();
+            File classRoot = new File(url.toURI());
+            f = new File(classRoot.getParentFile(), DIR_ROSCOS + nombreFichero);
+            if (f.exists()) return f;
+        } catch (URISyntaxException ignored) {}
+
+        // 3. Devuelve la ruta original aunque no exista (el error lo reporta cargarDatos)
+        return new File(DIR_ROSCOS + nombreFichero);
+    }
+
     // ── Carga de datos desde fichero ─────────────────────────────────────────
 
     private static String[][] cargarDatos(int nivel) {
@@ -218,7 +239,7 @@ public class PasaPalabra extends Juego {
 
         for (int i = 0; i < rosco.length; i++) rosco[i][3] = ESTADO_PENDIENTE;
 
-        File fichero = new File(DIR_ROSCOS + nombreFichero);
+        File fichero = resolverRuta(nombreFichero);
         String[] banco = new String[300];
         int lineasLeidas = 0;
 
@@ -227,11 +248,8 @@ public class PasaPalabra extends Juego {
                 String linea = lector.nextLine().trim();
                 if (!linea.isEmpty()) banco[lineasLeidas++] = linea;
             }
-        } catch (FileNotFoundException e) {
-            System.err.println("Fichero no encontrado: " + fichero.getAbsolutePath());
-            return rosco;
         } catch (IOException e) {
-            System.err.println("Error al leer el fichero: " + e.getMessage());
+            System.err.println("Fichero no encontrado o error de lectura: " + fichero.getAbsolutePath());
             return rosco;
         }
 

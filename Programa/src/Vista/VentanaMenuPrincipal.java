@@ -1,7 +1,10 @@
 package Vista;
 
+import Controlador.GestorEstadisticas;
+import Controlador.GestorJuegos;
 import Controlador.GestorPartidas;
 import Controlador.GestorUsuarios;
+import Modelo.Juego;
 import Modelo.Usuario;
 
 import javax.swing.*;
@@ -10,129 +13,73 @@ import java.util.ArrayList;
 
 /**
  * Ventana principal de navegación de la aplicación MiniJuegos.
+ * Se muestra tras el login y da acceso a jugar, estadísticas y administración.
  *
- * <p>Se muestra inmediatamente después de que el usuario completa
- * el inicio de sesión en {@code VentanaLogin}. Actúa como hub central
- * desde el que el usuario accede a todas las funcionalidades:</p>
- * <ul>
- *   <li>Iniciar una partida nueva.</li>
- *   <li>Reanudar una partida pausada previamente.</li>
- *   <li>Consultar su historial de estadísticas.</li>
- *   <li>Acceder al panel de administración (solo usuarios admin).</li>
- *   <li>Cerrar sesión y volver a {@code VentanaLogin}.</li>
- * </ul>
- *
- * <p>El botón de administración se oculta automáticamente si el usuario
- * no tiene privilegios de administrador, y se realiza una segunda
- * comprobación dentro de {@link #accionAdmin()} como medida de seguridad
- * adicional.</p>
- *
- * @see GestorUsuarios
- * @see GestorPartidas
- *
- * @author Adrián
- * @version 1.0
+ * @author Adrián, JP, Nacho, Juan Carlos
+ * @version 2.2
  */
 public class VentanaMenuPrincipal extends JFrame {
 
-    /** Gestor que controla la sesión activa y las operaciones sobre usuarios. */
-    private final GestorUsuarios gestorUsuarios;
+    private final GestorUsuarios     gestorUsuarios;
+    private final GestorPartidas     gestorPartidas;
+    private final GestorEstadisticas gestorEstadisticas;
+    private final GestorJuegos       gestorJuegos;
+    private final Usuario            usuarioActual;
 
-    /** Gestor que controla el ciclo de vida de las partidas. */
-    private final GestorPartidas gestorPartidas;
-
-    /** Usuario que ha iniciado sesión. Se obtiene de {@code gestorUsuarios} al construir la ventana. */
-    private final Usuario usuarioActual;
-
-    // ── Componentes ──────────────────────────────────────────────────────────
-
-    /** Etiqueta de bienvenida personalizada con el username del usuario. */
-    private JLabel lblBienvenida;
-
-    /** Botón para iniciar una partida nueva. */
+    private JLabel  lblBienvenida;
     private JButton btnJugar;
-
-    /** Botón para cargar y reanudar una partida pausada. */
     private JButton btnCargarPartida;
-
-    /** Botón para abrir la ventana de estadísticas del usuario. */
     private JButton btnEstadisticas;
-
-    /**
-     * Botón para abrir el panel de administración.
-     * Solo visible si {@code gestorUsuarios.esAdministrador()} devuelve {@code true}.
-     */
     private JButton btnAdmin;
-
-    /** Botón para cerrar la sesión actual y volver a {@code VentanaLogin}. */
     private JButton btnCerrarSesion;
 
-    // ─────────────────────────────────────────────────────────────────────────
-
-    /**
-     * Construye la ventana del menú principal para el usuario que acaba de iniciar sesión.
-     *
-     * <p>Obtiene el usuario actual a través de {@link GestorUsuarios#getUsuarioActual()}
-     * y delega la construcción de la interfaz gráfica en {@link #initUI()}.</p>
-     *
-     * @param gestorUsuarios gestor de usuarios con sesión activa; no debe ser {@code null}
-     *                       y {@code getUsuarioActual()} debe devolver un usuario válido.
-     * @param gestorPartidas gestor de partidas utilizado para listar y reanudar partidas pausadas.
-     */
     public VentanaMenuPrincipal(GestorUsuarios gestorUsuarios,
-                                GestorPartidas gestorPartidas) {
-        this.gestorUsuarios = gestorUsuarios;
-        this.gestorPartidas = gestorPartidas;
-        this.usuarioActual   = gestorUsuarios.getUsuarioActual();
-
+                                GestorPartidas gestorPartidas,
+                                GestorEstadisticas gestorEstadisticas,
+                                GestorJuegos gestorJuegos) {
+        this.gestorUsuarios     = gestorUsuarios;
+        this.gestorPartidas     = gestorPartidas;
+        this.gestorEstadisticas = gestorEstadisticas;
+        this.gestorJuegos       = gestorJuegos;
+        this.usuarioActual      = gestorUsuarios.getUsuarioActual();
         initUI();
     }
 
-    // ── Construcción de la interfaz ───────────────────────────────────────────
-
-    /**
-     * Inicializa y monta todos los componentes gráficos de la ventana.
-     *
-     * <p>Crea el panel principal con disposición vertical ({@code BoxLayout}),
-     * instancia los botones llamando a {@link #crearBoton(String)}, registra
-     * los listeners de cada acción y añade los componentes al panel en orden.</p>
-     *
-     * <p>Este método se invoca una única vez desde el constructor.</p>
-     */
     private void initUI() {
         setTitle("MiniJuegos — Menú principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(380, 400);
+        setSize(400, 440);
         setLocationRelativeTo(null);
         setResizable(false);
+        getContentPane().setBackground(Tema.FONDO);
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
+        panel.setBackground(Tema.FONDO_PANEL);
+        panel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Tema.BORDE, 1),
+                BorderFactory.createEmptyBorder(30, 50, 30, 50)
+        ));
 
-        // Bienvenida
         lblBienvenida = new JLabel("Bienvenido/a, " + usuarioActual.getUsername());
-        lblBienvenida.setFont(new Font("SansSerif", Font.BOLD, 16));
+        lblBienvenida.setFont(Tema.FUENTE_TITULO);
+        lblBienvenida.setForeground(Tema.ACENTO);
         lblBienvenida.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Botones
-        btnJugar         = crearBoton("🎮  Jugar");
-        btnCargarPartida = crearBoton("💾  Cargar partida guardada");
-        btnEstadisticas  = crearBoton("📊  Mis estadísticas");
-        btnAdmin         = crearBoton("⚙️  Panel de administración");
-        btnCerrarSesion  = crearBoton("🚪  Cerrar sesión");
+        btnJugar         = crearBotonPrimario("Jugar");
+        btnCargarPartida = crearBotonPrimario("Cargar partida guardada");
+        btnEstadisticas  = crearBotonPrimario("Mis estadisticas");
+        btnAdmin         = crearBotonSecundario("Panel de administracion");
+        btnCerrarSesion  = crearBotonSecundario("Cerrar sesion");
 
-        // El botón de admin solo se muestra si el usuario es administrador
         btnAdmin.setVisible(gestorUsuarios.esAdministrador());
 
-        // Listeners
-        btnJugar.addActionListener(e         -> accionJugar());
-        btnCargarPartida.addActionListener(e  -> accionCargarPartida());
-        btnEstadisticas.addActionListener(e   -> accionEstadisticas());
-        btnAdmin.addActionListener(e          -> accionAdmin());
-        btnCerrarSesion.addActionListener(e   -> accionCerrarSesion());
+        btnJugar.addActionListener(e        -> accionJugar());
+        btnCargarPartida.addActionListener(e -> accionCargarPartida());
+        btnEstadisticas.addActionListener(e  -> accionEstadisticas());
+        btnAdmin.addActionListener(e         -> accionAdmin());
+        btnCerrarSesion.addActionListener(e  -> accionCerrarSesion());
 
-        // Montaje
         panel.add(lblBienvenida);
         panel.add(Box.createRigidArea(new Dimension(0, 25)));
         panel.add(btnJugar);
@@ -145,182 +92,183 @@ public class VentanaMenuPrincipal extends JFrame {
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(btnCerrarSesion);
 
-        add(panel);
+        JPanel wrapper = new JPanel(new GridBagLayout());
+        wrapper.setBackground(Tema.FONDO);
+        wrapper.add(panel);
+        add(wrapper);
     }
 
-    /**
-     * Factoría interna que crea un {@code JButton} con el estilo visual
-     * uniforme que comparten todos los botones del menú.
-     *
-     * <p>Características aplicadas:</p>
-     * <ul>
-     *   <li>Alineación horizontal centrada dentro del {@code BoxLayout}.</li>
-     *   <li>Anchura máxima ilimitada para que ocupe todo el ancho disponible.</li>
-     *   <li>Altura fija de 40 px.</li>
-     *   <li>Sin borde de foco pintado ({@code setFocusPainted(false)}).</li>
-     * </ul>
-     *
-     * @param texto etiqueta que se mostrará en el botón.
-     * @return botón configurado listo para añadir al panel.
-     */
-    private JButton crearBoton(String texto) {
+    private JButton crearBotonPrimario(String texto) {
         JButton btn = new JButton(texto);
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
         btn.setFocusPainted(false);
+        btn.setBackground(Tema.ACENTO);
+        btn.setForeground(Color.BLACK);
+        btn.setFont(Tema.FUENTE_BOTON);
+        btn.setOpaque(true);
+        btn.setBorderPainted(false);
         return btn;
     }
 
-    // ── Acciones ─────────────────────────────────────────────────────────────
-
-    // ── Acciones ─────────────────────────────────────────────────────────────
-
-    /**
-     * Inicia el flujo para comenzar una partida nueva.
-     *
-     * <p>Flujo previsto (pendiente de implementar):</p>
-     * <ol>
-     *   <li>Abrir {@code VentanaSeleccionJuego} para que el usuario elija el juego.</li>
-     *   <li>Obtener el nombre del juego seleccionado.</li>
-     *   <li>Delegar en {@code GestorJuegos.crearJuego(nombre)} para instanciar el juego.</li>
-     *   <li>Llamar a {@link GestorPartidas#iniciarPartida} con el juego y el usuario actual.</li>
-     *   <li>Abrir la ventana de juego correspondiente y cerrar esta ventana.</li>
-     * </ol>
-     *
-     * <p><b>TODO:</b> instanciar {@code VentanaSeleccionJuego} e inyectar
-     * {@code GestorJuegos} cuando estén disponibles.</p>
-     */
-    private void accionJugar() {
-        // Pendiente: VentanaSeleccionJuego aún no existe.
-        // Flujo previsto:
-        //   VentanaSeleccionJuego seleccion = new VentanaSeleccionJuego(gestorJuegos);
-        //   seleccion.setVisible(true);
-        //   String nombreJuego = seleccion.getJuegoSeleccionado();
-        //   if (nombreJuego == null) return;
-        //   Juego juego = gestorJuegos.crearJuego(nombreJuego);
-        //   List<Usuario> jugadores = List.of(usuarioActual);
-        //   gestorPartidas.iniciarPartida(juego, jugadores);
-        //   abrirVentanaJuego(nombreJuego);
-        //   dispose();
-        JOptionPane.showMessageDialog(this,
-                "Selección de juego en desarrollo.",
-                "Próximamente", JOptionPane.INFORMATION_MESSAGE);
+    private JButton crearBotonSecundario(String texto) {
+        JButton btn = new JButton(texto);
+        btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
+        btn.setFocusPainted(false);
+        btn.setBackground(Tema.GRIS_BOTON);
+        btn.setForeground(Tema.TEXTO);
+        btn.setFont(Tema.FUENTE_BOTON);
+        btn.setOpaque(true);
+        btn.setBorderPainted(false);
+        return btn;
     }
 
-    /**
-     * Muestra las partidas pausadas disponibles y permite reanudar la elegida.
-     *
-     * <p>Obtiene la lista de identificadores de partidas pausadas a través de
-     * {@link GestorPartidas#listarPartidasPausadas()}. Si no hay ninguna,
-     * informa al usuario mediante un diálogo. En caso contrario, muestra un
-     * selector con los identificadores disponibles.</p>
-     *
-     * <p>Flujo previsto tras la selección (pendiente de implementar):</p>
-     * <ol>
-     *   <li>Cargar el estado serializado con {@code GestorPartidas.cargarDatosPartida(id)}.</li>
-     *   <li>Reanudar la partida con {@code GestorPartidas.reanudarPartida(id, estado)}.</li>
-     *   <li>Abrir la ventana de juego correspondiente y cerrar esta ventana.</li>
-     * </ol>
-     *
-     * <p><b>TODO:</b> completar el flujo de reanudación cuando
-     * {@code reanudarPartida} esté implementado en {@code GestorPartidas}.</p>
-     */
+    @Deprecated
+    private JButton crearBoton(String texto) {
+        return crearBotonPrimario(texto);
+    }
+
+    // ───────────────────────────────────────────────────────────────────────────
+    // ACCIONES
+    // ───────────────────────────────────────────────────────────────────────────
+
+    private void accionJugar() {
+        VentanaSeleccionJuego dialogo = new VentanaSeleccionJuego(this, gestorJuegos);
+        String nombreJuego = dialogo.getJuegoSeleccionado();
+        if (nombreJuego == null) return;
+    
+        ArrayList<Usuario> jugadores = new ArrayList<>();
+        jugadores.add(usuarioActual);
+    
+        if (gestorJuegos.esMultijugador(nombreJuego)) {
+            String username2 = JOptionPane.showInputDialog(this,
+                    "Introduce el username del segundo jugador:");
+            if (username2 == null || username2.trim().isEmpty()) return;
+    
+            String password2 = JOptionPane.showInputDialog(this,
+                    "Introduce la contraseña del segundo jugador:");
+            if (password2 == null) return;
+    
+            Usuario jugador2 = gestorUsuarios.buscarUsuario(username2.trim());
+            if (jugador2 == null || !jugador2.verificarPassword(password2)) {
+                JOptionPane.showMessageDialog(this,
+                        "Credenciales del segundo jugador incorrectas.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (jugador2.getUsername().equals(usuarioActual.getUsername())) {
+                JOptionPane.showMessageDialog(this,
+                        "El segundo jugador debe ser distinto.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            jugadores.add(jugador2);
+        }
+    
+        int nivel = 1;
+        if ("Pasapalabra".equals(nombreJuego)) {
+            String[] niveles = {"Infantil", "Fácil", "Medio", "Avanzado"};
+            String seleccion = (String) JOptionPane.showInputDialog(
+                    this, "Selecciona la dificultad:", "Dificultad",
+                    JOptionPane.PLAIN_MESSAGE, null, niveles, "Fácil");
+            if (seleccion == null) return;
+            switch (seleccion) {
+                case "Infantil": nivel = 0; break;
+                case "Medio":    nivel = 2; break;
+                case "Avanzado": nivel = 3; break;
+                default:         nivel = 1; break;
+            }
+        }
+    
+        Juego juego = gestorJuegos.crearJuego(nombreJuego, nivel);
+        if (juego == null) return;
+    
+        gestorPartidas.iniciarPartida(juego, jugadores);
+        setVisible(false);
+    
+        if ("TresEnRaya".equals(nombreJuego)) {
+            new VentanaJuegoTresEnRaya(this, gestorPartidas, gestorEstadisticas,
+                    gestorPartidas.getPartidaActual());
+        } else if ("Pasapalabra".equals(nombreJuego)) {
+            new VentanaJuegoPasapalabra(gestorPartidas.getPartidaActual(),
+                    gestorPartidas, gestorEstadisticas, this);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Ventana para '" + nombreJuego + "' no implementada.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            setVisible(true);
+        }
+    }
+
     private void accionCargarPartida() {
-        ArrayList<Integer> ids = gestorPartidas.listarPartidasPausadas();
+        ArrayList<Integer> ids = gestorPartidas.listarPartidasUsuario(usuarioActual.getUsername());
 
         if (ids == null || ids.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "No tienes partidas guardadas.",
+            JOptionPane.showMessageDialog(this, "No hay partidas pausadas.",
                     "Sin partidas", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        Integer[] opciones = ids.toArray(new Integer[0]);
-        Integer seleccionada = (Integer) JOptionPane.showInputDialog(
+        // Etiquetas legibles: "Partida 3 — Pasapalabra" en vez de IDs numéricos
+        String[] etiquetas = new String[ids.size()];
+        for (int i = 0; i < ids.size(); i++) {
+            int id = ids.get(i);
+            String datos = gestorPartidas.cargarDatosPartida(id);
+            String nombreJuego = (datos != null) ? datos.split("\\|", 2)[0] : "Desconocido";
+            etiquetas[i] = "Partida " + id + " — " + nombreJuego;
+        }
+
+        String seleccion = (String) JOptionPane.showInputDialog(
                 this,
                 "Selecciona una partida para reanudar:",
-                "Cargar partida",
+                "Partidas pausadas",
                 JOptionPane.PLAIN_MESSAGE,
                 null,
-                opciones,
-                opciones[0]);
+                etiquetas,
+                etiquetas[0]);
 
-        if (seleccionada == null) return; // usuario canceló
+        if (seleccion == null) return;
 
-        // Flujo previsto:
-        //   String estado = gestorPartidas.cargarDatosPartida(seleccionada);
-        //   gestorPartidas.reanudarPartida(seleccionada, estado);
-        //   abrirVentanaJuego(gestorPartidas.getPartidaActual().getJuego().getNombre());
-        //   dispose();
-        JOptionPane.showMessageDialog(this,
-                "Reanudación de partida en desarrollo.\nID: " + seleccionada,
-                "Próximamente", JOptionPane.INFORMATION_MESSAGE);
+        int idSeleccionado = ids.get(java.util.Arrays.asList(etiquetas).indexOf(seleccion));
+
+        String datos = gestorPartidas.cargarDatosPartida(idSeleccionado);
+        String nombreJuego = datos.split("\\|", 2)[0];
+        Juego juego = gestorJuegos.crearJuego(nombreJuego);
+
+        ArrayList<Usuario> jugadores = new ArrayList<>();
+        jugadores.add(usuarioActual);
+
+        gestorPartidas.reanudarPartida(idSeleccionado, datos, juego, jugadores);
+        setVisible(false);
+
+        if ("TresEnRaya".equals(nombreJuego)) {
+            new VentanaJuegoTresEnRaya(this, gestorPartidas, gestorEstadisticas,
+                    gestorPartidas.getPartidaActual());
+        } else if ("Pasapalabra".equals(nombreJuego)) {
+            new VentanaJuegoPasapalabra(gestorPartidas.getPartidaActual(),
+                    gestorPartidas, gestorEstadisticas, this);
+        } else {
+            JOptionPane.showMessageDialog(this, "Tipo de juego desconocido.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            setVisible(true);
+        }
     }
 
-    /**
-     * Abre la ventana de estadísticas del usuario actual.
-     *
-     * <p>Flujo previsto (pendiente de implementar):</p>
-     * <ol>
-     *   <li>Instanciar {@code VentanaEstadisticas} pasándole {@code GestorEstadisticas}
-     *       y el username del usuario actual.</li>
-     *   <li>Mostrar la ventana.</li>
-     * </ol>
-     *
-     * <p><b>TODO:</b> instanciar {@code VentanaEstadisticas} e inyectar
-     * {@code GestorEstadisticas} cuando estén disponibles.</p>
-     */
     private void accionEstadisticas() {
-        // Pendiente: VentanaEstadisticas aún no existe.
-        // Flujo previsto:
-        //   VentanaEstadisticas v = new VentanaEstadisticas(gestorEstadisticas, usuarioActual.getUsername());
-        //   v.setVisible(true);
-        JOptionPane.showMessageDialog(this,
-                "Estadísticas en desarrollo.",
-                "Próximamente", JOptionPane.INFORMATION_MESSAGE);
+        new VentanaEstadisticas(gestorEstadisticas, gestorUsuarios,
+                usuarioActual.getUsername()).setVisible(true);
     }
 
-    /**
-     * Abre el panel de administración si el usuario tiene privilegios de administrador.
-     *
-     * <p>Aunque el botón que invoca esta acción ya está oculto para usuarios
-     * sin privilegios (ver {@link #initUI()}), se realiza una segunda comprobación
-     * con {@link GestorUsuarios#esAdministrador()} antes de abrir la ventana,
-     * como capa de seguridad adicional frente a posibles accesos indebidos.</p>
-     *
-     * <p>Flujo previsto (pendiente de implementar):</p>
-     * <ol>
-     *   <li>Instanciar {@code VentanaAdmin} pasándole {@code GestorUsuarios}
-     *       y {@code GestorEstadisticas}.</li>
-     *   <li>Mostrar la ventana.</li>
-     * </ol>
-     *
-     * <p><b>TODO:</b> instanciar {@code VentanaAdmin} e inyectar
-     * {@code GestorEstadisticas} cuando estén disponibles.</p>
-     */
     private void accionAdmin() {
         if (!gestorUsuarios.esAdministrador()) {
-            JOptionPane.showMessageDialog(this,
-                    "Acceso denegado.",
+            JOptionPane.showMessageDialog(this, "Acceso denegado.",
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        // Pendiente: VentanaAdmin aún no existe.
-        // Flujo previsto:
-        //   VentanaAdmin v = new VentanaAdmin(gestorUsuarios, gestorEstadisticas);
-        //   v.setVisible(true);
-        JOptionPane.showMessageDialog(this,
-                "Panel de administración en desarrollo.",
-                "Próximamente", JOptionPane.INFORMATION_MESSAGE);
+        new VentanaAdmin(gestorEstadisticas, gestorUsuarios, gestorJuegos, gestorPartidas).setVisible(true);
     }
 
-    /**
-     * Cierra la sesión del usuario actual y regresa a la pantalla de login.
-     *
-     * <p>Llama a {@link GestorUsuarios#cerrarSesion()} para limpiar el estado
-     * de sesión, abre una nueva instancia de {@code VentanaLogin} y destruye
-     * esta ventana con {@code dispose()}.</p>
-     */
     private void accionCerrarSesion() {
         gestorUsuarios.cerrarSesion();
         new VentanaLogin(gestorUsuarios).setVisible(true);

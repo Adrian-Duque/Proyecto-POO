@@ -39,18 +39,23 @@ public class GestorEstadisticas {
      * @param partida partida finalizada de la que se extrae el resultado
      */
     public void registrarResultado(Partida partida) {
-        ArrayList<PuntuacionJugador> puntuaciones = partida.getPuntuaciones();
         Usuario ganador = partida.getGanador();
-
-        for (PuntuacionJugador pj : puntuaciones) {
-            String username = pj.getUsername();
+    
+        for (Usuario u : partida.getListaJugadores()) {
+            String username = u.getUsername();
             String nombreJuego = partida.getJuego().getNombre();
-            int puntuacion = pj.getPuntos();
-            boolean victoria = ganador != null && ganador.getUsername().equals(username);
-
+            int puntuacion = partida.getJuego().getPuntuacion(username);
+            boolean victoria;
+                if (partida.getJuego() instanceof Modelo.PasaPalabra) {
+                    Modelo.PasaPalabra pp = (Modelo.PasaPalabra) partida.getJuego();
+                    victoria = pp.contarPendientes() == 0 && pp.getFallos() == 0;
+                    } else {
+                    victoria = ganador != null && ganador.getUsername().equals(username);
+                    }
+    
             Estadistica e = new Estadistica(username, nombreJuego, puntuacion, victoria,
                     partida.getFechaFin());
-
+    
             persistencia.agregarEstadistica(e);
             listaEstadisticas.add(e);
         }

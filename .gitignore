@@ -6,6 +6,7 @@
 *.ear
 *.nar
 *.zip
+!docs/proyecto.zip
 *.tar.gz
 *.rar
 *.ctxt

@@ -1,5 +1,6 @@
 package Vista;
 
+import Controlador.GestorEstadisticas;
 import Controlador.GestorPartidas;
 import Modelo.Partida;
 import Modelo.PasaPalabra;
@@ -11,32 +12,20 @@ import java.awt.event.*;
 
 /**
  * Ventana gráfica para el juego PasaPalabra.
- * Por ahora extiende JFrame directamente porque VentanaJuego aún está vacía.
- * Cuando VentanaJuego tenga su estructura definitiva, se cambia la línea de extends.
  *
  * @author Adrián
- * @version 1.0
+ * @version 1.1
  */
-public class VentanaJuegoPasapalabra extends JFrame {
-
-    // ── Colores del rosco ────────────────────────────────────────────────────
-    private static final Color COLOR_PENDIENTE   = new Color(60, 60, 80);
-    private static final Color COLOR_CORRECTA    = new Color(34, 197, 94);
-    private static final Color COLOR_INCORRECTA  = new Color(239, 68, 68);
-    private static final Color COLOR_PASAPALABRA = new Color(59, 130, 246);
-    private static final Color COLOR_ACTUAL      = new Color(250, 204, 21);
-    private static final Color COLOR_FONDO       = new Color(15, 15, 25);
-    private static final Color COLOR_TEXTO       = new Color(240, 240, 245);
+public class VentanaJuegoPasapalabra extends VentanaJuego {
 
     // ── Referencias ─────────────────────────────────────────────────────────
-    private final PasaPalabra    juego;
-    private final Usuario        jugador;
-    private final Partida        partida;
-    private final GestorPartidas gestorPartidas;
+    private final PasaPalabra juego;
+    private final Usuario     jugador;
+    private final Partida     partida;
 
     // ── Componentes Swing ────────────────────────────────────────────────────
     private PanelRosco panelRosco;
-    private JLabel     lblDefinicion;
+    private JTextArea lblDefinicion;
     private JLabel     lblLetra;
     private JLabel     lblAciertos;
     private JLabel     lblFallos;
@@ -50,19 +39,22 @@ public class VentanaJuegoPasapalabra extends JFrame {
     // ── Temporizador ─────────────────────────────────────────────────────────
     private Timer timerSwing;
     private int   segundosRestantes;
-    private static final int TIEMPO_INICIAL = 150; // 2 min 30 seg
+    private static final int TIEMPO_INICIAL = 150;
 
     // ── Constructor ──────────────────────────────────────────────────────────
 
     /**
-     * @param partida        Partida activa (contiene el juego y los jugadores).
-     * @param gestorPartidas Para pausar y finalizar.
+     * @param partida            Partida activa (contiene el juego y los jugadores).
+     * @param gestorPartidas     Para pausar y finalizar.
+     * @param gestorEstadisticas Para registrar el resultado al finalizar.
+     * @param ventanaPadre       Ventana a la que volver al cerrar.
      */
-    public VentanaJuegoPasapalabra(Partida partida, GestorPartidas gestorPartidas) {
-        this.partida         = partida;
-        this.juego           = (PasaPalabra) partida.getJuego();
-        this.jugador         = partida.getJugadorActual();
-        this.gestorPartidas  = gestorPartidas;
+    public VentanaJuegoPasapalabra(Partida partida, GestorPartidas gestorPartidas,
+                                   GestorEstadisticas gestorEstadisticas, JFrame ventanaPadre) {
+        super(ventanaPadre, gestorPartidas, gestorEstadisticas);
+        this.partida           = partida;
+        this.juego             = (PasaPalabra) partida.getJuego();
+        this.jugador           = partida.getJugadorActual();
         this.segundosRestantes = TIEMPO_INICIAL;
 
         construirUI();
@@ -75,6 +67,7 @@ public class VentanaJuegoPasapalabra extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) { accionPausar(); }
         });
+        setMinimumSize(new Dimension(860, 600));
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -84,11 +77,13 @@ public class VentanaJuegoPasapalabra extends JFrame {
 
     private void construirUI() {
         setLayout(new BorderLayout(10, 10));
-        getContentPane().setBackground(COLOR_FONDO);
+        getContentPane().setBackground(Tema.FONDO_OSCURO);
+        ((JPanel) getContentPane()).setOpaque(true);
 
         panelRosco = new PanelRosco();
         panelRosco.setPreferredSize(new Dimension(500, 500));
-        panelRosco.setBackground(COLOR_FONDO);
+        panelRosco.setBackground(Tema.FONDO_OSCURO);
+        panelRosco.setOpaque(true);
 
         add(panelRosco,              BorderLayout.CENTER);
         add(construirPanelDerecho(), BorderLayout.EAST);
@@ -98,48 +93,49 @@ public class VentanaJuegoPasapalabra extends JFrame {
     private JPanel construirPanelDerecho() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(COLOR_FONDO);
+        panel.setBackground(Tema.FONDO_OSCURO);
+        panel.setOpaque(true);
         panel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 20));
-        panel.setPreferredSize(new Dimension(300, 500));
+        panel.setPreferredSize(new Dimension(320, 560));
 
-        // Temporizador
-        lblTiempo = crearLabel("2:30", 36, Font.BOLD, new Color(250, 204, 21));
+        lblTiempo = crearLabel("2:30", Tema.FUENTE_TIEMPO, Tema.ACTUAL);
         lblTiempo.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(lblTiempo);
         panel.add(Box.createVerticalStrut(16));
 
-        // Letra actual
-        lblLetra = crearLabel("A", 48, Font.BOLD, COLOR_ACTUAL);
+        lblLetra = crearLabel("A", Tema.FUENTE_LETRA, Tema.ACTUAL);
         lblLetra.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(lblLetra);
         panel.add(Box.createVerticalStrut(10));
 
-        // Definición
-        lblDefinicion = new JLabel("<html><div style='text-align:center;width:260px'>...</div></html>");
-        lblDefinicion.setForeground(COLOR_TEXTO);
-        lblDefinicion.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        lblDefinicion = new JTextArea("...");
+        lblDefinicion.setForeground(Tema.TEXTO);
+        lblDefinicion.setFont(Tema.FUENTE_DEFINICION);
+        lblDefinicion.setBackground(Tema.FONDO_OSCURO);
+        lblDefinicion.setWrapStyleWord(true);
+        lblDefinicion.setLineWrap(true);
+        lblDefinicion.setEditable(false);
+        lblDefinicion.setFocusable(false);
         lblDefinicion.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblDefinicion.setMaximumSize(new Dimension(270, Integer.MAX_VALUE));
         panel.add(lblDefinicion);
-        panel.add(Box.createVerticalStrut(20));
 
-        // Campo de respuesta (Enter también responde)
         txtRespuesta = new JTextField();
         txtRespuesta.setMaximumSize(new Dimension(260, 35));
-        txtRespuesta.setFont(new Font("SansSerif", Font.PLAIN, 15));
-        txtRespuesta.setBackground(new Color(30, 30, 45));
-        txtRespuesta.setForeground(COLOR_TEXTO);
-        txtRespuesta.setCaretColor(COLOR_TEXTO);
+        txtRespuesta.setFont(Tema.FUENTE_RESPUESTA);
+        txtRespuesta.setBackground(Tema.FONDO_INPUT);
+        txtRespuesta.setForeground(Tema.TEXTO);
+        txtRespuesta.setCaretColor(Tema.TEXTO);
         txtRespuesta.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(80, 80, 120), 1),
+                BorderFactory.createLineBorder(Tema.BORDE_INPUT, 1),
                 BorderFactory.createEmptyBorder(4, 8, 4, 8)
         ));
         txtRespuesta.addActionListener(e -> onResponder());
         panel.add(txtRespuesta);
         panel.add(Box.createVerticalStrut(10));
 
-        // Botones de juego
-        btnResponder   = crearBoton("Responder",   new Color(34, 197, 94),  e -> onResponder());
-        btnPasapalabra = crearBoton("PasaPalabra", new Color(59, 130, 246), e -> onPasapalabra());
+        btnResponder   = crearBoton("Responder",   Tema.CORRECTO,    e -> onResponder());
+        btnPasapalabra = crearBoton("PasaPalabra", Tema.PASAPALABRA, e -> onPasapalabra());
         btnResponder.setAlignmentX(Component.CENTER_ALIGNMENT);
         btnPasapalabra.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(btnResponder);
@@ -147,10 +143,9 @@ public class VentanaJuegoPasapalabra extends JFrame {
         panel.add(btnPasapalabra);
         panel.add(Box.createVerticalStrut(20));
 
-        // Contadores
-        lblAciertos     = crearLabel("Aciertos: 0",     13, Font.PLAIN, COLOR_CORRECTA);
-        lblFallos       = crearLabel("Fallos: 0",       13, Font.PLAIN, COLOR_INCORRECTA);
-        lblPasapalabras = crearLabel("Pasapalabras: 0", 13, Font.PLAIN, COLOR_PASAPALABRA);
+        lblAciertos     = crearLabel("Aciertos: 0",     Tema.FUENTE_PUNTOS, Tema.CORRECTO);
+        lblFallos       = crearLabel("Fallos: 0",       Tema.FUENTE_PUNTOS, Tema.INCORRECTO);
+        lblPasapalabras = crearLabel("Pasapalabras: 0", Tema.FUENTE_PUNTOS, Tema.PASAPALABRA);
         lblAciertos.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblFallos.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblPasapalabras.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -165,18 +160,15 @@ public class VentanaJuegoPasapalabra extends JFrame {
 
     private JPanel construirPanelControl() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
-        panel.setBackground(COLOR_FONDO);
-        btnPausar = crearBoton("Pausar partida", new Color(107, 114, 128), e -> accionPausar());
+        panel.setBackground(Tema.FONDO_OSCURO);
+        btnPausar = crearBoton("Pausar partida", Tema.GRIS_BOTON, e -> accionPausar());
         panel.add(btnPausar);
         return panel;
     }
 
     // ── Actualización de la vista ────────────────────────────────────────────
 
-    /**
-     * Refresca todos los componentes con el estado actual del juego.
-     * Llamado tras cada respuesta, pasapalabra y tick del timer.
-     */
+    @Override
     public void actualizarVista() {
         if (juego.isTerminado()) {
             accionFinalizar();
@@ -186,14 +178,13 @@ public class VentanaJuegoPasapalabra extends JFrame {
         int idx = juego.getLetraActual();
         String[] datos = juego.getDatosLetra(idx);
         if (datos != null) {
-            lblLetra.setText(datos[0]);
-            lblDefinicion.setText(
-                    "<html><div style='text-align:center;width:260px'>" + datos[1] + "</div></html>"
-            );
+            lblLetra.setText(datos[0] != null ? datos[0] : "?");
+            String def = datos[1] != null ? datos[1] : "(sin definición)";
+            lblDefinicion.setText(def);
         }
 
-        lblAciertos.setText("Aciertos: "     + juego.getAciertos());
-        lblFallos.setText("Fallos: "         + juego.getFallos());
+        lblAciertos.setText("Aciertos: "         + juego.getAciertos());
+        lblFallos.setText("Fallos: "             + juego.getFallos());
         lblPasapalabras.setText("Pasapalabras: " + juego.getPasaPalabras());
 
         panelRosco.repaint();
@@ -207,7 +198,7 @@ public class VentanaJuegoPasapalabra extends JFrame {
         String respuesta = txtRespuesta.getText().trim();
         if (respuesta.isEmpty()) return;
         boolean correcta = juego.procesarRespuesta(respuesta);
-        Color color = correcta ? COLOR_CORRECTA : COLOR_INCORRECTA;
+        Color color = correcta ? Tema.CORRECTO : Tema.INCORRECTO;
         String msg  = correcta ? "Correcto!" : "Incorrecto";
         flashMensaje(msg, color);
         actualizarVista();
@@ -215,30 +206,33 @@ public class VentanaJuegoPasapalabra extends JFrame {
 
     private void onPasapalabra() {
         juego.pasarPalabra();
-        flashMensaje("PasaPalabra", COLOR_PASAPALABRA);
+        flashMensaje("PasaPalabra", Tema.PASAPALABRA);
         actualizarVista();
     }
 
     // ── Pausar y finalizar ───────────────────────────────────────────────────
 
-    public void accionPausar() {
+    @Override
+    protected void accionPausar() {
         detenerTimer();
         gestorPartidas.pausarPartida();
         dispose();
-        // TODO: abrir VentanaMenuPrincipal cuando esté disponible
+        ventanaPadre.setVisible(true);
     }
 
-    public void accionFinalizar() {
+    @Override
+    protected void accionFinalizar() {
         detenerTimer();
-        gestorPartidas.finalizarPartida();
-        // TODO: llamar a GestorEstadisticas.registrarResultado() cuando esté disponible
+        Partida p = gestorPartidas.getPartidaActual();
+        gestorPartidas.finalizarPartida();          // establece fechaFin
+        gestorEstadisticas.registrarResultado(p);  // ya tiene fechaFin
 
         String resumen = String.format(
                 "<html><center><h2>Partida terminada</h2>" +
                         "<p>Aciertos: <b>%d</b></p>" +
                         "<p>Fallos: <b>%d</b></p>" +
                         "<p>Pasapalabras: <b>%d</b></p>" +
-                        "<p>Puntuacion: <b>%d</b></p></center></html>",
+                        "<p>Puntuación: <b>%d</b></p></center></html>",
                 juego.getAciertos(),
                 juego.getFallos(),
                 juego.getPasaPalabras(),
@@ -247,7 +241,7 @@ public class VentanaJuegoPasapalabra extends JFrame {
 
         JOptionPane.showMessageDialog(this, resumen, "Resultado", JOptionPane.INFORMATION_MESSAGE);
         dispose();
-        // TODO: abrir VentanaMenuPrincipal cuando esté disponible
+        ventanaPadre.setVisible(true);
     }
 
     // ── Temporizador ─────────────────────────────────────────────────────────
@@ -259,7 +253,7 @@ public class VentanaJuegoPasapalabra extends JFrame {
             if (segundosRestantes <= 0) {
                 detenerTimer();
                 JOptionPane.showMessageDialog(this,
-                        "Se acabo el tiempo!", "Tiempo", JOptionPane.WARNING_MESSAGE);
+                        "Se acabó el tiempo!", "Tiempo", JOptionPane.WARNING_MESSAGE);
                 accionFinalizar();
             }
         });
@@ -272,14 +266,14 @@ public class VentanaJuegoPasapalabra extends JFrame {
 
     private void mostrarTiempo(int segundos) {
         lblTiempo.setText(String.format("%d:%02d", segundos / 60, segundos % 60));
-        lblTiempo.setForeground(segundos <= 30 ? COLOR_INCORRECTA : new Color(250, 204, 21));
+        lblTiempo.setForeground(segundos <= 30 ? Tema.INCORRECTO : Tema.ACTUAL);
     }
 
     // ── Helpers de UI ────────────────────────────────────────────────────────
 
-    private JLabel crearLabel(String texto, int size, int style, Color color) {
+    private JLabel crearLabel(String texto, Font fuente, Color color) {
         JLabel lbl = new JLabel(texto);
-        lbl.setFont(new Font("SansSerif", style, size));
+        lbl.setFont(fuente);
         lbl.setForeground(color);
         return lbl;
     }
@@ -289,7 +283,7 @@ public class VentanaJuegoPasapalabra extends JFrame {
         btn.setBackground(bgColor);
         btn.setForeground(Color.WHITE);
         btn.setFocusPainted(false);
-        btn.setFont(new Font("SansSerif", Font.BOLD, 13));
+        btn.setFont(Tema.FUENTE_BOTON_JUEGO);
         btn.setBorder(BorderFactory.createEmptyBorder(8, 18, 8, 18));
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btn.addActionListener(listener);
@@ -297,17 +291,12 @@ public class VentanaJuegoPasapalabra extends JFrame {
         return btn;
     }
 
-    /**
-     * Muestra un mensaje de color breve en lblDefinicion durante 700ms.
-     * No bloquea el EDT.
-     */
     private void flashMensaje(String mensaje, Color color) {
-        lblDefinicion.setText("<html><div style='text-align:center'>"
-                + "<font color='#" + String.format("%02x%02x%02x",
-                color.getRed(), color.getGreen(), color.getBlue())
-                + "'><b>" + mensaje + "</b></font></div></html>");
+        lblDefinicion.setForeground(color);
+        lblDefinicion.setText(mensaje);
         Timer t = new Timer(700, e -> {
-            // actualizarVista() ya sobreescribirá lblDefinicion después
+            lblDefinicion.setForeground(Tema.TEXTO);
+            actualizarVista();
         });
         t.setRepeats(false);
         t.start();
@@ -315,10 +304,6 @@ public class VentanaJuegoPasapalabra extends JFrame {
 
     // ── Panel del rosco ──────────────────────────────────────────────────────
 
-    /**
-     * Componente personalizado que dibuja el rosco circular.
-     * Se repinta automáticamente cada vez que se llama a actualizarVista().
-     */
     private class PanelRosco extends JPanel {
 
         @Override
@@ -344,16 +329,15 @@ public class VentanaJuegoPasapalabra extends JFrame {
                 int x = (int) (cx + radio * Math.cos(angulo));
                 int y = (int) (cy + radio * Math.sin(angulo));
 
-                // Color según estado
                 Color fondo;
                 if (i == actual) {
-                    fondo = COLOR_ACTUAL;
+                    fondo = Tema.ACTUAL;
                 } else {
-                    switch (datos[3]) {
-                        case PasaPalabra.ESTADO_CORRECTA:    fondo = COLOR_CORRECTA;    break;
-                        case PasaPalabra.ESTADO_INCORRECTA:  fondo = COLOR_INCORRECTA;  break;
-                        case PasaPalabra.ESTADO_PASAPALABRA: fondo = COLOR_PASAPALABRA; break;
-                        default:                             fondo = COLOR_PENDIENTE;
+                    switch (datos[3] != null ? datos[3] : "") {
+                        case PasaPalabra.ESTADO_CORRECTA:    fondo = Tema.CORRECTO;    break;
+                        case PasaPalabra.ESTADO_INCORRECTA:  fondo = Tema.INCORRECTO;  break;
+                        case PasaPalabra.ESTADO_PASAPALABRA: fondo = Tema.PASAPALABRA; break;
+                        default:                             fondo = Tema.PENDIENTE;
                     }
                 }
 
@@ -367,10 +351,10 @@ public class VentanaJuegoPasapalabra extends JFrame {
                     g2.drawOval(x - r, y - r, r * 2, r * 2);
                 }
 
-                g2.setFont(new Font("SansSerif", Font.BOLD, 13));
-                g2.setColor(i == actual ? COLOR_FONDO : Color.WHITE);
+                String letra = datos[0] != null ? datos[0] : "?";
+                g2.setFont(Tema.FUENTE_ROSCO);
+                g2.setColor(i == actual ? Tema.FONDO_OSCURO : Color.WHITE);
                 FontMetrics fm = g2.getFontMetrics();
-                String letra = datos[0];
                 g2.drawString(letra, x - fm.stringWidth(letra) / 2, y + fm.getAscent() / 2 - 2);
             }
 

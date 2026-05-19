@@ -191,4 +191,36 @@ public class GestorUsuarios {
     public ArrayList<Usuario> getListaUsuarios() {
         return listaUsuarios;
     }
+
+    /**
+     * Elimina un usuario del sistema por su username.
+     * Restricciones: no se puede borrar al propio usuario con sesión activa,
+     * ni a otro administrador.
+     *
+     * @param username nombre de usuario a eliminar
+     * @return {@code null} si se eliminó correctamente, o un mensaje de error
+     */
+    public String borrarUsuario(String username) {
+        if (username == null || username.isEmpty()) {
+            return "El nombre de usuario no puede estar vacío.";
+        }
+        if (!esAdministrador()) {
+            return "Solo un administrador puede eliminar usuarios.";
+        }
+        if (usuarioActual.getUsername().equals(username)) {
+            return "No puedes eliminar tu propia cuenta mientras tienes la sesión activa.";
+        }
+        for (int i = 0; i < listaUsuarios.size(); i++) {
+            Usuario u = listaUsuarios.get(i);
+            if (u.getUsername().equals(username)) {
+                if (u instanceof Administrador) {
+                    return "No se puede eliminar una cuenta de administrador.";
+                }
+                listaUsuarios.remove(i);
+                persistencia.guardarUsuarios(listaUsuarios);
+                return null;
+            }
+        }
+        return "Usuario no encontrado.";
+    }
 }

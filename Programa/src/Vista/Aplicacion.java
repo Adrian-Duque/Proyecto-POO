@@ -16,7 +16,7 @@ import javax.swing.*;
  * sin necesidad de inyección manual en cada constructor.
  *
  * @author JP-Aceves
- * @version 1.0
+ * @version 1.1
  */
 public class Aplicacion {
 
@@ -32,10 +32,8 @@ public class Aplicacion {
      * @param args Argumentos de línea de comandos (no usados).
      */
     public static void main(String[] args) {
-        // Capa de persistencia
         GestorPersistencia persistencia = new PersistenciaArchivos();
 
-        // Gestores
         gestorUsuarios = new GestorUsuarios(persistencia);
         gestorEstadisticas = new GestorEstadisticas(persistencia);
 
@@ -45,43 +43,26 @@ public class Aplicacion {
 
         gestorPartidas = new GestorPartidas(persistencia);
 
-        // Arrancar GUI en el hilo de Swing
-        SwingUtilities.invokeLater(() -> new VentanaLogin(gestorUsuarios));
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (Exception ignored) {}
+
+        SwingUtilities.invokeLater(() -> new VentanaLogin(gestorUsuarios).setVisible(true));
     }
 
-    /**
-     * Devuelve el gestor de usuarios de la aplicación.
-     *
-     * @return GestorUsuarios.
-     */
-    public static GestorUsuarios getGestorUsuarios() {
-        return gestorUsuarios;
+    public static GestorUsuarios getGestorUsuarios(){
+        return gestorUsuarios; 
     }
 
-    /**
-     * Devuelve el gestor de juegos de la aplicación.
-     *
-     * @return GestorJuegos.
-     */
-    public static GestorJuegos getGestorJuegos() {
-        return gestorJuegos;
+    public static GestorJuegos getGestorJuegos(){ 
+        return gestorJuegos; 
     }
 
-    /**
-     * Devuelve el gestor de partidas de la aplicación.
-     *
-     * @return GestorPartidas.
-     */
-    public static GestorPartidas getGestorPartidas() {
-        return gestorPartidas;
+    public static GestorPartidas getGestorPartidas(){ 
+        return gestorPartidas; 
     }
-
-    /**
-     * Devuelve el gestor de estadísticas de la aplicación.
-     *
-     * @return GestorEstadisticas.
-     */
-    public static GestorEstadisticas getGestorEstadisticas() {
-        return gestorEstadisticas;
+    
+    public static GestorEstadisticas getGestorEstadisticas(){
+        return gestorEstadisticas; 
     }
 }

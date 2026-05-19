@@ -30,13 +30,14 @@ public class VentanaSeleccionJuego extends JDialog {
      * </p>
      *
      * @param padre        ventana propietaria sobre la que se centra el diálogo
-     * @param gestorJuegos gestor del que se obtiene la lista de juegos disponibles
+     * @param gestorJuegos gestor del que obtiene la lista de juegos disponibles
      */
     public VentanaSeleccionJuego(JFrame padre, GestorJuegos gestorJuegos) {
         super(padre, "Selecciona un Juego", true);
-        setSize(280, 220);
+        setSize(300, 240);
         setLocationRelativeTo(padre);
         setResizable(false);
+        getContentPane().setBackground(Tema.FONDO);
 
         DefaultListModel<String> modelo = new DefaultListModel<>();
         for (String nombre : gestorJuegos.getJuegosDisponibles()) {
@@ -46,16 +47,36 @@ public class VentanaSeleccionJuego extends JDialog {
         listaJuegos = new JList<>(modelo);
         listaJuegos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listaJuegos.setSelectedIndex(0);
+        listaJuegos.setBackground(Tema.FONDO_CAMPO);
+        listaJuegos.setForeground(Tema.TEXTO);
+        listaJuegos.setSelectionBackground(Tema.ACENTO);
+        listaJuegos.setSelectionForeground(Color.BLACK);
+        listaJuegos.setFont(Tema.FUENTE_CAMPO);
+        listaJuegos.setFixedCellHeight(32);
+
+        JScrollPane scroll = new JScrollPane(listaJuegos);
+        scroll.setBorder(BorderFactory.createLineBorder(Tema.BORDE, 1));
+        scroll.getViewport().setBackground(Tema.FONDO_CAMPO);
 
         JPanel panel = new JPanel(new BorderLayout(10, 10));
-        panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        panel.add(new JScrollPane(listaJuegos), BorderLayout.CENTER);
+        panel.setBackground(Tema.FONDO_PANEL);
+        panel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Tema.ACENTO, 1),
+                BorderFactory.createEmptyBorder(15, 15, 15, 15)
+        ));
+        panel.add(scroll, BorderLayout.CENTER);
 
-        JPanel botones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel botones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        botones.setBackground(Tema.FONDO_PANEL);
+
         JButton btnSeleccionar = new JButton("Jugar");
+        estilizarBoton(btnSeleccionar, Tema.ACENTO, Color.BLACK);
         btnSeleccionar.addActionListener(e -> accionSeleccionar());
+
         JButton btnCancelar = new JButton("Cancelar");
-        btnCancelar.addActionListener(e -> accionCancelar()); // ← corregido
+        estilizarBoton(btnCancelar, Tema.GRIS_BOTON, Tema.TEXTO);
+        btnCancelar.addActionListener(e -> accionCancelar());
+
         botones.add(btnSeleccionar);
         botones.add(btnCancelar);
         panel.add(botones, BorderLayout.SOUTH);
@@ -64,9 +85,18 @@ public class VentanaSeleccionJuego extends JDialog {
         setVisible(true);
     }
 
+    private void estilizarBoton(JButton btn, Color bg, Color fg) {
+        btn.setBackground(bg);
+        btn.setForeground(fg);
+        btn.setFont(Tema.FUENTE_BOTON);
+        btn.setFocusPainted(false);
+        btn.setOpaque(true);
+        btn.setBorderPainted(false);
+        btn.setBorder(BorderFactory.createEmptyBorder(6, 16, 6, 16));
+    }
+
     /**
      * Guarda el juego seleccionado en la lista y cierra el diálogo.
-     * Llamado al pulsar el botón "Jugar".
      */
     private void accionSeleccionar() {
         juegoSeleccionado = listaJuegos.getSelectedValue();
@@ -75,7 +105,6 @@ public class VentanaSeleccionJuego extends JDialog {
 
     /**
      * Establece el resultado como {@code null} y cierra el diálogo.
-     * Llamado al pulsar el botón "Cancelar".
      */
     private void accionCancelar() {
         juegoSeleccionado = null;

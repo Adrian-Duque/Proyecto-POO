@@ -1,56 +1,70 @@
+package Vista;
+
+import Controlador.GestorEstadisticas;
+import Controlador.GestorUsuarios;
+import Modelo.Estadistica;
+import Modelo.Usuario;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * 
+ * Ventana que muestra el historial de estadísticas de un usuario.
+ *
  * @author Juan Carlos
  * @version 1.0
  */
 public class VentanaEstadisticas extends JFrame {
 
-    /**
-     * Nombre de usuario del cual se mostrarán las estadísticas.
-     */
+    /** Nombre de usuario del cual se mostrarán las estadísticas. */
     private String username;
 
-    /**
-     * Modelo de datos de la tabla, se rellena en mostrarTabla().
-     */
+    /** Gestor de estadísticas del que se obtienen los datos. */
+    private GestorEstadisticas gestorEstadisticas;
+
+    /** Gestor de usuarios para buscar el objeto Usuario. */
+    private GestorUsuarios gestorUsuarios;
+
+    /** Modelo de datos de la tabla, se rellena en mostrarTabla(). */
     private DefaultTableModel modeloTabla;
 
-    /**
-     * Tabla visual donde se muestran las estadísticas.
-     */
+    /** Tabla visual donde se muestran las estadísticas. */
     private JTable tabla;
 
     /**
      * Constructor de VentanaEstadisticas.
-     * 
-     * Inicializa la ventana con los componentes gráficos y carga automáticamente las estadísticas del usuario en la tabla.
-     * 
-     * @param username Nombre del usuario del que se mostrarán las estadísticas
+     *
+     * @param gestorEstadisticas gestor del que se obtienen las estadísticas
+     * @param gestorUsuarios     gestor para buscar el objeto Usuario
+     * @param username           nombre del usuario del que se mostrarán las estadísticas
      */
-    public VentanaEstadisticas(String username) {
+    public VentanaEstadisticas(GestorEstadisticas gestorEstadisticas,
+                               GestorUsuarios gestorUsuarios,
+                               String username) {
+        this.gestorEstadisticas = gestorEstadisticas;
+        this.gestorUsuarios = gestorUsuarios;
         this.username = username;
-        
-        // Configuración de la ventana
+
         setTitle("Estadísticas - " + username);
-        setSize(700, 500);
+        setSize(620, 430);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        getContentPane().setBackground(Tema.FONDO);
 
-        // Panel principal con BoxLayout vertical
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
+        panelPrincipal.setBackground(Tema.FONDO);
 
-        // Título
         JLabel lblTitulo = new JLabel("Estadísticas de " + username, JLabel.CENTER);
         lblTitulo.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        lblTitulo.setFont(Tema.FUENTE_TITULO);
+        lblTitulo.setForeground(Tema.ACENTO);
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(15, 10, 10, 10));
         panelPrincipal.add(lblTitulo);
 
-        // Crear modelo y tabla
         String[] columnas = {"Juego", "Puntuación", "Resultado", "Fecha"};
         modeloTabla = new DefaultTableModel(columnas, 0) {
             @Override
@@ -58,50 +72,61 @@ public class VentanaEstadisticas extends JFrame {
                 return false;
             }
         };
-        
+
         tabla = new JTable(modeloTabla);
-        tabla.setRowHeight(25);
-        
+        tabla.setRowHeight(28);
+        tabla.setBackground(Tema.FONDO_PANEL);
+        tabla.setForeground(Tema.TEXTO);
+        tabla.setGridColor(Tema.BORDE);
+        tabla.setFont(Tema.FUENTE_CAMPO);
+        tabla.setSelectionBackground(Tema.ACENTO);
+        tabla.setSelectionForeground(Color.BLACK);
+        tabla.setShowGrid(true);
+
+        JTableHeader header = tabla.getTableHeader();
+        header.setBackground(Tema.ACENTO);
+        header.setForeground(Color.BLACK);
+        header.setFont(Tema.FUENTE_BOTON);
+        header.setBorder(BorderFactory.createLineBorder(Tema.BORDE, 1));
+
         JScrollPane scrollPane = new JScrollPane(tabla);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
+        scrollPane.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(0, 15, 0, 15),
+                BorderFactory.createLineBorder(Tema.BORDE, 1)
+        ));
+        scrollPane.getViewport().setBackground(Tema.FONDO_PANEL);
         panelPrincipal.add(scrollPane);
 
-        // Botón cerrar
         JButton btnCerrar = new JButton("Cerrar");
         btnCerrar.setAlignmentX(JButton.CENTER_ALIGNMENT);
+        btnCerrar.setBackground(Tema.GRIS_BOTON);
+        btnCerrar.setForeground(Tema.TEXTO);
+        btnCerrar.setFont(Tema.FUENTE_BOTON);
+        btnCerrar.setFocusPainted(false);
+        btnCerrar.setOpaque(true);
+        btnCerrar.setBorderPainted(false);
         btnCerrar.addActionListener(e -> dispose());
-        
+
         JPanel panelBoton = new JPanel();
+        panelBoton.setBackground(Tema.FONDO);
         panelBoton.add(btnCerrar);
         panelBoton.setBorder(BorderFactory.createEmptyBorder(10, 10, 15, 10));
         panelPrincipal.add(panelBoton);
 
         add(panelPrincipal);
 
-        // Cargar las estadísticas en la tabla
         mostrarTabla();
     }
 
     /**
-     * Muestra la tabla con las estadísticas del usuario.
-     * 
-     * Llama a gestorEstadisticas.getEstadisticasUsuario(username), 
-     * puebla el DefaultTableModel con los datos y lo asigna al JTable.
+     * Puebla la tabla con las estadísticas del usuario.
      */
     public void mostrarTabla() {
-        // Obtener el gestor desde Aplicacion
-        GestorEstadisticas gestorEstadisticas = Aplicacion.getGestorEstadisticas();
-        
-        // Buscar el usuario
-        Usuario usuario = Aplicacion.getGestorUsuarios().buscarUsuario(username);
-        
-        // Obtener las estadísticas del usuario
+        Usuario usuario = gestorUsuarios.buscarUsuario(username);
         ArrayList<Estadistica> estadisticas = gestorEstadisticas.getEstadisticasUsuario(usuario);
 
-        // Limpiar tabla
         modeloTabla.setRowCount(0);
 
-        // Poblar el DefaultTableModel con los datos
         for (Estadistica e : estadisticas) {
             String resultado = e.isVictoria() ? "VICTORIA" : "DERROTA";
             Object[] fila = {

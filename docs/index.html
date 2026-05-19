@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Memoria Técnica · Programación Orientada a Objetos</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="page">
+<header class="cover">
+<div class="cover-eyebrow">Memoria técnica · POO</div>
+<h1 class="cover-title">Proyecto Final — Programación Orientada a Objetos</h1>
+<div class="cover-subtitle">Documentación Técnica Completa</div>
+<div class="cover-rule"></div>
+<div class="cover-meta">1º Ingeniería Informática · Curso 2024-2025</div>
+<div class="cover-team">Integrantes: JP Aceves · Adrián Duque · Juan Carlos Alcazarde · Ignacio del Peso</div>
+</header>
+<h1>PARTE 1 — DOCUMENTACIÓN ORGANIZATIVA DEL PROYECTO</h1>
+<h2><span class="num">1.1</span><span class="ttl">Descripción general del proyecto</span></h2>
+<p>MiniJuegos es una aplicación de escritorio desarrollada en Java con interfaz gráfica Swing. Permite a varios usuarios registrados jugar partidas de minijuegos de forma individual o multijugador, pausar y reanudar partidas, y consultar un historial de estadísticas. Incluye además un panel de administración para usuarios con rol de administrador.</p>
+<h3>Stack tecnológico</h3>
+<ul>
+<li><strong>Lenguaje: </strong>Java SE (JDK 17+)</li>
+<li><strong>Interfaz gráfica: </strong>Swing (javax.swing, java.awt)</li>
+<li><strong>Persistencia: </strong>Ficheros de texto plano (.txt, .dat) en la carpeta data/</li>
+<li><strong>Librerías externas: </strong>Ninguna — requisito explícito del enunciado</li>
+<li><strong>Seguridad: </strong>SHA-256 (java.security.MessageDigest)</li>
+</ul>
+<h3>Juegos implementados</h3>
+<ul>
+<li>Pasapalabra: rosco de 27 letras con 4 niveles de dificultad (Infantil, Fácil, Medio, Avanzado). El jugador dispone de 2 minutos 30 segundos para responder todas las definiciones.</li>
+<li>Tres en Raya: tablero 3×3 para dos jugadores con detección automática de victoria y empate.</li>
+</ul>
+<h2><span class="num">1.2</span><span class="ttl">Requisitos del enunciado</span></h2>
+<ul>
+<li>Aplicación de minijuegos con mínimo dos juegos distintos.</li>
+<li>Gestión de usuarios con registro, login y roles (usuario estándar / administrador).</li>
+<li>Persistencia en ficheros de texto sin librerías externas de base de datos.</li>
+<li>Arquitectura orientada a objetos: uso de herencia, polimorfismo, clases abstractas e interfaces.</li>
+<li>Interfaz gráfica con Swing.</li>
+<li>Historial de estadísticas por usuario y ranking global por juego.</li>
+<li>Posibilidad de pausar y reanudar partidas.</li>
+<li>Panel de administración accesible solo para usuarios admin.</li>
+</ul>
+<h2><span class="num">1.3</span><span class="ttl">Arquitectura en capas</span></h2>
+<p>El sistema está organizado en cuatro capas bien diferenciadas ubicadas en paquetes Java independientes:</p>
+<h3>Vista (paquete Vista)</h3>
+<p>Contiene todas las ventanas y paneles Swing. Cada ventana es responsable de recoger la interacción del usuario y delegar la lógica en los gestores. No contiene reglas de negocio. Las clases son: Aplicacion, Tema, VentanaLogin, VentanaMenuPrincipal, VentanaSeleccionJuego, VentanaJuego (abstracta), VentanaJuegoPasapalabra, VentanaJuegoTresEnRaya, VentanaEstadisticas y VentanaAdmin.</p>
+<h3>Controladores (paquete Controlador)</h3>
+<p>Coordinan Vista con Modelo. Cada gestor cubre un dominio específico: GestorUsuarios (autenticación, registro, sesión), GestorJuegos (registro y creación de juegos), GestorPartidas (ciclo de vida de partidas: iniciar, pausar, reanudar, finalizar), GestorEstadisticas (registro y consulta de resultados).</p>
+<h3>Modelo (paquete Modelo)</h3>
+<p>Clases de dominio puras sin dependencias de UI ni de persistencia: Usuario (abstracta), Jugador, Administrador, Juego (abstracta), PasaPalabra, TresEnRaya, Partida, Estadistica, PuntuacionJugador y el enum EstadoPartida.</p>
+<h3>Persistencia (paquete Persistencia)</h3>
+<p>La interfaz GestorPersistencia define el contrato de acceso a datos (usuarios, estadísticas, partidas pausadas). La clase PersistenciaArchivos implementa ese contrato usando ficheros de texto en la carpeta data/. Esta separación permite cambiar el mecanismo de almacenamiento (p. ej. base de datos) sin modificar el resto del sistema.</p>
+<h2><span class="num">1.4</span><span class="ttl">Decisiones de diseño tomadas y por qué</span></h2>
+<h4>Juego es clase abstracta (no interfaz)</h4>
+<p>Todos los juegos comparten estado común (nombre, descripción, juegoFinalizado, listaPuntuacionPorJugador) y comportamiento concreto (sumarPuntos, getPuntuacion). Una interfaz no puede llevar estado. Los métodos abstractos (inicializar, getEstadoTexto, serializarEstado, deserializarEstado, terminar) obligan a cada subclase a implementar su mecánica propia.</p>
+<h4>Usuario abstracta con subclases Jugador y Administrador (en lugar de boolean esAdmin)</h4>
+<p>La decisión inicial era un campo esAdmin:boolean dentro de Usuario. En la implementación final se optó por polimorfismo real (instanceof Administrador) porque simplifica los condicionales en GestorUsuarios y VentanaAdmin, y facilita extender el sistema con más roles en el futuro sin modificar código existente.</p>
+<h4>GestorPersistencia es una interfaz</h4>
+<p>Permite cambiar de ficheros de texto a cualquier otra fuente de datos (base de datos relacional, XML, red) sin tocar ni los controladores ni la vista. Solo hay que proporcionar una nueva implementación de la interfaz.</p>
+<h4>Contraseñas almacenadas como hash SHA-256</h4>
+<p>Las contraseñas nunca se guardan en texto plano. La clase Usuario aplica SHA-256 internamente. El constructor alternativo (yaEsHash=true) permite reconstruir objetos desde disco sin volver a hashear.</p>
+<h4>PasaPalabra carga una pregunta aleatoria por letra de cada bloque de 10</h4>
+<p>Cada nivel tiene ~10 preguntas por letra. cargarDatos() elige una al azar en cada ejecución, lo que aumenta la rejugabilidad sin aumentar la complejidad del modelo.</p>
+<h4>Estado de partida pausada serializado en formato texto inline</h4>
+<p>El estado se serializa como una cadena única (ej. "TresEnRaya|user1,user2|casilla00,...") guardada en un fichero .dat por partida. Esto evita dependencias de serialización Java y hace el formato legible y fácil de depurar.</p>
+<h4>Gestores expuestos como campos estáticos desde Aplicacion</h4>
+<p>En lugar de inyectar los gestores en cada constructor de ventana (lo que sería más puro), se accede a ellos vía Aplicacion.getGestorX(). Simplifica el código de las ventanas y evita cadenas largas de parámetros en constructores, a costa de un acoplamiento mayor con la clase Aplicacion.</p>
+<h4>VentanaJuegoPasapalabra NO extiende VentanaJuego</h4>
+<p>Pasapalabra necesita lógica propia de temporizador y resumen final que difiere del ciclo estándar de accionFinalizar(). Se decidió que extender VentanaJuego añadiría más complejidad que valor. VentanaJuegoPasapalabra extiende directamente JFrame.</p>
+<h4>Atributos siempre private; protected solo donde la subclase lo necesita</h4>
+<p>Juego declara algunos atributos como protected (nombreJuego, descripcion, juegoFinalizado, listaPuntuacionPorJugador) porque TresEnRaya y PasaPalabra acceden directamente a ellos. El resto de clases usa private con getters/setters.</p>
+<h4>Clase Tema con constantes de diseño visual</h4>
+<p>Centraliza toda la paleta de colores y tipografía. Así, cambiar el aspecto visual de la aplicación requiere modificar un único fichero en lugar de buscar valores hardcodeados por todas las ventanas.</p>
+<h2><span class="num">1.5</span><span class="ttl">Reparto de trabajo por integrante</span></h2>
+<h3>JP Aceves</h3>
+<p>Coordinación general, arquitectura, modelo de partidas y persistencia.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Clase / Componente</th><th>Responsabilidad</th></tr></thead><tbody>
+<tr><td>enum EstadoPartida</td><td>Define los tres estados posibles de una partida</td></tr>
+<tr><td>PuntuacionJugador</td><td>Par username/puntos; usado internamente por Juego para las puntuaciones de la partida</td></tr>
+<tr><td>interface GestorPersistencia</td><td>Contrato para toda operación de lectura/escritura en disco</td></tr>
+<tr><td>PersistenciaArchivos</td><td>Implementación de GestorPersistencia sobre ficheros de texto</td></tr>
+<tr><td>Juego (abstracta)</td><td>Clase base de todos los juegos; define estado común y métodos abstractos</td></tr>
+<tr><td>Partida</td><td>Representa una sesión concreta de juego; coordina turno, estado y resultados</td></tr>
+<tr><td>GestorPartidas</td><td>Ciclo de vida completo de las partidas (iniciar/pausar/reanudar/finalizar)</td></tr>
+<tr><td>VentanaJuego (abstracta)</td><td>Base de las ventanas de juego con accionPausar y accionFinalizar</td></tr>
+<tr><td>Aplicacion</td><td>Punto de entrada main; instancia y expone todos los gestores</td></tr>
+<tr><td>Tema</td><td>Paleta de colores y fuentes compartida por toda la UI</td></tr>
+<tr><td>VentanaSeleccionJuego</td><td>Diálogo modal para que el usuario elija el juego a jugar</td></tr>
+<tr><td>GestorPartidas (colaboración)</td><td>Codesarrollo con Adrián Duque para el soporte de partidas pausadas</td></tr>
+</tbody></table></div>
+<h3>Adrián Duque</h3>
+<p>Modelo de usuarios, juego Pasapalabra y vistas de login y menú.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Clase / Componente</th><th>Responsabilidad</th></tr></thead><tbody>
+<tr><td>Usuario (abstracta)</td><td>Clase base de usuarios; hash SHA-256, verificación de contraseña</td></tr>
+<tr><td>Jugador</td><td>Subclase de Usuario sin privilegios especiales</td></tr>
+<tr><td>Administrador</td><td>Subclase de Usuario con rol de administrador</td></tr>
+<tr><td>PasaPalabra</td><td>Implementación completa del juego: carga de roscos, lógica de turno, serialización</td></tr>
+<tr><td>GestorUsuarios</td><td>Autenticación, registro, validaciones de formato y gestión de sesión</td></tr>
+<tr><td>VentanaLogin</td><td>Pantalla de inicio de sesión / registro</td></tr>
+<tr><td>VentanaMenuPrincipal</td><td>Menú principal tras login con acceso a todas las funcionalidades</td></tr>
+<tr><td>VentanaJuegoPasapalabra</td><td>Vista completa del juego Pasapalabra con rosco visual y temporizador</td></tr>
+<tr><td>PersistenciaArchivos (colaboración)</td><td>Codesarrollo con JP</td></tr>
+<tr><td>GestorPartidas (colaboración)</td><td>Codesarrollo con JP</td></tr>
+</tbody></table></div>
+<h3>Juan Carlos Alcazarde</h3>
+<p>Estadísticas y panel de administración.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Clase / Componente</th><th>Responsabilidad</th></tr></thead><tbody>
+<tr><td>Estadistica</td><td>Registro de resultado de una partida: usuario, juego, puntuación, victoria, fecha</td></tr>
+<tr><td>GestorEstadisticas</td><td>Registro, consulta, ranking y últimas partidas de un usuario</td></tr>
+<tr><td>VentanaEstadisticas</td><td>Historial de resultados del usuario actual en tabla interactiva</td></tr>
+<tr><td>VentanaAdmin</td><td>Panel de administración con ranking por juego y lista de usuarios</td></tr>
+</tbody></table></div>
+<h3>Ignacio del Peso</h3>
+<p>Juego Tres en Raya y su vista.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Clase / Componente</th><th>Responsabilidad</th></tr></thead><tbody>
+<tr><td>TresEnRaya</td><td>Tablero 3×3, lógica de turnos, detección de victoria/empate, serialización de estado</td></tr>
+<tr><td>GestorJuegos</td><td>Registro de juegos disponibles y fábrica para crear instancias</td></tr>
+<tr><td>VentanaJuegoTresEnRaya</td><td>Vista del tablero 3×3 con botones clicables, turno actual y puntuaciones</td></tr>
+</tbody></table></div>
+<h2><span class="num">1.6</span><span class="ttl">Guía de métodos por clase</span></h2>
+<p>A continuación se listan todos los métodos de cada clase con una descripción de su función.</p>
+<h3>MODELO</h3>
+<p>Usuario (abstracta)</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>Usuario(username, password)</td><td>Constructor para usuarios nuevos. Hashea la contraseña con SHA-256.</td></tr>
+<tr><td>Usuario(username, passwordHash, yaEsHash)</td><td>Constructor para reconstruir desde fichero. No vuelve a hashear si yaEsHash=true.</td></tr>
+<tr><td>hashear(password) [private static]</td><td>Aplica SHA-256 y convierte el resultado a cadena hexadecimal de 64 caracteres.</td></tr>
+<tr><td>getUsername()</td><td>Devuelve el identificador del usuario.</td></tr>
+<tr><td>verificarPassword(introPassword)</td><td>Hashea la contraseña introducida y la compara con el hash almacenado.</td></tr>
+<tr><td>toArchivo() [abstracto]</td><td>Serializa el usuario al formato CSV usado en usuarios.txt.</td></tr>
+<tr><td>toString() [abstracto]</td><td>Representación legible del usuario.</td></tr>
+</tbody></table></div>
+<p>Jugador extends Usuario</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>Jugador(username, password)</td><td>Constructor para nuevo jugador.</td></tr>
+<tr><td>Jugador(username, passwordHash, yaEsHash)</td><td>Constructor para reconstruir desde fichero.</td></tr>
+<tr><td>toString()</td><td>Devuelve "Jugador{username='X'}"</td></tr>
+<tr><td>toArchivo()</td><td>Devuelve "username;passwordHash;false"</td></tr>
+</tbody></table></div>
+<p>Administrador extends Usuario</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>Administrador(username, password)</td><td>Constructor para nuevo administrador.</td></tr>
+<tr><td>Administrador(username, passwordHash, yaEsHash)</td><td>Constructor para reconstruir desde fichero.</td></tr>
+<tr><td>toString()</td><td>Devuelve "Administrador{username='X'}"</td></tr>
+<tr><td>toArchivo()</td><td>Devuelve "username;passwordHash;true"</td></tr>
+</tbody></table></div>
+<p>Juego (abstracta)</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>Juego(nombreJuego, descripcion, juegoFinalizado)</td><td>Constructor base. juegoFinalizado siempre se inicializa a false.</td></tr>
+<tr><td>inicializar() [abstracto]</td><td>Prepara el estado inicial del juego.</td></tr>
+<tr><td>getEstadoTexto() [abstracto]</td><td>Devuelve el estado actual como texto legible.</td></tr>
+<tr><td>serializarEstado() [abstracto]</td><td>Convierte el estado a String para guardar en disco al pausar.</td></tr>
+<tr><td>deserializarEstado(estado) [abstracto]</td><td>Reconstruye el estado desde el String deserializado.</td></tr>
+<tr><td>terminar() [abstracto]</td><td>Marca el juego como finalizado.</td></tr>
+<tr><td>sumarPuntos(username, n)</td><td>Suma n puntos al jugador dado; crea entrada si no existía.</td></tr>
+<tr><td>getPuntuacion(username)</td><td>Devuelve la puntuación actual del jugador; 0 si no existe.</td></tr>
+<tr><td>getPuntuaciones()</td><td>Devuelve la lista completa de PuntuacionJugador.</td></tr>
+<tr><td>isTerminado()</td><td>Devuelve si el juego ha finalizado.</td></tr>
+<tr><td>getNombre()</td><td>Devuelve el nombre identificador del juego.</td></tr>
+<tr><td>getDescripcion()</td><td>Devuelve la descripción breve del juego.</td></tr>
+</tbody></table></div>
+<p>TresEnRaya extends Juego</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>TresEnRaya()</td><td>Constructor: nombre "TresEnRaya", tablero vacío, ganador=null.</td></tr>
+<tr><td>inicializar()</td><td>Limpia el tablero 3×3, resetea ganador y juegoFinalizado.</td></tr>
+<tr><td>jugarTurno(username, ficha, fila, columna)</td><td>Coloca la ficha, comprueba victoria/empate. Devuelve false si celda ocupada o juego terminado.</td></tr>
+<tr><td>casillaOcupada(fila, columna) [private]</td><td>Verifica si la celda ya tiene ficha.</td></tr>
+<tr><td>hayVictoria(ficha) [private]</td><td>Comprueba filas, columnas y diagonales para detectar victoria.</td></tr>
+<tr><td>tableroLleno() [private]</td><td>Devuelve true si no quedan celdas vacías (empate).</td></tr>
+<tr><td>getGanador()</td><td>Devuelve el username del ganador, o null si no hay.</td></tr>
+<tr><td>getTablero()</td><td>Devuelve una copia defensiva del tablero 3×3.</td></tr>
+<tr><td>getEstadoTexto()</td><td>Tablero ASCII con separadores + indicación de ganador/empate si terminó.</td></tr>
+<tr><td>serializarEstado()</td><td>"casilla00,casilla01,...,casilla22;ganador"</td></tr>
+<tr><td>deserializarEstado(s)</td><td>Reconstruye tablero y ganador desde el formato serializado.</td></tr>
+<tr><td>terminar()</td><td>Establece juegoFinalizado=true.</td></tr>
+</tbody></table></div>
+<p>PasaPalabra extends Juego</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>PasaPalabra(nivel)</td><td>Constructor con nivel específico (0=Infantil, 1=Fácil, 2=Medio, 3=Avanzado).</td></tr>
+<tr><td>PasaPalabra()</td><td>Constructor por defecto con nivel 1 (Fácil).</td></tr>
+<tr><td>inicializar()</td><td>Carga el rosco desde fichero, resetea contadores, avanza a primera letra pendiente.</td></tr>
+<tr><td>procesarRespuesta(respuesta)</td><td>Compara normalizada. Si correcta: +10 pts, avanza. Si no: marca incorrecta, avanza.</td></tr>
+<tr><td>pasarPalabra()</td><td>Marca la letra como PASAPALABRA y avanza a la siguiente pendiente.</td></tr>
+<tr><td>avanzarAProximaPendiente() [private]</td><td>Búsqueda circular de la siguiente letra PENDIENTE o PASAPALABRA.</td></tr>
+<tr><td>comprobarFinDeJuego() [private]</td><td>Llama a terminar() si no quedan letras pendientes.</td></tr>
+<tr><td>obtenerUsernameJugador() [private]</td><td>Devuelve el username del primer jugador de la lista de puntuaciones.</td></tr>
+<tr><td>limpiarTexto(texto) [public static]</td><td>Normaliza NFD, elimina diacríticos, convierte a minúsculas y elimina espacios.</td></tr>
+<tr><td>cargarDatos(nivel) [private static]</td><td>Lee el fichero de rosco del nivel indicado; selecciona 1 pregunta aleatoria por cada bloque de 10.</td></tr>
+<tr><td>getAciertos()</td><td>Getter del contador de respuestas correctas.</td></tr>
+<tr><td>getFallos()</td><td>Getter del contador de respuestas incorrectas.</td></tr>
+<tr><td>getPasaPalabras()</td><td>Getter del contador de pasapalabras.</td></tr>
+<tr><td>getLetraActual()</td><td>Getter del índice de la letra en turno.</td></tr>
+<tr><td>getNivel()</td><td>Getter del nivel actual.</td></tr>
+<tr><td>getDatosLetra(indice)</td><td>Devuelve copia de [letra, definición, respuesta, estado] para el índice dado.</td></tr>
+<tr><td>contarPendientes()</td><td>Cuenta letras en estado PENDIENTE o PASAPALABRA.</td></tr>
+<tr><td>getTotalLetras()</td><td>Devuelve 27 (total de letras del abecedario español).</td></tr>
+<tr><td>getEstadoTexto()</td><td>"Letra X - definición" de la letra actual.</td></tr>
+<tr><td>serializarEstado()</td><td>"letraActual,aciertos,fallos,pasapalabras,estado0,...,estado26"</td></tr>
+<tr><td>deserializarEstado(estado)</td><td>Restaura letraActual, contadores y el estado de cada una de las 27 letras.</td></tr>
+<tr><td>terminar()</td><td>Establece juegoFinalizado=true.</td></tr>
+</tbody></table></div>
+<p>Partida</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>Partida(id, juego, listaJugadores)</td><td>Constructor: estado EN_CURSO, turnoActual=0, fecha=hoy, fechaFin=null.</td></tr>
+<tr><td>pausar()</td><td>Cambia el estado a PAUSADA.</td></tr>
+<tr><td>reanudar(estadoSerializado)</td><td>Restaura el estado del juego y pone la partida EN_CURSO.</td></tr>
+<tr><td>finalizar()</td><td>Cambia el estado a FINALIZADA y guarda fechaFin=hoy.</td></tr>
+<tr><td>getJugadorActual()</td><td>Devuelve el Usuario al que le toca jugar.</td></tr>
+<tr><td>siguienteTurno()</td><td>Avanza al siguiente jugador de forma circular.</td></tr>
+<tr><td>contieneJugador(u)</td><td>Comprueba si el usuario es participante de esta partida.</td></tr>
+<tr><td>getPuntuacion(u)</td><td>Delega en juego.getPuntuacion() para el usuario dado.</td></tr>
+<tr><td>getPuntuaciones()</td><td>Delega en juego.getPuntuaciones(). Devuelve lista de PuntuacionJugador.</td></tr>
+<tr><td>getGanador()</td><td>Devuelve el jugador con mayor puntuación; null si la lista está vacía.</td></tr>
+<tr><td>getId()</td><td>Getter del identificador.</td></tr>
+<tr><td>getFecha()</td><td>Getter de la fecha de inicio.</td></tr>
+<tr><td>getFechaFin()</td><td>Getter de la fecha de fin; null si no ha terminado.</td></tr>
+<tr><td>getEstadoActual()</td><td>Getter del EstadoPartida (EN_CURSO / PAUSADA / FINALIZADA).</td></tr>
+<tr><td>getJuego()</td><td>Getter del objeto Juego asociado.</td></tr>
+<tr><td>getListaJugadores()</td><td>Getter de los jugadores participantes.</td></tr>
+<tr><td>toString()</td><td>"Partida{id=X, juego=Y, fecha=Z, estado=W}"</td></tr>
+</tbody></table></div>
+<p>PuntuacionJugador</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>PuntuacionJugador(username)</td><td>Constructor: puntos=0.</td></tr>
+<tr><td>getUsername()</td><td>Devuelve el nombre de usuario.</td></tr>
+<tr><td>getPuntos()</td><td>Devuelve los puntos acumulados.</td></tr>
+<tr><td>sumarPuntos(n)</td><td>Suma n puntos al contador.</td></tr>
+</tbody></table></div>
+<p>Estadistica</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>Estadistica(username, nombreJuego, puntuacion, victoria, fecha)</td><td>Constructor completo.</td></tr>
+<tr><td>getUsername()</td><td>Devuelve el nombre de usuario.</td></tr>
+<tr><td>getNombreJuego()</td><td>Devuelve el nombre del juego.</td></tr>
+<tr><td>getPuntuacion()</td><td>Devuelve la puntuación.</td></tr>
+<tr><td>isVictoria()</td><td>Devuelve true si el jugador ganó la partida.</td></tr>
+<tr><td>getFecha()</td><td>Devuelve la fecha de la partida.</td></tr>
+<tr><td>toArchivo()</td><td>"username;nombreJuego;puntuacion;victoria;fecha_ISO"</td></tr>
+<tr><td>toString()</td><td>Representación legible con etiquetas VICTORIA/DERROTA.</td></tr>
+</tbody></table></div>
+<h3>CONTROLADORES</h3>
+<p>GestorUsuarios</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>GestorUsuarios(persistencia)</td><td>Constructor: inyecta persistencia y carga usuarios de disco.</td></tr>
+<tr><td>iniciarSesion(username, contrasena)</td><td>Busca usuario, verifica password, guarda en usuarioActual. Devuelve null si falla.</td></tr>
+<tr><td>registrarUsuario(username, contrasena)</td><td>Valida formato, unicidad, crea Jugador y persiste. Devuelve null si OK o mensaje de error.</td></tr>
+<tr><td>validarUsername(username) [private]</td><td>No vacío, ≥3 chars, solo [a-zA-Z0-9-]+. Devuelve null si válido.</td></tr>
+<tr><td>validarPassword(password) [private]</td><td>No vacía, ≥8 chars, sin punto y coma. Devuelve null si válida.</td></tr>
+<tr><td>cerrarSesion()</td><td>Pone usuarioActual a null.</td></tr>
+<tr><td>getUsuarioActual()</td><td>Devuelve el usuario con sesión activa.</td></tr>
+<tr><td>buscarUsuario(username)</td><td>Búsqueda lineal en la lista; devuelve null si no encontrado.</td></tr>
+<tr><td>esAdministrador()</td><td>Devuelve true si el usuarioActual es instancia de Administrador.</td></tr>
+<tr><td>getListaUsuarios()</td><td>Devuelve la lista completa de usuarios.</td></tr>
+</tbody></table></div>
+<p>GestorJuegos</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>GestorJuegos()</td><td>Constructor: lista vacía de juegos disponibles.</td></tr>
+<tr><td>registrarJuego(nombre)</td><td>Añade el nombre a la lista si no estaba ya registrado.</td></tr>
+<tr><td>crearJuego(nombre)</td><td>Fábrica: devuelve new PasaPalabra() o new TresEnRaya() según el nombre; null si no reconocido.</td></tr>
+<tr><td>esMultijugador(nombre)</td><td>Devuelve true solo para "TresEnRaya".</td></tr>
+<tr><td>getMaxJugadores(nombre)</td><td>Devuelve 2 para "TresEnRaya", 1 para el resto.</td></tr>
+<tr><td>getJuegosDisponibles()</td><td>Devuelve una copia defensiva de la lista de juegos disponibles.</td></tr>
+</tbody></table></div>
+<p>GestorPartidas</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>GestorPartidas(persistencia)</td><td>Constructor: inyecta persistencia, llama inicializarContador().</td></tr>
+<tr><td>inicializarContador() [private]</td><td>Lee ids de partidas pausadas en disco y fija contadorId al máximo.</td></tr>
+<tr><td>iniciarPartida(juego, jugadores)</td><td>Llama juego.inicializar(), crea Partida con id autoincremental, la guarda en partidaActual.</td></tr>
+<tr><td>pausarPartida()</td><td>Llama partidaActual.pausar(), serializa con formato "nombreJuego|users|estado", llama persistencia.guardarPartidaPausada().</td></tr>
+<tr><td>reanudarPartida(id, datos, juego, jugadores)</td><td>Parsea los datos, llama juego.inicializar() + partida.reanudar(estado). Devuelve la Partida activa.</td></tr>
+<tr><td>finalizarPartida()</td><td>Llama partida.finalizar(), añade al historial, elimina el .dat, deja partidaActual=null.</td></tr>
+<tr><td>listarPartidasPausadas()</td><td>Delega en persistencia.listarPartidasPausadas(). Devuelve lista de ids.</td></tr>
+<tr><td>listarPartidasUsuario(username)</td><td>Filtra las partidas pausadas donde el username aparece en el campo de jugadores.</td></tr>
+<tr><td>cargarDatosPartida(id)</td><td>Delega en persistencia.cargarPartidaPausada(id).</td></tr>
+<tr><td>getPartidaActual()</td><td>Devuelve la partida en curso actual.</td></tr>
+<tr><td>getPartidasUsuario(usuario)</td><td>Filtra el historial en memoria por contieneJugador().</td></tr>
+</tbody></table></div>
+<p>GestorEstadisticas</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>GestorEstadisticas(persistencia)</td><td>Constructor: inyecta persistencia, carga estadísticas de disco.</td></tr>
+<tr><td>registrarResultado(partida)</td><td>Crea una Estadistica por cada PuntuacionJugador; determina victoria comparando con partida.getGanador().</td></tr>
+<tr><td>getEstadisticasUsuario(u)</td><td>Filtra la lista en memoria por username.</td></tr>
+<tr><td>getUltimasPartidas(u, n)</td><td>Ordena por fecha descendente (bubble sort) y devuelve las n primeras.</td></tr>
+<tr><td>calcularRanking(nombreJuego)</td><td>Filtra por juego, ordena por puntuación descendente (bubble sort).</td></tr>
+<tr><td>contarPartidas(username)</td><td>Total de estadísticas del usuario.</td></tr>
+<tr><td>contarVictorias(username)</td><td>Estadísticas del usuario con isVictoria()==true.</td></tr>
+</tbody></table></div>
+<h3>PERSISTENCIA</h3>
+<p>GestorPersistencia (interfaz)</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>guardarUsuarios(listaUsuarios)</td><td>Persiste la lista completa de usuarios.</td></tr>
+<tr><td>cargarUsuarios()</td><td>Carga y devuelve todos los usuarios almacenados.</td></tr>
+<tr><td>agregarEstadistica(e)</td><td>Añade (append) una nueva estadística.</td></tr>
+<tr><td>cargarEstadisticas()</td><td>Carga y devuelve todas las estadísticas.</td></tr>
+<tr><td>guardarPartidaPausada(id, estado)</td><td>Persiste el estado serializado de una partida.</td></tr>
+<tr><td>cargarPartidaPausada(id)</td><td>Carga el estado de la partida con ese id.</td></tr>
+<tr><td>eliminarPartidaPausada(id)</td><td>Elimina el fichero/entrada de la partida pausada.</td></tr>
+<tr><td>listarPartidasPausadas()</td><td>Devuelve la lista de ids de partidas pausadas disponibles.</td></tr>
+</tbody></table></div>
+<p>PersistenciaArchivos implements GestorPersistencia</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>PersistenciaArchivos()</td><td>Constructor: crea directorios data/ y data/partidas/ con mkdirs() si no existen.</td></tr>
+<tr><td>guardarUsuarios(listaUsuarios)</td><td>Sobrescribe data/usuarios.txt línea a línea usando toArchivo().</td></tr>
+<tr><td>cargarUsuarios()</td><td>Lee data/usuarios.txt; parsea "username;hash;esAdmin"; instancia Jugador o Administrador.</td></tr>
+<tr><td>agregarEstadistica(e)</td><td>Abre data/estadisticas.txt en modo append y escribe e.toArchivo().</td></tr>
+<tr><td>cargarEstadisticas()</td><td>Lee data/estadisticas.txt; parsea los 5 campos; reconstruye LocalDate con parse().</td></tr>
+<tr><td>guardarPartidaPausada(id, estado)</td><td>Escribe estado en data/partidas/id.dat.</td></tr>
+<tr><td>cargarPartidaPausada(id)</td><td>Lee la primera línea de data/partidas/id.dat; devuelve null si no existe.</td></tr>
+<tr><td>eliminarPartidaPausada(id)</td><td>Elimina data/partidas/id.dat si existe.</td></tr>
+<tr><td>listarPartidasPausadas()</td><td>Recorre data/partidas/, filtra .dat, extrae el id del nombre de fichero.</td></tr>
+</tbody></table></div>
+<h3>VISTA</h3>
+<p>Aplicacion</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>main(args)</td><td>Punto de entrada: crea PersistenciaArchivos, instancia los 4 gestores, registra juegos, lanza VentanaLogin.</td></tr>
+<tr><td>getGestorUsuarios()</td><td>Devuelve la instancia estática de GestorUsuarios.</td></tr>
+<tr><td>getGestorJuegos()</td><td>Devuelve la instancia estática de GestorJuegos.</td></tr>
+<tr><td>getGestorPartidas()</td><td>Devuelve la instancia estática de GestorPartidas.</td></tr>
+<tr><td>getGestorEstadisticas()</td><td>Devuelve la instancia estática de GestorEstadisticas.</td></tr>
+</tbody></table></div>
+<p>Tema (final)</p>
+<p>No tiene métodos. Declara únicamente constantes public static final. Colores: FONDO, FONDO_PANEL, FONDO_OSCURO, FONDO_CAMPO, FONDO_INPUT, ACENTO, TEXTO, SUBTEXTO, ERROR, BORDE, BORDE_INPUT, CORRECTO, INCORRECTO, PASAPALABRA, ACTUAL, PENDIENTE, FICHA_X, FICHA_O, GRIS_BOTON. Fuentes: FUENTE_TITULO, FUENTE_LABEL, FUENTE_CAMPO, FUENTE_BOTON, FUENTE_ENLACE, FUENTE_GRANDE, FUENTE_CELDA, FUENTE_TURNO, FUENTE_PUNTOS, FUENTE_TIEMPO, FUENTE_LETRA, FUENTE_DEFINICION, FUENTE_RESPUESTA, FUENTE_BOTON_JUEGO, FUENTE_ROSCO.</p>
+<p>VentanaLogin extends JFrame</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>VentanaLogin(gestorUsuarios)</td><td>Constructor: inicializa campos, construye UI, modoLogin=true.</td></tr>
+<tr><td>inicializarVentana()</td><td>Construye el layout GridBag con campos username/password, botones y label de error.</td></tr>
+<tr><td>accionPrincipal()</td><td>Si modoLogin: llama iniciarSesion() y abre menú. Si registro: llama registrarUsuario(), auto-login y abre menú.</td></tr>
+<tr><td>cambiarModo()</td><td>Alterna modoLogin; actualiza textos de título, botón principal y botón de cambio de modo.</td></tr>
+<tr><td>abrirMenuPrincipal()</td><td>Instancia VentanaMenuPrincipal con todos los gestores de Aplicacion; oculta esta ventana.</td></tr>
+</tbody></table></div>
+<p>VentanaMenuPrincipal extends JFrame</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>VentanaMenuPrincipal(...)</td><td>Constructor: recibe los 4 gestores y el usuario actual; construye UI.</td></tr>
+<tr><td>accionJugar()</td><td>Abre VentanaSeleccionJuego; si multijugador, pide credenciales del 2º jugador; inicia partida y abre ventana de juego.</td></tr>
+<tr><td>accionCargarPartida()</td><td>Lista partidas pausadas del usuario, muestra diálogo de selección, reanuda y abre ventana de juego.</td></tr>
+<tr><td>accionEstadisticas()</td><td>Abre VentanaEstadisticas con el usuario actual.</td></tr>
+<tr><td>accionAdmin()</td><td>Verifica que es admin, abre VentanaAdmin.</td></tr>
+<tr><td>accionCerrarSesion()</td><td>Llama cerrarSesion(), abre VentanaLogin, cierra esta ventana.</td></tr>
+</tbody></table></div>
+<p>VentanaSeleccionJuego extends JDialog</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>VentanaSeleccionJuego(padre, gestorJuegos)</td><td>Constructor: rellena JList con juegos disponibles; modal; bloquea hasta selección.</td></tr>
+<tr><td>accionSeleccionar()</td><td>Guarda el juego seleccionado y cierra el diálogo.</td></tr>
+<tr><td>accionCancelar()</td><td>Deja juegoSeleccionado=null y cierra el diálogo.</td></tr>
+<tr><td>getJuegoSeleccionado()</td><td>Devuelve el nombre del juego elegido o null si se canceló.</td></tr>
+</tbody></table></div>
+<p>VentanaJuego (abstracta) extends JFrame</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>VentanaJuego(ventanaPadre, gestorPartidas, gestorEstadisticas)</td><td>Constructor base.</td></tr>
+<tr><td>actualizarVista() [abstracto]</td><td>Repinta la UI con el estado actual del juego.</td></tr>
+<tr><td>accionPausar() [protected]</td><td>Llama gestorPartidas.pausarPartida(), muestra aviso, vuelve al menú.</td></tr>
+<tr><td>accionFinalizar() [protected]</td><td>Obtiene la partida, llama finalizarPartida() luego registrarResultado(). Vuelve al menú.</td></tr>
+</tbody></table></div>
+<p>VentanaJuegoTresEnRaya extends VentanaJuego</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>VentanaJuegoTresEnRaya(...)</td><td>Constructor: recibe ventanaPadre, gestores, partida; castea juego a TresEnRaya; construye UI.</td></tr>
+<tr><td>inicializarComponentes()</td><td>Panel norte (turno + puntos), centro (tablero 3×3), sur (Pausar + Finalizar).</td></tr>
+<tr><td>manejarJugada(fila, columna)</td><td>Determina ficha, llama juego.jugarTurno(), avanza turno si no terminó, actualiza vista, muestra resultado si terminó.</td></tr>
+<tr><td>mostrarResultado()</td><td>Muestra JOptionPane con ganador o "empate", luego llama accionFinalizar().</td></tr>
+<tr><td>actualizarVista()</td><td>Actualiza texto/color de cada botón del tablero, label de turno y label de puntuaciones.</td></tr>
+</tbody></table></div>
+<p>VentanaJuegoPasapalabra extends JFrame (independiente)</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>VentanaJuegoPasapalabra(...)</td><td>Constructor: recibe ventanaPadre, gestores, partida; castea juego a PasaPalabra; construye UI, inicia timer.</td></tr>
+<tr><td>construirUI()</td><td>BorderLayout: rosco al CENTER, panel derecho al EAST, control al SOUTH.</td></tr>
+<tr><td>construirPanelDerecho()</td><td>Temporizador, letra actual, definición, campo respuesta, botones Responder/PasaPalabra, contadores aciertos/fallos/pasapalabras.</td></tr>
+<tr><td>actualizarVista()</td><td>Si terminó llama accionFinalizar(). Si no, actualiza letra, definición, contadores y repinta rosco.</td></tr>
+<tr><td>onResponder()</td><td>Llama juego.procesarRespuesta(), muestra flash de color (verde/rojo), llama actualizarVista().</td></tr>
+<tr><td>onPasapalabra()</td><td>Llama juego.pasarPalabra(), flash azul, llama actualizarVista().</td></tr>
+<tr><td>accionPausar()</td><td>Detiene el timer, llama gestorPartidas.pausarPartida(), vuelve al menú.</td></tr>
+<tr><td>accionFinalizar()</td><td>Detiene el timer, llama finalizarPartida() y registrarResultado(), muestra resumen HTML, vuelve al menú.</td></tr>
+<tr><td>iniciarTimer()</td><td>Timer de 1 segundo; decrementa segundosRestantes; si llega a 0 llama accionFinalizar(). Color rojo si ≤30 s.</td></tr>
+<tr><td>PanelRosco.paintComponent(g) [inner class]</td><td>Dibuja 27 círculos en disposición circular, coloreados según el estado de cada letra.</td></tr>
+</tbody></table></div>
+<p>VentanaEstadisticas extends JFrame</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>VentanaEstadisticas(username, gestores)</td><td>Constructor: crea tabla, llama mostrarTabla().</td></tr>
+<tr><td>mostrarTabla()</td><td>Busca el usuario por username, obtiene estadísticas, rellena la JTable con juego/puntuación/resultado/fecha.</td></tr>
+</tbody></table></div>
+<p>VentanaAdmin extends JFrame</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>VentanaAdmin(gestores)</td><td>Constructor: crea JTabbedPane con dos pestañas (Ranking y Usuarios).</td></tr>
+<tr><td>crearPanelRanking()</td><td>ComboBox con juegos disponibles; JTable con columnas Posición/Usuario/Puntuación/Fecha.</td></tr>
+<tr><td>crearPanelUsuarios()</td><td>JTable con columnas Username/Tipo (ADMIN o Usuario).</td></tr>
+<tr><td>mostrarRanking(juego)</td><td>Llama gestorEstadisticas.calcularRanking(), rellena la tabla con posición incremental.</td></tr>
+<tr><td>mostrarListaUsuarios()</td><td>Llama gestorUsuarios.getListaUsuarios(), muestra tipo según instanceof Administrador.</td></tr>
+</tbody></table></div>
+<h1>PARTE 2 — ANÁLISIS TÉCNICO DEL CÓDIGO</h1>
+<p>Esta parte está basada en la lectura directa del código fuente ubicado en /JuegoFinal/Programa/src/.</p>
+<h2><span class="num">2.1</span><span class="ttl">Estructura de paquetes</span></h2>
+<pre class="code">
+JuegoFinal/Programa/
+
+├── src/
+
+│   ├── Controlador/     GestorEstadisticas, GestorJuegos, GestorPartidas, GestorUsuarios
+
+│   ├── Modelo/          Administrador, Estadistica, EstadoPartida (enum), Juego,
+
+│   │                    Jugador, Partida, PasaPalabra, PuntuacionJugador,
+
+│   │                    TresEnRaya, Usuario
+
+│   ├── Persistencia/    GestorPersistencia (interfaz), PersistenciaArchivos
+
+│   └── Vista/           Aplicacion, Tema, VentanaAdmin, VentanaEstadisticas,
+
+│                        VentanaJuego, VentanaJuegoPasapalabra,
+
+│                        VentanaJuegoTresEnRaya, VentanaLogin,
+
+│                        VentanaMenuPrincipal, VentanaSeleccionJuego
+
+└── data/
+
+    ├── usuarios.txt          username;sha256hash;esAdmin
+
+    ├── estadisticas.txt      username;juego;pts;victoria;fecha (generado en runtime)
+
+    ├── partidas/id.dat       nombreJuego|users|estadoSerializado (generado en runtime)
+
+    └── roscos/
+
+        ├── rosco_infantil.txt    Letra;Definición;Respuesta  (269 líneas)
+
+        ├── rosco_facil.txt
+
+        ├── rosco_medio.txt
+
+        └── rosco_avanzado.txt
+
+</pre>
+<h2><span class="num">2.2</span><span class="ttl">Paquete Modelo</span></h2>
+<h3>Usuario (abstracta)</h3>
+<p>Propósito: clase base para todos los usuarios del sistema. Gestiona identidad y autenticación.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Atributo</th><th>Tipo</th><th>Acceso</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>username</td><td>String</td><td>protected</td><td>Identificador único del usuario</td></tr>
+<tr><td>passwordHash</td><td>String</td><td>protected</td><td>Hash SHA-256 de 64 caracteres de la contraseña</td></tr>
+</tbody></table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Método</th><th>Parámetros</th><th>Retorno</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>hashear</td><td>String password</td><td>String</td><td>SHA-256 → hex. RuntimeException si SHA-256 no disponible</td></tr>
+<tr><td>getUsername</td><td>—</td><td>String</td><td>Devuelve username</td></tr>
+<tr><td>verificarPassword</td><td>String introPassword</td><td>boolean</td><td>Compara hash del input con el almacenado</td></tr>
+<tr><td>toArchivo</td><td>—</td><td>String</td><td>[abstracto] Serialización CSV para fichero</td></tr>
+<tr><td>toString</td><td>—</td><td>String</td><td>[abstracto] Representación legible</td></tr>
+</tbody></table></div>
+<p>Relaciones: extendida por Jugador y Administrador. Usada por GestorUsuarios, GestorPartidas, Partida.</p>
+<h3>Jugador extends Usuario</h3>
+<p>Sin campos propios. toArchivo() serializa esAdmin siempre como false.</p>
+<p>Relaciones: instanceof comprobado en GestorUsuarios.esAdministrador() y VentanaAdmin.</p>
+<h3>Administrador extends Usuario</h3>
+<p>Sin campos propios. toArchivo() serializa esAdmin como true.</p>
+<p>Relaciones: instanceof comprobado en GestorUsuarios.esAdministrador() y VentanaAdmin. VentanaMenuPrincipal muestra el botón de admin solo si el usuario es instancia de esta clase.</p>
+<h3>Juego (abstracta)</h3>
+<p>Propósito: clase base de todos los juegos. Define estado compartido y el contrato abstracto de mecánica.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Atributo</th><th>Tipo</th><th>Acceso</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>nombreJuego</td><td>String</td><td>protected</td><td>Nombre identificador del juego</td></tr>
+<tr><td>descripcion</td><td>String</td><td>protected</td><td>Descripción breve para el menú</td></tr>
+<tr><td>juegoFinalizado</td><td>boolean</td><td>protected</td><td>true cuando el juego ha concluido</td></tr>
+<tr><td>listaPuntuacionPorJugador</td><td>ArrayList&lt;PuntuacionJugador&gt;</td><td>package</td><td>Puntuaciones de la partida en curso</td></tr>
+</tbody></table></div>
+<p>Relaciones: extendida por PasaPalabra y TresEnRaya. Agregada en Partida (campo juego). GestorPartidas trabaja siempre con referencia tipo Juego (polimorfismo).</p>
+<h3>TresEnRaya extends Juego</h3>
+<p>Propósito: implementación del juego Tres en Raya para dos jugadores.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Atributo</th><th>Tipo</th><th>Acceso</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>tablero</td><td>char[][]</td><td>private</td><td>Tablero 3×3. Espacio=vacío, 'X'/'O'=fichas</td></tr>
+<tr><td>ganador</td><td>String</td><td>private</td><td>Username del ganador; null si no ha terminado o empate</td></tr>
+</tbody></table></div>
+<p>Detalle de serialización: "casilla00,casilla01,...,casilla22;ganador" donde casillas vacías se representan como espacio y sin ganador como "null". VentanaJuegoTresEnRaya castea la referencia Juego de Partida a TresEnRaya para acceder a jugarTurno() y getTablero().</p>
+<h3>PasaPalabra extends Juego</h3>
+<p>Propósito: juego PasaPalabra con rosco de 27 letras y 4 niveles de dificultad.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Constante</th><th>Valor</th><th>Significado</th></tr></thead><tbody>
+<tr><td>ESTADO_PENDIENTE</td><td>"0"</td><td>Letra aún sin responder</td></tr>
+<tr><td>ESTADO_CORRECTA</td><td>"1"</td><td>Respondida correctamente (+10 pts)</td></tr>
+<tr><td>ESTADO_INCORRECTA</td><td>"2"</td><td>Respondida incorrectamente</td></tr>
+<tr><td>ESTADO_PASAPALABRA</td><td>"3"</td><td>Pasada para más tarde</td></tr>
+<tr><td>DIR_ROSCOS</td><td>"data/roscos/"</td><td>Ruta base de los ficheros de preguntas</td></tr>
+</tbody></table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Atributo</th><th>Tipo</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>rosco</td><td>String[][]</td><td>Matriz 27×4: [letra, definición, respuesta_correcta, estado]</td></tr>
+<tr><td>letraActual</td><td>int</td><td>Índice (0-26) de la letra en turno</td></tr>
+<tr><td>nivel</td><td>int</td><td>0=Infantil, 1=Fácil, 2=Medio, 3=Avanzado</td></tr>
+<tr><td>aciertos</td><td>int</td><td>Respuestas correctas acumuladas</td></tr>
+<tr><td>fallos</td><td>int</td><td>Respuestas incorrectas acumuladas</td></tr>
+<tr><td>pasapalabras</td><td>int</td><td>Letras pasadas pendientes de resolver</td></tr>
+</tbody></table></div>
+<p>Carga de roscos: cargarDatos() lee el fichero del nivel, divide en bloques de 10 preguntas por letra y elige una al azar en cada bloque. Esto garantiza variedad entre partidas. limpiarTexto() normaliza NFD y elimina diacríticos para comparar respuestas sin sensibilidad a tildes.</p>
+<h3>Partida</h3>
+<p>Propósito: sesión concreta de juego. Coordina turno circular, estado y resultados.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Atributo</th><th>Tipo</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>id</td><td>int</td><td>Identificador único de la partida</td></tr>
+<tr><td>fecha</td><td>LocalDate</td><td>Fecha de inicio (LocalDate.now() en constructor)</td></tr>
+<tr><td>fechaFin</td><td>LocalDate</td><td>Fecha de finalización; null hasta que se finaliza</td></tr>
+<tr><td>turnoActual</td><td>int</td><td>Índice del jugador activo en listaJugadores</td></tr>
+<tr><td>estadoActual</td><td>EstadoPartida</td><td>EN_CURSO / PAUSADA / FINALIZADA</td></tr>
+<tr><td>juego</td><td>Juego</td><td>Referencia polimórfica al juego de la partida</td></tr>
+<tr><td>listaJugadores</td><td>ArrayList&lt;Usuario&gt;</td><td>Jugadores participantes</td></tr>
+</tbody></table></div>
+<h3>Estadistica</h3>
+<p>Propósito: registro inmutable del resultado de una partida para un jugador concreto.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Atributo</th><th>Tipo</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>username</td><td>String</td><td>Jugador al que corresponde</td></tr>
+<tr><td>nombreJuego</td><td>String</td><td>Juego jugado</td></tr>
+<tr><td>puntuacion</td><td>int</td><td>Puntuación obtenida</td></tr>
+<tr><td>victoria</td><td>boolean</td><td>true si fue el ganador</td></tr>
+<tr><td>fecha</td><td>LocalDate</td><td>Fecha de la partida</td></tr>
+</tbody></table></div>
+<h3>PuntuacionJugador y EstadoPartida</h3>
+<p>PuntuacionJugador es un par (username, puntos) utilizado internamente por Juego. EstadoPartida es un enum con tres valores: EN_CURSO, PAUSADA y FINALIZADA.</p>
+<h2><span class="num">2.3</span><span class="ttl">Paquete Controlador</span></h2>
+<h3>GestorUsuarios</h3>
+<p>Gestiona autenticación, registro y sesión activa.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Atributo</th><th>Tipo</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>persistencia</td><td>GestorPersistencia</td><td>Capa de acceso a datos inyectada por constructor</td></tr>
+<tr><td>listaUsuarios</td><td>ArrayList&lt;Usuario&gt;</td><td>Cache en memoria; cargada una sola vez al construir</td></tr>
+<tr><td>usuarioActual</td><td>Usuario</td><td>Usuario con sesión activa; null si no hay sesión</td></tr>
+</tbody></table></div>
+<p>Relaciones: usa GestorPersistencia para cargar/guardar. VentanaLogin llama iniciarSesion() y registrarUsuario(). VentanaAdmin usa esAdministrador() y getListaUsuarios().</p>
+<h3>GestorJuegos</h3>
+<p>Registro de juegos disponibles y fábrica (Factory Method) para crear instancias.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Atributo</th><th>Tipo</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>juegosDisponibles</td><td>ArrayList&lt;String&gt;</td><td>Nombres de juegos registrados</td></tr>
+</tbody></table></div>
+<p>Relaciones: Aplicacion.main() registra "TresEnRaya" y "Pasapalabra". VentanaMenuPrincipal y VentanaSeleccionJuego consultan getJuegosDisponibles(). crearJuego() instancia TresEnRaya o PasaPalabra según el nombre.</p>
+<h3>GestorPartidas</h3>
+<p>Gestiona el ciclo de vida completo de las partidas.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Atributo</th><th>Tipo</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>contadorId</td><td>int (static)</td><td>Autoincremental global; sincronizado con ficheros .dat al arrancar</td></tr>
+<tr><td>partidaActual</td><td>Partida</td><td>Partida en curso; null si ninguna</td></tr>
+<tr><td>listaPartidas</td><td>ArrayList&lt;Partida&gt;</td><td>Historial de partidas finalizadas en esta ejecución</td></tr>
+<tr><td>persistencia</td><td>GestorPersistencia</td><td>Capa de acceso a datos</td></tr>
+</tbody></table></div>
+<p>Formato del fichero .dat: "nombreJuego|user1,user2|estadoSerializado" (formato con jugadores). También soporta el legado "nombreJuego|estadoSerializado" (sin jugadores). Relaciones: delega persistencia en GestorPersistencia. VentanaMenuPrincipal y ventanas de juego llaman iniciarPartida(), pausarPartida(), finalizarPartida().</p>
+<h3>GestorEstadisticas</h3>
+<p>Registro y consulta de estadísticas históricas.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Atributo</th><th>Tipo</th><th>Descripción</th></tr></thead><tbody>
+<tr><td>persistencia</td><td>GestorPersistencia</td><td>Capa de acceso a datos</td></tr>
+<tr><td>listaEstadisticas</td><td>ArrayList&lt;Estadistica&gt;</td><td>Cache en memoria; cargada al construir</td></tr>
+</tbody></table></div>
+<p>Los algoritmos de ordenación (calcularRanking, getUltimasPartidas) usan bubble sort implementado a mano con LocalDate.isBefore(). Relaciones: VentanaEstadisticas y VentanaAdmin consumen sus métodos. VentanaJuego y VentanaJuegoPasapalabra llaman registrarResultado() al finalizar.</p>
+<h2><span class="num">2.4</span><span class="ttl">Paquete Persistencia</span></h2>
+<h3>GestorPersistencia (interfaz)</h3>
+<p>Define 8 operaciones de acceso a datos agrupadas en tres áreas: usuarios (guardar/cargar), estadísticas (agregar/cargar) y partidas pausadas (guardar/cargar/eliminar/listar). La separación mediante interfaz permite cambiar PersistenciaArchivos por cualquier otra implementación (BD relacional, XML, red) sin afectar a los controladores.</p>
+<h3>PersistenciaArchivos implements GestorPersistencia</h3>
+<p>Implementación sobre ficheros de texto plano en la carpeta data/.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Constante</th><th>Valor</th></tr></thead><tbody>
+<tr><td>DATA_USUARIOS</td><td>"data/usuarios.txt"</td></tr>
+<tr><td>DATA_ESTADISTICAS</td><td>"data/estadisticas.txt"</td></tr>
+<tr><td>CARPETA_PARTIDAS</td><td>"data/partidas/"</td></tr>
+</tbody></table></div>
+<p>El constructor crea los directorios necesarios con mkdirs() si no existen. El formato de usuarios.txt es "username;sha256hash;esAdmin" (un usuario por línea). estadisticas.txt usa append (no se sobreescribe; cada partida añade una línea). Los ficheros .dat en data/partidas/ almacenan el estado serializado completo de una partida pausada.</p>
+<h2><span class="num">2.5</span><span class="ttl">Paquete Vista</span></h2>
+<h3>Aplicacion — Punto de entrada</h3>
+<p>main() crea PersistenciaArchivos, instancia los 4 gestores inyectando la persistencia, registra los dos juegos disponibles ("TresEnRaya" y "Pasapalabra") en GestorJuegos, y lanza VentanaLogin dentro de SwingUtilities.invokeLater() para garantizar que todo el código Swing corra en el Event Dispatch Thread. Expone los gestores como campos estáticos accesibles desde todas las ventanas.</p>
+<h3>VentanaLogin</h3>
+<p>Alterna entre modo login y modo registro con un único botón de cambio de modo. En modo registro: valida campos, crea el usuario, hace auto-login y abre el menú. Muestra mensajes de error en rojo (Tema.ERROR) en un JLabel dedicado.</p>
+<h3>VentanaMenuPrincipal</h3>
+<p>Hub central de la aplicación. Muestra botón de administración solo si el usuario tiene rol de Administrador. La acción "Jugar" inicia el flujo completo: selección de juego, opcionalmente solicitar credenciales del 2º jugador (si multijugador), crear partida, y abrir la ventana específica del juego.</p>
+<p>La acción "Cargar Partida" obtiene la lista de partidas pausadas del usuario y muestra sus etiquetas legibles en un JOptionPane. Al seleccionar, reconstruye el objeto Juego correcto, llama reanudarPartida() y abre la ventana correspondiente.</p>
+<h3>VentanaJuegoTresEnRaya</h3>
+<p>Tablero de 9 JButton dispuestos en GridLayout 3×3. Cada botón llama manejarJugada(). La ficha asignada a cada jugador (X para el jugador 0, O para el jugador 1) se determina comparando el índice en listaJugadores con turnoActual. Cuando el juego termina, muestra JOptionPane con el resultado y llama a accionFinalizar() heredado de VentanaJuego.</p>
+<h3>VentanaJuegoPasapalabra</h3>
+<p>No extiende VentanaJuego. Incluye un Timer Swing que cuenta 150 segundos (2:30 min). El panel central es PanelRosco, una inner class que sobreescribe paintComponent() para dibujar 27 círculos en disposición circular, cada uno coloreado según el estado de su letra (verde=correcta, rojo=incorrecta, azul=pasapalabra, gris=pendiente, amarillo=actual). Al finalizar muestra un resumen HTML en un JOptionPane con aciertos, fallos, pasapalabras y puntuación.</p>
+<h3>VentanaEstadisticas</h3>
+<p>JTable con modelo DefaultTableModel y 4 columnas (Juego, Puntuación, Resultado, Fecha). Carga las estadísticas del usuario actual al construir.</p>
+<h3>VentanaAdmin</h3>
+<p>JTabbedPane con dos pestañas. "Ranking": JComboBox con los juegos disponibles; al cambiar el juego se recalcula y muestra el ranking. "Usuarios": tabla con todos los usuarios registrados y su tipo (ADMIN / Usuario).</p>
+<h3>Tema</h3>
+<p>Clase utilitaria final no instanciable. Centraliza la paleta de colores y el conjunto de fuentes de la aplicación. Todas las ventanas referencian Tema.FONDO, Tema.ACENTO, Tema.FUENTE_TITULO, etc. en lugar de valores hardcodeados.</p>
+<h2><span class="num">2.6</span><span class="ttl">Flujo de ejecución — del arranque a una partida</span></h2>
+<h4>1. Arranque</h4>
+<p>main() en Aplicacion crea PersistenciaArchivos y los 4 gestores (GestorUsuarios, GestorJuegos, GestorPartidas, GestorEstadisticas). GestorUsuarios y GestorEstadisticas cargan datos de disco. GestorPartidas sincroniza contadorId con los .dat existentes. GestorJuegos registra "TresEnRaya" y "Pasapalabra". SwingUtilities.invokeLater lanza VentanaLogin.</p>
+<h4>2. Login / Registro</h4>
+<p>El usuario introduce credenciales. Si es login, GestorUsuarios.iniciarSesion() verifica el hash. Si es registro, GestorUsuarios.registrarUsuario() valida formato, unicidad, crea Jugador, guarda en disco. En ambos casos, si OK, VentanaLogin abre VentanaMenuPrincipal y se oculta.</p>
+<h4>3. Selección de juego</h4>
+<p>El usuario pulsa "Jugar". VentanaMenuPrincipal abre VentanaSeleccionJuego (modal). El usuario elige el juego y pulsa "Jugar". Si es multijugador (TresEnRaya), se pide username y contraseña del 2º jugador con verificación de credenciales.</p>
+<h4>4. Inicio de partida</h4>
+<p>VentanaMenuPrincipal llama GestorJuegos.crearJuego() para obtener la instancia. Luego llama GestorPartidas.iniciarPartida(juego, jugadores), que invoca juego.inicializar() y crea la Partida con id autoincremental y estado EN_CURSO. A continuación abre VentanaJuegoTresEnRaya o VentanaJuegoPasapalabra según el juego.</p>
+<h4>5. Juego en curso — Tres en Raya</h4>
+<p>Cada clic en un botón del tablero llama manejarJugada(). manejarJugada() llama juego.jugarTurno(username, ficha, fila, columna). TresEnRaya coloca la ficha, comprueba victoria/empate y suma 10 pts si hay victoria. La ventana llama partida.siguienteTurno() y actualizarVista(). Si el juego terminó, mostrarResultado() llama accionFinalizar().</p>
+<h4>5. Juego en curso — Pasapalabra</h4>
+<p>El timer corre 150 s. El jugador teclea en txtRespuesta y pulsa "Responder" u "onPasapalabra". PasaPalabra.procesarRespuesta() normaliza y compara; si correcta suma 10 pts y avanza. pasarPalabra() marca PASAPALABRA y avanza circularmente. Cada acción llama actualizarVista() que repinta PanelRosco. Al llegar a 0 letras pendientes o al terminar el timer, se llama accionFinalizar().</p>
+<h4>6. Pausa (opcional)</h4>
+<p>El usuario pulsa "Pausar". La ventana llama GestorPartidas.pausarPartida(), que serializa el estado del juego como "nombreJuego|user1,user2|estadoSerializado" y lo persiste en data/partidas/id.dat. La ventana se cierra y vuelve a VentanaMenuPrincipal.</p>
+<h4>7. Reanudación</h4>
+<p>El usuario pulsa "Cargar Partida". GestorPartidas.listarPartidasUsuario() filtra los .dat que contienen el username. El usuario selecciona una partida. VentanaMenuPrincipal llama GestorJuegos.crearJuego(), GestorPartidas.reanudarPartida() (que parsea el .dat y llama juego.deserializarEstado()), y abre la ventana de juego.</p>
+<h4>8. Finalización</h4>
+<p>accionFinalizar() (o accionFinalizar() interno en Pasapalabra) llama primero GestorPartidas.finalizarPartida() (que marca la partida como FINALIZADA, la añade al historial y elimina el .dat), y luego GestorEstadisticas.registrarResultado(partida), que crea una Estadistica por jugador y la persiste en estadisticas.txt. La ventana se cierra y vuelve a VentanaMenuPrincipal.</p>
+<h2><span class="num">2.7</span><span class="ttl">Mapa de conexiones entre clases</span></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Origen</th><th>Relación</th><th>Destino</th></tr></thead><tbody>
+<tr><td>Aplicacion</td><td>Crea y expone</td><td>GestorUsuarios, GestorJuegos, GestorPartidas, GestorEstadisticas</td></tr>
+<tr><td>Aplicacion</td><td>Crea</td><td>PersistenciaArchivos (inyectada en gestores)</td></tr>
+<tr><td>Aplicacion</td><td>Abre</td><td>VentanaLogin</td></tr>
+<tr><td>VentanaLogin</td><td>Llama</td><td>GestorUsuarios.iniciarSesion() / registrarUsuario()</td></tr>
+<tr><td>VentanaLogin</td><td>Abre</td><td>VentanaMenuPrincipal</td></tr>
+<tr><td>VentanaMenuPrincipal</td><td>Llama</td><td>GestorJuegos.crearJuego()</td></tr>
+<tr><td>VentanaMenuPrincipal</td><td>Llama</td><td>GestorPartidas.iniciarPartida() / listarPartidasUsuario() / reanudarPartida()</td></tr>
+<tr><td>VentanaMenuPrincipal</td><td>Abre</td><td>VentanaSeleccionJuego, VentanaJuegoPasapalabra, VentanaJuegoTresEnRaya, VentanaEstadisticas, VentanaAdmin</td></tr>
+<tr><td>VentanaJuegoTresEnRaya</td><td>Castea y llama</td><td>TresEnRaya.jugarTurno() vía referencia Juego de Partida</td></tr>
+<tr><td>VentanaJuegoTresEnRaya</td><td>Llama (heredado)</td><td>VentanaJuego.accionPausar() / accionFinalizar()</td></tr>
+<tr><td>VentanaJuego.accionFinalizar()</td><td>Llama</td><td>GestorPartidas.finalizarPartida() + GestorEstadisticas.registrarResultado()</td></tr>
+<tr><td>VentanaJuegoPasapalabra</td><td>Castea y llama</td><td>PasaPalabra.procesarRespuesta() / pasarPalabra() vía referencia Juego</td></tr>
+<tr><td>VentanaJuegoPasapalabra</td><td>Llama (propia)</td><td>GestorPartidas.pausarPartida() / finalizarPartida() + GestorEstadisticas.registrarResultado()</td></tr>
+<tr><td>GestorPartidas</td><td>Delega E/S en</td><td>GestorPersistencia (cargar / guardar / eliminar partidas)</td></tr>
+<tr><td>GestorUsuarios</td><td>Delega E/S en</td><td>GestorPersistencia (cargar / guardar usuarios)</td></tr>
+<tr><td>GestorEstadisticas</td><td>Delega E/S en</td><td>GestorPersistencia (cargar / agregar estadísticas)</td></tr>
+<tr><td>PersistenciaArchivos</td><td>Implementa</td><td>GestorPersistencia sobre ficheros data/</td></tr>
+<tr><td>Partida</td><td>Agrega</td><td>Juego (referencia polimórfica), ArrayList&lt;Usuario&gt;</td></tr>
+<tr><td>GestorPartidas</td><td>Serializa vía</td><td>Juego.serializarEstado() / deserializarEstado()</td></tr>
+<tr><td>GestorEstadisticas.registrarResultado()</td><td>Lee</td><td>Partida.getPuntuaciones() + Partida.getGanador()</td></tr>
+<tr><td>VentanaAdmin</td><td>Usa</td><td>GestorEstadisticas.calcularRanking() + GestorUsuarios.getListaUsuarios()</td></tr>
+<tr><td>VentanaEstadisticas</td><td>Usa</td><td>GestorEstadisticas.getEstadisticasUsuario()</td></tr>
+</tbody></table></div>
+<h2><span class="num">2.8</span><span class="ttl">Discrepancias entre diseño y código real</span></h2>
+<h4>⚠ Las siguientes diferencias se encontraron al comparar la documentación de diseño inicial con el código fuente.</h4>
+<h4>1. Jerarquía de usuarios</h4>
+<p>Diseño original: Usuario con boolean esAdmin. Código real: Usuario abstracta + subclases Jugador y Administrador. La diferencia es una mejora: permite polimorfismo con instanceof y facilita futuros roles sin modificar código existente.</p>
+<h4>2. VentanaJuegoPasapalabra no extiende VentanaJuego</h4>
+<p>Diseño: VentanaJuegoPasapalabra debería extender VentanaJuego (abstracta). Código real: extiende directamente JFrame. Motivo: la lógica de temporizador y resumen final de Pasapalabra difiere suficientemente de accionFinalizar() de VentanaJuego. Consecuencia: algo de código duplicado (pause/finalizar implementado de forma independiente).</p>
+<h4>3. GestorUsuarios no tiene clase GestorPersistencia propia</h4>
+<p>El diseño mencionaba "GestorPersistencia (colaboración con JP)" para Adrián Duque. En el código, GestorPersistencia es una interfaz única implementada por PersistenciaArchivos; no hay implementación separada por gestor.</p>
+<h4>4. Clase Tema no estaba en el diseño inicial</h4>
+<p>Añadida durante la implementación como buena práctica de centralización de estilos. No modifica ningún comportamiento funcional.</p>
+<h4>5. VentanaSeleccionJuego no estaba en el diseño inicial</h4>
+<p>Añadida como JDialog modal para el flujo de selección de juego. No estaba en la arquitectura original pero encaja limpiamente en la capa Vista.</p>
+<h4>6. Usuario usa nombre Jugador (no Usuario concreta)</h4>
+<p>El diseño mencionaba "Usuario" como posible clase concreta para jugadores normales. En el código se usa "Jugador" como subclase de Usuario (abstracta). Más correcto desde el punto de vista OO.</p>
+<h4>7. Bubble sort en GestorEstadisticas en lugar de Collections.sort()</h4>
+<p>Las ordenaciones en calcularRanking() y getUltimasPartidas() están implementadas con bubble sort manual. No es un error de diseño sino una decisión de implementación, posiblemente por familiaridad del autor con el algoritmo.</p>
+<h2><span class="ttl">Conclusión</span></h2>
+<p>El proyecto implementa correctamente todos los requisitos del enunciado: dos juegos funcionales, gestión de usuarios con roles, persistencia en ficheros sin dependencias externas, arquitectura en cuatro capas con herencia polimorfismo e interfaces, historial de estadísticas, pausa/reanudación de partidas y panel de administración. Las discrepancias encontradas son mejoras respecto al diseño inicial, no regresiones.</p>
+</main>
+</body>
+</html>
