@@ -1,5 +1,7 @@
 package modelo;
 
+import Modelo.Juego;
+
 /**
  * Implementación del juego Tres en Raya para dos jugadores.
  *
@@ -10,7 +12,7 @@ package modelo;
  * @author Nacho 
  * @version 2.1
  */
-public class TresEnRaya extends Juego {
+public class tresenraya extends Juego {
 
     /** Tablero 3x3. Cada celda contiene 'X', 'O' o ' ' si está vacía. */
     private char[][] tablero;
@@ -28,7 +30,7 @@ public class TresEnRaya extends Juego {
      * Crea una nueva instancia de Tres en Raya.
      * Llamar a {@link #inicializar()} antes de empezar a jugar.
      */
-    public TresEnRaya() {
+    public tresenraya() {
         super("TresEnRaya", "Juego del tres en raya para dos jugadores", false); 
         this.tablero = new char[3][3];
         this.ganador = null;
