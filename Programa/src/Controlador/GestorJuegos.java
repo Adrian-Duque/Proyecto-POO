@@ -53,6 +53,18 @@ public class GestorJuegos {
     }
 
     /**
+     * Crea e inicializa una nueva instancia del juego indicado por nombre y nivel (metodo con sobrecarga).
+     *
+     * @param nombre nombre del juego ("PasaPalabra", "TresEnRaya", …)
+     * @return instancia de Juego y Nivel correspondiente, o null si el nombre no existe
+     */
+    public Juego crearJuego(String nombre, int nivel) {
+        if ("Pasapalabra".equals(nombre)) return new PasaPalabra(nivel);
+        if ("TresEnRaya".equals(nombre)) return new TresEnRaya();
+        return null;
+    }
+
+    /**
      * Indica si un juego es multijugador.
      *
      * @param nombre nombre del juego a consultar

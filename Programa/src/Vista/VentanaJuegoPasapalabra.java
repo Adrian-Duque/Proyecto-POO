@@ -25,7 +25,7 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
 
     // ── Componentes Swing ────────────────────────────────────────────────────
     private PanelRosco panelRosco;
-    private JLabel     lblDefinicion;
+    private JTextArea lblDefinicion;
     private JLabel     lblLetra;
     private JLabel     lblAciertos;
     private JLabel     lblFallos;
@@ -67,6 +67,7 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
             @Override
             public void windowClosing(WindowEvent e) { accionPausar(); }
         });
+        setMinimumSize(new Dimension(860, 600));
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -77,10 +78,12 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
     private void construirUI() {
         setLayout(new BorderLayout(10, 10));
         getContentPane().setBackground(Tema.FONDO_OSCURO);
+        ((JPanel) getContentPane()).setOpaque(true);
 
         panelRosco = new PanelRosco();
         panelRosco.setPreferredSize(new Dimension(500, 500));
         panelRosco.setBackground(Tema.FONDO_OSCURO);
+        panelRosco.setOpaque(true);
 
         add(panelRosco,              BorderLayout.CENTER);
         add(construirPanelDerecho(), BorderLayout.EAST);
@@ -91,8 +94,9 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Tema.FONDO_OSCURO);
+        panel.setOpaque(true);
         panel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 20));
-        panel.setPreferredSize(new Dimension(300, 500));
+        panel.setPreferredSize(new Dimension(320, 560));
 
         lblTiempo = crearLabel("2:30", Tema.FUENTE_TIEMPO, Tema.ACTUAL);
         lblTiempo.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -104,12 +108,17 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
         panel.add(lblLetra);
         panel.add(Box.createVerticalStrut(10));
 
-        lblDefinicion = new JLabel("<html><div style='text-align:center;width:260px'>...</div></html>");
+        lblDefinicion = new JTextArea("...");
         lblDefinicion.setForeground(Tema.TEXTO);
         lblDefinicion.setFont(Tema.FUENTE_DEFINICION);
+        lblDefinicion.setBackground(Tema.FONDO_OSCURO);
+        lblDefinicion.setWrapStyleWord(true);
+        lblDefinicion.setLineWrap(true);
+        lblDefinicion.setEditable(false);
+        lblDefinicion.setFocusable(false);
         lblDefinicion.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblDefinicion.setMaximumSize(new Dimension(270, Integer.MAX_VALUE));
         panel.add(lblDefinicion);
-        panel.add(Box.createVerticalStrut(20));
 
         txtRespuesta = new JTextField();
         txtRespuesta.setMaximumSize(new Dimension(260, 35));
@@ -169,10 +178,9 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
         int idx = juego.getLetraActual();
         String[] datos = juego.getDatosLetra(idx);
         if (datos != null) {
-            lblLetra.setText(datos[0]);
-            lblDefinicion.setText(
-                    "<html><div style='text-align:center;width:260px'>" + datos[1] + "</div></html>"
-            );
+            lblLetra.setText(datos[0] != null ? datos[0] : "?");
+            String def = datos[1] != null ? datos[1] : "(sin definición)";
+            lblDefinicion.setText(def);
         }
 
         lblAciertos.setText("Aciertos: "         + juego.getAciertos());
@@ -284,11 +292,12 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
     }
 
     private void flashMensaje(String mensaje, Color color) {
-        lblDefinicion.setText("<html><div style='text-align:center'>"
-                + "<font color='#" + String.format("%02x%02x%02x",
-                color.getRed(), color.getGreen(), color.getBlue())
-                + "'><b>" + mensaje + "</b></font></div></html>");
-        Timer t = new Timer(700, e -> {});
+        lblDefinicion.setForeground(color);
+        lblDefinicion.setText(mensaje);
+        Timer t = new Timer(700, e -> {
+            lblDefinicion.setForeground(Tema.TEXTO);
+            actualizarVista();
+        });
         t.setRepeats(false);
         t.start();
     }
@@ -324,7 +333,7 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
                 if (i == actual) {
                     fondo = Tema.ACTUAL;
                 } else {
-                    switch (datos[3]) {
+                    switch (datos[3] != null ? datos[3] : "") {
                         case PasaPalabra.ESTADO_CORRECTA:    fondo = Tema.CORRECTO;    break;
                         case PasaPalabra.ESTADO_INCORRECTA:  fondo = Tema.INCORRECTO;  break;
                         case PasaPalabra.ESTADO_PASAPALABRA: fondo = Tema.PASAPALABRA; break;
@@ -342,10 +351,10 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
                     g2.drawOval(x - r, y - r, r * 2, r * 2);
                 }
 
+                String letra = datos[0] != null ? datos[0] : "?";
                 g2.setFont(Tema.FUENTE_ROSCO);
                 g2.setColor(i == actual ? Tema.FONDO_OSCURO : Color.WHITE);
                 FontMetrics fm = g2.getFontMetrics();
-                String letra = datos[0];
                 g2.drawString(letra, x - fm.stringWidth(letra) / 2, y + fm.getAscent() / 2 - 2);
             }
 

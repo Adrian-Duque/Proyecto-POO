@@ -71,6 +71,9 @@ public class GestorPartidas {
      * @return la {@link Partida} recién creada
      */
     public Partida iniciarPartida(Juego juego, ArrayList<Usuario> jugadores) {
+        for (Usuario u : jugadores) {
+            juego.sumarPuntos(u.getUsername(), 0);
+        }
         juego.inicializar();
         partidaActual = new Partida(++contadorId, juego, jugadores);
         return partidaActual;

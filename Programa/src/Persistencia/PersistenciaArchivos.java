@@ -30,13 +30,13 @@ import java.util.ArrayList;
 public class PersistenciaArchivos implements GestorPersistencia {
 
     /** Ruta del fichero que almacena los usuarios registrados. */
-    private static final String DATA_USUARIOS     = "data/usuarios.txt";
+    private static final String DATA_USUARIOS     = "Programa/data/usuarios.txt";
 
     /** Ruta del fichero que almacena el historial de estadísticas. */
-    private static final String DATA_ESTADISTICAS = "data/estadisticas.txt";
+    private static final String DATA_ESTADISTICAS = "Programa/data/estadisticas.txt";
 
     /** Ruta de la carpeta que contiene los ficheros de partidas pausadas. */
-    private static final String CARPETA_PARTIDAS  = "data/partidas/";
+    private static final String CARPETA_PARTIDAS  = "Programa/data/partidas/";
 
     /**
      * Construye una instancia de {@code PersistenciaArchivos} y garantiza
@@ -46,7 +46,7 @@ public class PersistenciaArchivos implements GestorPersistencia {
      * Esto evita {@link IOException} en la primera ejecución de la aplicación.</p>
      */
     public PersistenciaArchivos() {
-        new File("data").mkdirs();
+        new File("Programa/data").mkdirs();
         new File(CARPETA_PARTIDAS).mkdirs();
     }
 
@@ -107,9 +107,9 @@ public class PersistenciaArchivos implements GestorPersistencia {
                 boolean esAdmin  = Boolean.parseBoolean(campos[2]);
 
                 if (esAdmin) {
-                    lista.add(new Administrador(username, password));
+                    lista.add(new Administrador(username, password,true));
                 } else {
-                    lista.add(new Jugador(username, password));
+                    lista.add(new Jugador(username, password, true));
                 }
             }
         } catch (IOException e) {

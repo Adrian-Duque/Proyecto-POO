@@ -137,19 +137,19 @@ public class VentanaMenuPrincipal extends JFrame {
         VentanaSeleccionJuego dialogo = new VentanaSeleccionJuego(this, gestorJuegos);
         String nombreJuego = dialogo.getJuegoSeleccionado();
         if (nombreJuego == null) return;
-
+    
         ArrayList<Usuario> jugadores = new ArrayList<>();
         jugadores.add(usuarioActual);
-
+    
         if (gestorJuegos.esMultijugador(nombreJuego)) {
             String username2 = JOptionPane.showInputDialog(this,
                     "Introduce el username del segundo jugador:");
             if (username2 == null || username2.trim().isEmpty()) return;
-
+    
             String password2 = JOptionPane.showInputDialog(this,
                     "Introduce la contraseña del segundo jugador:");
             if (password2 == null) return;
-
+    
             Usuario jugador2 = gestorUsuarios.buscarUsuario(username2.trim());
             if (jugador2 == null || !jugador2.verificarPassword(password2)) {
                 JOptionPane.showMessageDialog(this,
@@ -165,13 +165,28 @@ public class VentanaMenuPrincipal extends JFrame {
             }
             jugadores.add(jugador2);
         }
-
-        Juego juego = gestorJuegos.crearJuego(nombreJuego);
+    
+        int nivel = 1;
+        if ("Pasapalabra".equals(nombreJuego)) {
+            String[] niveles = {"Infantil", "Fácil", "Medio", "Avanzado"};
+            String seleccion = (String) JOptionPane.showInputDialog(
+                    this, "Selecciona la dificultad:", "Dificultad",
+                    JOptionPane.PLAIN_MESSAGE, null, niveles, "Fácil");
+            if (seleccion == null) return;
+            switch (seleccion) {
+                case "Infantil": nivel = 0; break;
+                case "Medio":    nivel = 2; break;
+                case "Avanzado": nivel = 3; break;
+                default:         nivel = 1; break;
+            }
+        }
+    
+        Juego juego = gestorJuegos.crearJuego(nombreJuego, nivel);
         if (juego == null) return;
-
+    
         gestorPartidas.iniciarPartida(juego, jugadores);
         setVisible(false);
-
+    
         if ("TresEnRaya".equals(nombreJuego)) {
             new VentanaJuegoTresEnRaya(this, gestorPartidas, gestorEstadisticas,
                     gestorPartidas.getPartidaActual());

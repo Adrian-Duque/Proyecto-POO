@@ -92,6 +92,8 @@ public class VentanaAdmin extends JFrame {
         panelPrincipal.add(lblTitulo);
 
         JTabbedPane tabs = new JTabbedPane();
+        tabs.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI());
+        tabs.setOpaque(true);
         tabs.setBackground(Tema.FONDO_PANEL);
         tabs.setForeground(Tema.ACENTO);
         tabs.setFont(Tema.FUENTE_GRANDE);
