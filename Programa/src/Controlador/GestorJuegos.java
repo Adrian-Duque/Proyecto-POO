@@ -46,7 +46,7 @@ public class GestorJuegos {
      * @return instancia de Juego correspondiente, o null si el nombre no existe
      */
     public Juego crearJuego(String nombre) {
-        if ("Pasapalabra".equals(nombre)) return new PasaPalabra();
+        if ("PasaPalabra".equals(nombre)) return new PasaPalabra();
         if ("TresEnRaya".equals(nombre)) return new TresEnRaya();
         System.err.println("GestorJuegos: juego desconocido -> " + nombre);
         return null;
@@ -59,7 +59,7 @@ public class GestorJuegos {
      * @return instancia de Juego y Nivel correspondiente, o null si el nombre no existe
      */
     public Juego crearJuego(String nombre, int nivel) {
-        if ("Pasapalabra".equals(nombre)) return new PasaPalabra(nivel);
+        if ("PasaPalabra".equals(nombre)) return new PasaPalabra(nivel);
         if ("TresEnRaya".equals(nombre)) return new TresEnRaya();
         return null;
     }

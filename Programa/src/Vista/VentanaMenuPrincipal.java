@@ -253,7 +253,7 @@ public class VentanaMenuPrincipal extends JFrame {
         if ("TresEnRaya".equals(nombreJuego)) {
             new VentanaJuegoTresEnRaya(this, gestorPartidas, gestorEstadisticas,
                     gestorPartidas.getPartidaActual());
-        } else if ("Pasapalabra".equals(nombreJuego)) {
+        } else if ("PasaPalabra".equals(nombreJuego)) {
             new VentanaJuegoPasapalabra(gestorPartidas.getPartidaActual(),
                     gestorPartidas, gestorEstadisticas, this);
         } else {
