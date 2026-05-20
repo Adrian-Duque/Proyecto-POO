@@ -43,11 +43,19 @@ public class PasaPalabra extends Juego {
 
     // ── Constructores ────────────────────────────────────────────────────────
 
+    /**
+     * Crea una nueva partida de PasaPalabra con el nivel de dificultad indicado.
+     *
+     * @param nivel nivel de dificultad: 0=Infantil, 1=Fácil, 2=Medio, 3=Avanzado
+     */
     public PasaPalabra(int nivel) {
         super("PasaPalabra", "Adivina las palabras del rosco letra a letra", false);
         this.nivel = nivel;
     }
 
+    /**
+     * Crea una nueva partida de PasaPalabra con dificultad Fácil (nivel 1).
+     */
     public PasaPalabra() {
         this(1);
     }
@@ -136,7 +144,10 @@ public class PasaPalabra extends Juego {
         return esCorrecta;
     }
 
-    /** Marca la letra actual como pasapalabra y avanza a la siguiente pendiente. */
+    /**
+     * Marca la letra actual como pasapalabra y avanza a la siguiente letra pendiente.
+     * No hace nada si el juego ya ha terminado o el rosco no está cargado.
+     */
     public void pasarPalabra() {
         if (juegoFinalizado || rosco == null) return;
         rosco[letraActual][3] = ESTADO_PASAPALABRA;
@@ -147,19 +158,37 @@ public class PasaPalabra extends Juego {
 
     // ── Getters de estado para la vista ─────────────────────────────────────
 
+    /** @return número de letras acertadas hasta el momento */
     public int getAciertos()     { return aciertos; }
+
+    /** @return número de letras acertadas hasta el momento */
     public int getFallos()       { return fallos; }
+
+    /** @return número de letras marcadas como pasapalabra hasta el momento */
     public int getPasaPalabras() { return pasapalabras; }
+
+    /** @return índice de la letra que se está respondiendo actualmente */
     public int getLetraActual()  { return letraActual; }
+
+    /** @return nivel de dificultad del rosco (0=Infantil, 1=Fácil, 2=Medio, 3=Avanzado) */
     public int getNivel()        { return nivel; }
 
-    /** Devuelve una copia de la fila [letra, definición, respuesta, estado] para el índice dado. */
+    /**
+     * Devuelve los datos de una letra del rosco por su índice.
+     *
+     * @param indice posición en el rosco (0-26)
+     * @return array {@code [letra, definición, respuesta, estado]}, o {@code null} si el índice es inválido
+     */
     public String[] getDatosLetra(int indice) {
         if (rosco == null || indice < 0 || indice >= rosco.length) return null;
         return rosco[indice].clone();
     }
 
-    /** Cuántas letras quedan por responder (pendientes + pasapalabras). */
+    /**
+     * Cuenta cuántas letras quedan por resolver (pendientes o marcadas como pasapalabra).
+     *
+     * @return número de letras sin respuesta definitiva
+     */
     public int contarPendientes() {
         if (rosco == null) return 0;
         int count = 0;
@@ -169,6 +198,11 @@ public class PasaPalabra extends Juego {
         return count;
     }
 
+    /**
+     * Devuelve el número total de letras del rosco.
+     *
+     * @return total de letras (normalmente 27)
+     */
     public int getTotalLetras() {
         return rosco != null ? rosco.length : 27;
     }
@@ -197,7 +231,13 @@ public class PasaPalabra extends Juego {
         return lista.isEmpty() ? "jugador" : lista.get(0).getUsername();
     }
 
-    /** Normaliza texto: elimina tildes y convierte a minúsculas. */
+    /**
+     * Normaliza un texto eliminando tildes y convirtiendo a minúsculas.
+     * Se usa para comparar respuestas sin distinguir acentos ni mayúsculas.
+     *
+     * @param texto texto a normalizar; si es {@code null} devuelve cadena vacía
+     * @return texto normalizado en minúsculas y sin tildes
+     */
     public static String limpiarTexto(String texto) {
         if (texto == null) return "";
         String n = Normalizer.normalize(texto, Normalizer.Form.NFD);

@@ -16,6 +16,7 @@ import javax.swing.*;
  * sin necesidad de inyección manual en cada constructor.
  *
  * @author JP-Aceves
+ * @author Adrián
  * @version 1.1
  */
 public class Aplicacion {
@@ -50,18 +51,38 @@ public class Aplicacion {
         SwingUtilities.invokeLater(() -> new VentanaLogin(gestorUsuarios).setVisible(true));
     }
 
+    /**
+     * Devuelve el gestor de usuarios de la aplicación.
+     *
+     * @return instancia de {@link GestorUsuarios} inicializada en el arranque
+     */
     public static GestorUsuarios getGestorUsuarios(){
         return gestorUsuarios; 
     }
 
+    /**
+     * Devuelve el gestor de juegos de la aplicación.
+     *
+     * @return instancia de {@link GestorJuegos} inicializada en el arranque
+     */
     public static GestorJuegos getGestorJuegos(){ 
         return gestorJuegos; 
     }
 
+    /**
+     * Devuelve el gestor de partidas de la aplicación.
+     *
+     * @return instancia de {@link GestorPartidas} inicializada en el arranque
+     */
     public static GestorPartidas getGestorPartidas(){ 
         return gestorPartidas; 
     }
-    
+
+    /**
+     * Devuelve el gestor de estadísticas de la aplicación.
+     *
+     * @return instancia de {@link GestorEstadisticas} inicializada en el arranque
+     */
     public static GestorEstadisticas getGestorEstadisticas(){
         return gestorEstadisticas; 
     }
