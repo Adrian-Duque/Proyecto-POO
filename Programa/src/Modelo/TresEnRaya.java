@@ -3,9 +3,9 @@ package Modelo;
 /**
  * Implementación del juego Tres en Raya para dos jugadores.
  *
- * <p>Hereda de {@link Juego} e implementa todos sus métodos abstractos.
+ * <p>Hereda de {@link Modelo.Juego} e implementa todos sus métodos abstractos.
  * El tablero es 3x3 con fichas 'X' y 'O'. La gestión del turno la lleva
- * {@link Partida} externamente — esta clase solo conoce el estado del tablero.</p>
+ * {@link Modelo.Partida} externamente — esta clase solo conoce el estado del tablero.</p>
  *
  * @author Nacho
  * @version 2.1
