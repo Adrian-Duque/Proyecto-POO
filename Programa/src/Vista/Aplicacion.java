@@ -40,7 +40,7 @@ public class Aplicacion {
 
         gestorJuegos = new GestorJuegos();
         gestorJuegos.registrarJuego("TresEnRaya");
-        gestorJuegos.registrarJuego("Pasapalabra");
+        gestorJuegos.registrarJuego("PasaPalabra");
 
         gestorPartidas = new GestorPartidas(persistencia);
 

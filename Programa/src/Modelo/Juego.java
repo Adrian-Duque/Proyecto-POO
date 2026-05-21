@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public abstract class Juego {
 
-    /** Nombre identificador del juego (ej: "Pasapalabra", "TresEnRaya"). */
+    /** Nombre identificador del juego (ej: "PasaPalabra", "TresEnRaya"). */
     protected String nombreJuego;
 
     /** Descripción breve del juego mostrada en el menú de selección. */

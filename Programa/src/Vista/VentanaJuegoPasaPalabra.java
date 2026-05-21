@@ -16,7 +16,7 @@ import java.awt.event.*;
  * @author Adrián
  * @version 1.1
  */
-public class VentanaJuegoPasapalabra extends VentanaJuego {
+public class VentanaJuegoPasaPalabra extends VentanaJuego {
 
     // ── Referencias ─────────────────────────────────────────────────────────
     private final PasaPalabra juego;
@@ -29,11 +29,11 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
     private JLabel     lblLetra;
     private JLabel     lblAciertos;
     private JLabel     lblFallos;
-    private JLabel     lblPasapalabras;
+    private JLabel     lblPasaPalabras;
     private JLabel     lblTiempo;
     private JTextField txtRespuesta;
     private JButton    btnResponder;
-    private JButton    btnPasapalabra;
+    private JButton    btnPasaPalabra;
     private JButton    btnPausar;
 
     // ── Temporizador ─────────────────────────────────────────────────────────
@@ -49,7 +49,7 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
      * @param gestorEstadisticas Para registrar el resultado al finalizar.
      * @param ventanaPadre       Ventana a la que volver al cerrar.
      */
-    public VentanaJuegoPasapalabra(Partida partida, GestorPartidas gestorPartidas,
+    public VentanaJuegoPasaPalabra(Partida partida, GestorPartidas gestorPartidas,
                                    GestorEstadisticas gestorEstadisticas, JFrame ventanaPadre) {
         super(ventanaPadre, gestorPartidas, gestorEstadisticas);
         this.partida           = partida;
@@ -135,25 +135,25 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
         panel.add(Box.createVerticalStrut(10));
 
         btnResponder   = crearBoton("Responder",   Tema.CORRECTO,    e -> onResponder());
-        btnPasapalabra = crearBoton("PasaPalabra", Tema.PASAPALABRA, e -> onPasapalabra());
+        btnPasaPalabra = crearBoton("PasaPalabra", Tema.PASAPALABRA, e -> onPasaPalabra());
         btnResponder.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btnPasapalabra.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnPasaPalabra.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(btnResponder);
         panel.add(Box.createVerticalStrut(8));
-        panel.add(btnPasapalabra);
+        panel.add(btnPasaPalabra);
         panel.add(Box.createVerticalStrut(20));
 
         lblAciertos     = crearLabel("Aciertos: 0",     Tema.FUENTE_PUNTOS, Tema.CORRECTO);
         lblFallos       = crearLabel("Fallos: 0",       Tema.FUENTE_PUNTOS, Tema.INCORRECTO);
-        lblPasapalabras = crearLabel("Pasapalabras: 0", Tema.FUENTE_PUNTOS, Tema.PASAPALABRA);
+        lblPasaPalabras = crearLabel("PasaPalabras: 0", Tema.FUENTE_PUNTOS, Tema.PASAPALABRA);
         lblAciertos.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblFallos.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lblPasapalabras.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblPasaPalabras.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(lblAciertos);
         panel.add(Box.createVerticalStrut(4));
         panel.add(lblFallos);
         panel.add(Box.createVerticalStrut(4));
-        panel.add(lblPasapalabras);
+        panel.add(lblPasaPalabras);
 
         return panel;
     }
@@ -185,7 +185,7 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
 
         lblAciertos.setText("Aciertos: "         + juego.getAciertos());
         lblFallos.setText("Fallos: "             + juego.getFallos());
-        lblPasapalabras.setText("Pasapalabras: " + juego.getPasaPalabras());
+        lblPasaPalabras.setText("PasaPalabras: " + juego.getPasaPalabras());
 
         panelRosco.repaint();
         txtRespuesta.setText("");
@@ -204,7 +204,7 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
         actualizarVista();
     }
 
-    private void onPasapalabra() {
+    private void onPasaPalabra() {
         juego.pasarPalabra();
         flashMensaje("PasaPalabra", Tema.PASAPALABRA);
         actualizarVista();
@@ -231,7 +231,7 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
                 "<html><center><h2>Partida terminada</h2>" +
                         "<p>Aciertos: <b>%d</b></p>" +
                         "<p>Fallos: <b>%d</b></p>" +
-                        "<p>Pasapalabras: <b>%d</b></p>" +
+                        "<p>PasaPalabras: <b>%d</b></p>" +
                         "<p>Puntuación: <b>%d</b></p></center></html>",
                 juego.getAciertos(),
                 juego.getFallos(),

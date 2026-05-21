@@ -175,7 +175,7 @@ public class VentanaMenuPrincipal extends JFrame {
         }
     
         int nivel = 1;
-        if ("Pasapalabra".equals(nombreJuego)) {
+        if ("PasaPalabra".equals(nombreJuego)) {
             String[] niveles = {"Infantil", "Fácil", "Medio", "Avanzado"};
             String seleccion = (String) JOptionPane.showInputDialog(
                     this, "Selecciona la dificultad:", "Dificultad",
@@ -198,8 +198,8 @@ public class VentanaMenuPrincipal extends JFrame {
         if ("TresEnRaya".equals(nombreJuego)) {
             new VentanaJuegoTresEnRaya(this, gestorPartidas, gestorEstadisticas,
                     gestorPartidas.getPartidaActual());
-        } else if ("Pasapalabra".equals(nombreJuego)) {
-            new VentanaJuegoPasapalabra(gestorPartidas.getPartidaActual(),
+        } else if ("PasaPalabra".equals(nombreJuego)) {
+            new VentanaJuegoPasaPalabra(gestorPartidas.getPartidaActual(),
                     gestorPartidas, gestorEstadisticas, this);
         } else {
             JOptionPane.showMessageDialog(this,
@@ -218,7 +218,7 @@ public class VentanaMenuPrincipal extends JFrame {
             return;
         }
 
-        // Etiquetas legibles: "Partida 3 — Pasapalabra" en vez de IDs numéricos
+        // Etiquetas legibles: "Partida 3 — PasaPalabra" en vez de IDs numéricos
         String[] etiquetas = new String[ids.size()];
         for (int i = 0; i < ids.size(); i++) {
             int id = ids.get(i);
@@ -254,7 +254,7 @@ public class VentanaMenuPrincipal extends JFrame {
             new VentanaJuegoTresEnRaya(this, gestorPartidas, gestorEstadisticas,
                     gestorPartidas.getPartidaActual());
         } else if ("PasaPalabra".equals(nombreJuego)) {
-            new VentanaJuegoPasapalabra(gestorPartidas.getPartidaActual(),
+            new VentanaJuegoPasaPalabra(gestorPartidas.getPartidaActual(),
                     gestorPartidas, gestorEstadisticas, this);
         } else {
             JOptionPane.showMessageDialog(this, "Tipo de juego desconocido.",
