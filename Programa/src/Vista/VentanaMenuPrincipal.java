@@ -33,14 +33,6 @@ public class VentanaMenuPrincipal extends JFrame {
     private JButton btnAdmin;
     private JButton btnCerrarSesion;
 
-    /**
-     * Construye el menú principal para el usuario con sesión activa.
-     *
-     * @param gestorUsuarios     gestor de usuarios; se usa para obtener el usuario actual y cerrar sesión
-     * @param gestorPartidas     gestor de partidas; se usa para iniciar y cargar partidas
-     * @param gestorEstadisticas gestor de estadísticas; se pasa a las ventanas de juego y estadísticas
-     * @param gestorJuegos       gestor de juegos; se usa para listar los juegos disponibles
-     */
     public VentanaMenuPrincipal(GestorUsuarios gestorUsuarios,
                                 GestorPartidas gestorPartidas,
                                 GestorEstadisticas gestorEstadisticas,
@@ -253,7 +245,7 @@ public class VentanaMenuPrincipal extends JFrame {
         if ("TresEnRaya".equals(nombreJuego)) {
             new VentanaJuegoTresEnRaya(this, gestorPartidas, gestorEstadisticas,
                     gestorPartidas.getPartidaActual());
-        } else if ("PasaPalabra".equals(nombreJuego)) {
+        } else if ("Pasapalabra".equals(nombreJuego)) {
             new VentanaJuegoPasapalabra(gestorPartidas.getPartidaActual(),
                     gestorPartidas, gestorEstadisticas, this);
         } else {

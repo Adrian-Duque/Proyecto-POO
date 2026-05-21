@@ -3,7 +3,7 @@ package Vista;
 import Controlador.GestorEstadisticas;
 import Controlador.GestorPartidas;
 import Modelo.Partida;
-import Modelo.PasaPalabra;
+import Modelo.Pasapalabra;
 import Modelo.Usuario;
 
 import javax.swing.*;
@@ -19,7 +19,7 @@ import java.awt.event.*;
 public class VentanaJuegoPasapalabra extends VentanaJuego {
 
     // ── Referencias ─────────────────────────────────────────────────────────
-    private final PasaPalabra juego;
+    private final Pasapalabra juego;
     private final Usuario     jugador;
     private final Partida     partida;
 
@@ -53,7 +53,7 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
                                    GestorEstadisticas gestorEstadisticas, JFrame ventanaPadre) {
         super(ventanaPadre, gestorPartidas, gestorEstadisticas);
         this.partida           = partida;
-        this.juego             = (PasaPalabra) partida.getJuego();
+        this.juego             = (Pasapalabra) partida.getJuego();
         this.jugador           = partida.getJugadorActual();
         this.segundosRestantes = TIEMPO_INICIAL;
 
@@ -334,9 +334,9 @@ public class VentanaJuegoPasapalabra extends VentanaJuego {
                     fondo = Tema.ACTUAL;
                 } else {
                     switch (datos[3] != null ? datos[3] : "") {
-                        case PasaPalabra.ESTADO_CORRECTA:    fondo = Tema.CORRECTO;    break;
-                        case PasaPalabra.ESTADO_INCORRECTA:  fondo = Tema.INCORRECTO;  break;
-                        case PasaPalabra.ESTADO_PASAPALABRA: fondo = Tema.PASAPALABRA; break;
+                        case Pasapalabra.ESTADO_CORRECTA:    fondo = Tema.CORRECTO;    break;
+                        case Pasapalabra.ESTADO_INCORRECTA:  fondo = Tema.INCORRECTO;  break;
+                        case Pasapalabra.ESTADO_PASAPALABRA: fondo = Tema.PASAPALABRA; break;
                         default:                             fondo = Tema.PENDIENTE;
                     }
                 }

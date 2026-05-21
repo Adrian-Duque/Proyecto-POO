@@ -67,6 +67,7 @@ public class GestorPartidas {
      *
      * @param juego     juego que se va a jugar
      * @param jugadores lista de usuarios que participan
+     * @param fecha     fecha de inicio de la partida
      * @return la {@link Partida} recién creada
      */
     public Partida iniciarPartida(Juego juego, ArrayList<Usuario> jugadores) {

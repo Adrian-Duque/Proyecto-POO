@@ -44,10 +44,10 @@ public class GestorEstadisticas {
         for (Usuario u : partida.getListaJugadores()) {
             String username = u.getUsername();
             String nombreJuego = partida.getJuego().getNombre();
-            int puntuacion = partida.getJuego().getPuntuacion(username);
+            int puntuacion = partida.getPuntuacion(u);
             boolean victoria;
-                if (partida.getJuego() instanceof Modelo.PasaPalabra) {
-                    Modelo.PasaPalabra pp = (Modelo.PasaPalabra) partida.getJuego();
+                if (partida.getJuego() instanceof Modelo.Pasapalabra) {
+                    Modelo.Pasapalabra pp = (Modelo.Pasapalabra) partida.getJuego();
                     victoria = pp.contarPendientes() == 0 && pp.getFallos() == 0;
                     } else {
                     victoria = ganador != null && ganador.getUsername().equals(username);

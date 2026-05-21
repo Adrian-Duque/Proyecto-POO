@@ -3,9 +3,9 @@ package Modelo;
 /**
  * Implementación del juego Tres en Raya para dos jugadores.
  *
- * <p>Hereda de {@link Modelo.Juego} e implementa todos sus métodos abstractos.
+ * <p>Hereda de {@link Juego} e implementa todos sus métodos abstractos.
  * El tablero es 3x3 con fichas 'X' y 'O'. La gestión del turno la lleva
- * {@link Modelo.Partida} externamente — esta clase solo conoce el estado del tablero.</p>
+ * {@link Partida} externamente — esta clase solo conoce el estado del tablero.</p>
  *
  * @author Nacho
  * @version 2.1
@@ -182,18 +182,8 @@ public class TresEnRaya extends Juego {
     // GETTERS
     // ============================================================
 
-    /**
-     * Devuelve el username del ganador de la partida.
-     *
-     * @return username del ganador, o {@code null} si no hay ganador todavía (empate o en curso)
-     */
     public String getGanador() { return ganador; }
 
-    /**
-     * Devuelve una copia del tablero para evitar modificaciones externas.
-     *
-     * @return matriz 3x3 con el estado actual; celdas vacías contienen {@code ' '}
-     */
     public char[][] getTablero() {
         char[][] copia = new char[3][3];
         for (int i = 0; i < 3; i++) copia[i] = tablero[i].clone();
