@@ -104,8 +104,8 @@ public class PersistenciaArchivos implements GestorPersistencia {
 
                 String  username = campos[0];
                 String  password = campos[1];
-                boolean esAdmin  = Boolean.parseBoolean(campos[2]);
-                int añoNacimiento = Integer.parseInt(campos[3]);
+                boolean esAdmin  = Boolean.parseBoolean(campos[3]);
+                int añoNacimiento = Integer.parseInt(campos[2]);
 
                 if (esAdmin) {
                     lista.add(new Administrador(username, password,true, añoNacimiento));

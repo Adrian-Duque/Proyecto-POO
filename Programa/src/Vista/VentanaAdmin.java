@@ -42,6 +42,8 @@ public class VentanaAdmin extends JFrame {
     /** Modelo de datos de la tabla de usuarios. */
     private DefaultTableModel modeloUsuarios;
 
+    private DefaultTableModel modeloMenores;
+
     /** Modelo de datos de la tabla de partidas. */
     private DefaultTableModel modeloPartidas;
 
@@ -50,6 +52,8 @@ public class VentanaAdmin extends JFrame {
 
     /** Tabla que muestra la lista de usuarios. */
     private JTable tablaUsuarios;
+
+    private JTable tablaMenores;
 
     /** Tabla que muestra el historial de partidas. */
     private JTable tablaPartidas;
@@ -99,6 +103,7 @@ public class VentanaAdmin extends JFrame {
         tabs.setFont(Tema.FUENTE_GRANDE);
         tabs.addTab("Ranking", crearPanelRanking());
         tabs.addTab("Usuarios", crearPanelUsuarios());
+        tabs.addTab("Menores", crearPanelUsuarios());
         tabs.addTab("Partidas", crearPanelPartidas());
         tabs.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
         panelPrincipal.add(tabs);
@@ -247,6 +252,71 @@ public class VentanaAdmin extends JFrame {
         return panel;
     }
 
+
+    private JPanel crearPanelMenores() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Tema.FONDO_PANEL);
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        String[] columnas = {"Username", "Tipo", "Año"};
+        modeloMenores = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        tablaMenores = new JTable(modeloMenores);
+        estilizarTabla(tablaMenores);
+        tablaMenores.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrollUsuarios = new JScrollPane(tablaMenores);
+        scrollUsuarios.getViewport().setBackground(Tema.FONDO_PANEL);
+        scrollUsuarios.setBorder(BorderFactory.createLineBorder(Tema.BORDE, 1));
+        panel.add(scrollUsuarios);
+
+        JButton btnBorrar = new JButton("Borrar usuario seleccionado");
+        btnBorrar.setAlignmentX(JButton.CENTER_ALIGNMENT);
+        btnBorrar.setBackground(Tema.INCORRECTO);
+        btnBorrar.setForeground(Color.WHITE);
+        btnBorrar.setFont(Tema.FUENTE_BOTON);
+        btnBorrar.setFocusPainted(false);
+        btnBorrar.setOpaque(true);
+        btnBorrar.setBorderPainted(false);
+        btnBorrar.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
+        btnBorrar.addActionListener(e -> {
+            int fila = tablaMenores.getSelectedRow();
+            if (fila < 0) {
+                JOptionPane.showMessageDialog(this,
+                        "Selecciona un usuario de la tabla primero.",
+                        "Ningún usuario seleccionado", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            String username = (String) modeloMenores.getValueAt(fila, 0);
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "¿Seguro que quieres eliminar al usuario '" + username + "'?",
+                    "Confirmar borrado", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (confirm != JOptionPane.YES_OPTION) return;
+
+            String error = gestorUsuarios.borrarUsuario(username);
+            if (error != null) {
+                JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Usuario '" + username + "' eliminado correctamente.",
+                        "Borrado", JOptionPane.INFORMATION_MESSAGE);
+                mostrarListaMenores();
+            }
+        });
+
+        JPanel panelBoton = new JPanel();
+        panelBoton.setBackground(Tema.FONDO_PANEL);
+        panelBoton.add(btnBorrar);
+        panel.add(panelBoton);
+
+        return panel;
+    }
+
     /**
      * Crea el panel de partidas con el historial de partidas finalizadas y pausadas.
      *
@@ -311,6 +381,19 @@ public class VentanaAdmin extends JFrame {
             String tipo = (u instanceof Administrador) ? "ADMIN" : "Usuario";
             Object[] fila = {u.getUsername(), tipo};
             modeloUsuarios.addRow(fila);
+        }
+    }
+
+    public void mostrarListaMenores() {
+        ArrayList<Usuario> menores = gestorUsuarios.getListaUsuarios();
+
+        modeloMenores.setRowCount(0);
+
+        for (Usuario u : menores) {
+
+            String tipo = (u instanceof Administrador) ? "ADMIN" : "Usuario";
+            Object[] fila = {u.getUsername(), tipo};
+            modeloMenores.addRow(fila);
         }
     }
 
