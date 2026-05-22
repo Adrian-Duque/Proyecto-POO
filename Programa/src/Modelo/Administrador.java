@@ -20,8 +20,8 @@ public class Administrador extends Usuario {
      * @param username nombre de usuario único; no debe estar vacío ni contener espacios.
      * @param password contraseña en texto plano asociada a esta cuenta.
      */
-    public Administrador(String username, String password) {
-        super(username, password);
+    public Administrador(String username, String password, int añoNacimiento) {
+        super(username, password, añoNacimiento);
     }
 
     /**
@@ -38,8 +38,8 @@ public class Administrador extends Usuario {
      *                   procesarse; {@code false} si es texto plano y debe hashearse
      * @see Usuario#Usuario(String, String, boolean)
      */
-    public Administrador(String username, String passwordHash, boolean yaEsHash) {
-        super(username, passwordHash, yaEsHash);
+    public Administrador(String username, String passwordHash, boolean yaEsHash, int añoNacimiento) {
+        super(username, passwordHash, añoNacimiento, yaEsHash);
     }
 
     /**
@@ -65,6 +65,6 @@ public class Administrador extends Usuario {
      */
     @Override
     public String toArchivo() {
-        return username + ";" + passwordHash + ";" + true;
+        return username + ";" + passwordHash + ";" + añoNacimiento + ";" + true;
     }
 }

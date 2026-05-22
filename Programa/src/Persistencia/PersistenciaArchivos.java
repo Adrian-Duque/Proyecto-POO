@@ -100,16 +100,17 @@ public class PersistenciaArchivos implements GestorPersistencia {
                 if (linea.isEmpty()) continue;
 
                 String[] campos = linea.split(";");
-                if (campos.length < 3) continue;
+                if (campos.length < 4) continue;
 
                 String  username = campos[0];
                 String  password = campos[1];
                 boolean esAdmin  = Boolean.parseBoolean(campos[2]);
+                int añoNacimiento = Integer.parseInt(campos[3]);
 
                 if (esAdmin) {
-                    lista.add(new Administrador(username, password,true));
+                    lista.add(new Administrador(username, password,true, añoNacimiento));
                 } else {
-                    lista.add(new Jugador(username, password, true));
+                    lista.add(new Jugador(username, password, true, añoNacimiento));
                 }
             }
         } catch (IOException e) {

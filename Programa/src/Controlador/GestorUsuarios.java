@@ -73,13 +73,16 @@ public class GestorUsuarios {
      * @param contrasena contraseña deseada
      * @return {@code null} si el registro fue exitoso, o un mensaje de error si falló
      */
-    public String registrarUsuario(String username, String contrasena) {
+    public String registrarUsuario(String username, String contrasena, int añoNacimiento) {
         // Validar formato antes de tocar la lista
         String errorUsername = validarUsername(username);
         if (errorUsername != null) return errorUsername;
 
         String errorPassword = validarPassword(contrasena);
         if (errorPassword != null) return errorPassword;
+
+        String errorEdad = validarEdad(añoNacimiento);
+        if (errorEdad != null) return errorEdad;
 
         // Comprobar duplicado
         for (Usuario u : listaUsuarios) {
@@ -89,7 +92,7 @@ public class GestorUsuarios {
         }
 
         // Jugador es la subclase concreta de Usuario para usuarios normales
-        listaUsuarios.add(new Jugador(username, contrasena));
+        listaUsuarios.add(new Jugador(username, contrasena, añoNacimiento));
         persistencia.guardarUsuarios(listaUsuarios);
         return null;
     }
@@ -137,6 +140,14 @@ public class GestorUsuarios {
         }
         if (password.contains(";")) {
             return "La contraseña no puede contener el carácter ';'.";
+        }
+        return null;
+    }
+
+
+    private String validarEdad(int añoNacimiento) {
+        if (añoNacimiento < 0) {
+            return "La edad no puede ser negativa.";
         }
         return null;
     }

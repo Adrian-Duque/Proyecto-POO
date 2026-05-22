@@ -19,8 +19,8 @@ public class Jugador extends Usuario {
      * @param username nombre de usuario único; no debe estar vacío ni contener espacios.
      * @param password contraseña en texto plano asociada a esta cuenta.
      */
-    public Jugador(String username, String password) {
-        super(username, password);
+    public Jugador(String username, String password, int añoNacimiento) {
+        super(username, password, añoNacimiento);
     }
 
     /**
@@ -37,8 +37,8 @@ public class Jugador extends Usuario {
      *                   procesarse; {@code false} si es texto plano y debe hashearse
      * @see Usuario#Usuario(String, String, boolean)
      */
-    public Jugador(String username, String passwordHash, boolean yaEsHash) {
-        super(username, passwordHash, yaEsHash);
+    public Jugador(String username, String passwordHash, boolean yaEsHash, int añoNacimiento) {
+        super(username, passwordHash, añoNacimiento, yaEsHash);
     }
 
     /**
@@ -64,6 +64,6 @@ public class Jugador extends Usuario {
      */
     @Override
     public String toArchivo() {
-        return username + ";" + passwordHash + ";" + false;
+        return username + ";" + passwordHash + ";" + añoNacimiento + ";" + false;
     }
 }

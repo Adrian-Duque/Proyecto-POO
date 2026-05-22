@@ -33,6 +33,8 @@ public class VentanaLogin extends JFrame {
     private JTextField txtUsername;
     private JLabel  lblPassword;
     private JPasswordField txtPassword;
+    private JLabel  lblAño;
+    private JTextField txtAño;
     private JButton btnAccion;
     private JButton btnCambiarModo;
     private JLabel  lblError;
@@ -62,7 +64,7 @@ public class VentanaLogin extends JFrame {
                 BorderFactory.createLineBorder(Tema.ACENTO, 1),
                 new EmptyBorder(36, 40, 36, 40)
         ));
-        card.setPreferredSize(new Dimension(380, 430));
+        card.setPreferredSize(new Dimension(380, 530));
 
         lblTitulo = new JLabel("MINIJUEGOS");
         lblTitulo.setFont(Tema.FUENTE_TITULO);
@@ -90,6 +92,13 @@ public class VentanaLogin extends JFrame {
 
         txtPassword = new JPasswordField();
         estilizarCampo(txtPassword);
+
+        lblAño = new JLabel("Año Nacimiento");
+        lblAño.setFont(Tema.FUENTE_LABEL);
+        lblAño.setForeground(Tema.TEXTO);
+        lblAño.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        txtAño = crearCampoTexto();
 
         lblError = new JLabel(" ");
         lblError.setFont(Tema.FUENTE_LABEL);
@@ -149,6 +158,10 @@ public class VentanaLogin extends JFrame {
         card.add(Box.createRigidArea(new Dimension(0, 6)));
         card.add(txtPassword);
         card.add(Box.createRigidArea(new Dimension(0, 12)));
+        card.add(lblAño);
+        card.add(Box.createRigidArea(new Dimension(0, 6)));
+        card.add(txtAño);
+        card.add(Box.createRigidArea(new Dimension(0, 16)));
         card.add(lblError);
         card.add(Box.createRigidArea(new Dimension(0, 16)));
         card.add(btnAccion);
@@ -219,13 +232,14 @@ public class VentanaLogin extends JFrame {
     private void accionRegistro() {
         String username = txtUsername.getText().trim();
         String password = new String(txtPassword.getPassword());
+        int año = Integer.parseInt(txtAño.getText().trim());
 
         if (username.isEmpty() || password.isEmpty()) {
             mostrarError("Rellena todos los campos.");
             return;
         }
 
-        String error = gestorUsuarios.registrarUsuario(username, password);
+        String error = gestorUsuarios.registrarUsuario(username, password, año);
 
         if (error == null) {
             gestorUsuarios.iniciarSesion(username, password);
@@ -241,6 +255,7 @@ public class VentanaLogin extends JFrame {
         limpiarError();
         txtUsername.setText("");
         txtPassword.setText("");
+        txtAño.setText("");
         actualizarModo();
     }
 
@@ -249,10 +264,14 @@ public class VentanaLogin extends JFrame {
             lblSubtitulo.setText("Inicia sesión para jugar");
             btnAccion.setText("Iniciar sesión");
             btnCambiarModo.setText("¿No tienes cuenta? Regístrate");
+            txtAño.setVisible(false);
+            lblAño.setVisible(false);
         } else {
             lblSubtitulo.setText("Crea tu cuenta");
             btnAccion.setText("Registrarse");
             btnCambiarModo.setText("¿Ya tienes cuenta? Inicia sesión");
+            txtAño.setVisible(true);
+            lblAño.setVisible(true);
         }
     }
 

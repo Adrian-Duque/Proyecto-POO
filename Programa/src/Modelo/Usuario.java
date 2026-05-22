@@ -26,6 +26,8 @@ public abstract class Usuario {
     /** Hash SHA-256 de la contraseña del usuario, en representación hexadecimal. */
     protected String passwordHash;
 
+    protected int añoNacimiento;
+
     /**
      * Crea un nuevo usuario a partir de credenciales en texto plano.
      * La contraseña se hashea con SHA-256 antes de almacenarse.
@@ -33,9 +35,10 @@ public abstract class Usuario {
      * @param username identificador único del usuario
      * @param password contraseña en texto plano; se convertirá a hash internamente
      */
-    public Usuario(String username, String password) {
+    public Usuario(String username, String password, int añoNacimiento) {
         this.username = username;
         this.passwordHash = hashear(password);
+        this.añoNacimiento = añoNacimiento;
     }
 
     /**
@@ -51,9 +54,10 @@ public abstract class Usuario {
      * @param yaEsHash     {@code true} si el segundo parámetro ya es un hash SHA-256;
      *                     {@code false} si es texto plano y debe hashearse
      */
-    public Usuario(String username, String passwordHash, boolean yaEsHash) {
+    public Usuario(String username, String passwordHash, int añoNacimiento, boolean yaEsHash) {
         this.username = username;
         this.passwordHash = yaEsHash ? passwordHash : hashear(passwordHash);
+        this.añoNacimiento = añoNacimiento;
     }
 
     /**
