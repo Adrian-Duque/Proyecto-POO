@@ -103,7 +103,7 @@ public class VentanaAdmin extends JFrame {
         tabs.setFont(Tema.FUENTE_GRANDE);
         tabs.addTab("Ranking", crearPanelRanking());
         tabs.addTab("Usuarios", crearPanelUsuarios());
-        tabs.addTab("Menores", crearPanelUsuarios());
+        tabs.addTab("Menores", crearPanelMenores());
         tabs.addTab("Partidas", crearPanelPartidas());
         tabs.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
         panelPrincipal.add(tabs);
@@ -127,6 +127,7 @@ public class VentanaAdmin extends JFrame {
         add(panelPrincipal);
 
         mostrarListaUsuarios();
+        mostrarListaMenores();
     }
 
     /**
@@ -194,7 +195,7 @@ public class VentanaAdmin extends JFrame {
         panel.setBackground(Tema.FONDO_PANEL);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        String[] columnas = {"Username", "Tipo"};
+        String[] columnas = {"Username", "Tipo", "Año"};
         modeloUsuarios = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -379,7 +380,8 @@ public class VentanaAdmin extends JFrame {
 
         for (Usuario u : usuarios) {
             String tipo = (u instanceof Administrador) ? "ADMIN" : "Usuario";
-            Object[] fila = {u.getUsername(), tipo};
+            int año = u.getAñoNacimiento();
+            Object[] fila = {u.getUsername(), tipo, año};
             modeloUsuarios.addRow(fila);
         }
     }
@@ -390,10 +392,13 @@ public class VentanaAdmin extends JFrame {
         modeloMenores.setRowCount(0);
 
         for (Usuario u : menores) {
+            if (u.getAñoNacimiento() > 2007) {
+                String tipo = (u instanceof Administrador) ? "ADMIN" : "Usuario";
+                int año = u.getAñoNacimiento();
+                Object[] fila = {u.getUsername(), tipo, año};
 
-            String tipo = (u instanceof Administrador) ? "ADMIN" : "Usuario";
-            Object[] fila = {u.getUsername(), tipo};
-            modeloMenores.addRow(fila);
+                modeloMenores.addRow(fila);
+            }
         }
     }
 

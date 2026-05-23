@@ -94,6 +94,8 @@ public abstract class Usuario {
         return username;
     }
 
+    public int getAñoNacimiento() {return añoNacimiento;}
+
     /**
      * Verifica si la contraseña proporcionada coincide con la almacenada.
      * <p>
